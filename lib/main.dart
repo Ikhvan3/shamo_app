@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shamo_app/pages/sign_in_page.dart';
+import 'package:shamo_app/pages/splash_page.dart';
 
 void main(List<String> args) {
   runApp(MyApp());
@@ -11,18 +13,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Image.asset('assets/image_splash.png'),
+      routes: {
+        '/': (context) => SplashPage(),
+        '/sign-in': (context) => SignInPage(),
+      },
     );
   }
 }
