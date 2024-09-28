@@ -24,57 +24,49 @@ class MainPage extends StatelessWidget {
           top: Radius.circular(30),
         ),
         child: BottomAppBar(
-          color: backgroundColor4,
+          color: Color.fromARGB(255, 33, 35, 44),
           shape: CircularNotchedRectangle(),
           notchMargin: 10,
           clipBehavior: Clip.antiAlias,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              InkWell(
-                onTap: () {
-                  // Aksi ketika icon home diklik
-                  print('Home clicked');
-                },
-                child: Image.asset(
-                  'assets/icon_home.png',
-                  width: 21,
+          child: Container(
+            height: 60,
+            color: backgroundColor4,
+            child: BottomNavigationBar(
+              backgroundColor: backgroundColor4,
+              // backgroundColor: Colors.transparent,
+              type: BottomNavigationBarType.fixed,
+              elevation: 0,
+              items: [
+                BottomNavigationBarItem(
+                  icon: Image.asset(
+                    'assets/icon_home.png',
+                    width: 21,
+                  ),
+                  label: '',
                 ),
-              ),
-              InkWell(
-                onTap: () {
-                  // Aksi ketika icon chat diklik
-                  print('Chat clicked');
-                },
-                child: Image.asset(
-                  'assets/icon_chat.png',
-                  width: 20,
+                BottomNavigationBarItem(
+                  icon: Image.asset(
+                    'assets/icon_chat.png',
+                    width: 20,
+                  ),
+                  label: '',
                 ),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              InkWell(
-                onTap: () {
-                  // Aksi ketika icon wishlist diklik
-                  print('Wishlist clicked');
-                },
-                child: Image.asset(
-                  'assets/icon_whislist.png',
-                  width: 20,
+                BottomNavigationBarItem(
+                  icon: Image.asset(
+                    'assets/icon_whislist.png',
+                    width: 20,
+                  ),
+                  label: '',
                 ),
-              ),
-              InkWell(
-                onTap: () {
-                  // Aksi ketika icon profile diklik
-                  print('Profile clicked');
-                },
-                child: Image.asset(
-                  'assets/icon_profile.png',
-                  width: 18,
+                BottomNavigationBarItem(
+                  icon: Image.asset(
+                    'assets/icon_profile.png',
+                    width: 18,
+                  ),
+                  label: '',
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       );
