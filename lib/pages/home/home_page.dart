@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shamo_app/theme.dart';
 import 'package:shamo_app/widgets/product_card.dart';
+import 'package:shamo_app/widgets/product_tile.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -246,7 +247,12 @@ class HomePage extends StatelessWidget {
           top: 14,
         ),
         child: Column(
-          children: [],
+          children: [
+            ProductTile(),
+            ProductTile(),
+            ProductTile(),
+            ProductTile(),
+          ],
         ),
       );
     }
@@ -258,6 +264,7 @@ class HomePage extends StatelessWidget {
         popularProductsTitle(),
         popularProducts(),
         newArrivalTitle(),
+        newArrivals(),
       ],
     );
   }
