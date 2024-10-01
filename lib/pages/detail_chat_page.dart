@@ -18,6 +18,27 @@ class DetailChatPage extends StatelessWidget {
                 'assets/image_shop_logo_online.png',
                 width: 50,
               ),
+              SizedBox(
+                width: 12,
+              ),
+              Column(
+                children: [
+                  Text(
+                    'Shoe Store',
+                    style: primaryTextStyle.copyWith(
+                      fontWeight: medium,
+                      fontSize: 14,
+                    ),
+                  ),
+                  Text(
+                    'Online',
+                    style: secondaryTextStyle.copyWith(
+                      fontWeight: light,
+                      fontSize: 14,
+                    ),
+                  )
+                ],
+              )
             ],
           ),
         ),
