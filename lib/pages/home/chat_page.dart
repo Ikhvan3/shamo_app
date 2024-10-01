@@ -23,7 +23,30 @@ class ChatPage extends StatelessWidget {
     }
 
     Widget content() {
-      return Container();
+      return Expanded(
+          child: Container(
+        width: double.infinity,
+        color: backgroundColor3,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/icon_headset.png',
+              width: 80,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              'Opss no message yet?',
+              style: primaryTextStyle.copyWith(
+                fontSize: 16,
+                fontWeight: medium,
+              ),
+            ),
+          ],
+        ),
+      ));
     }
 
     return Column(
