@@ -7,13 +7,23 @@ class WishlistPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Wishlist Page',
-        style: TextStyle(
-          color: secondaryTextColor,
+    Widget header() {
+      return AppBar(
+        backgroundColor: backgroundColor1,
+        centerTitle: true,
+        title: Text(
+          'Favorite Shoes',
+          style: primaryTextStyle,
         ),
-      ),
+        elevation: 0,
+        automaticallyImplyLeading: false,
+      );
+    }
+
+    return Column(
+      children: [
+        header(),
+      ],
     );
   }
 }
