@@ -40,7 +40,32 @@ class EditProfilePage extends StatelessWidget {
     }
 
     Widget content() {
-      return Container();
+      return Container(
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(
+          horizontal: defaultMargin,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: 100,
+              height: 100,
+              margin: EdgeInsets.only(
+                top: defaultMargin,
+              ),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  image: AssetImage(
+                    'assets/image_profile.png',
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      );
     }
 
     return Scaffold(
