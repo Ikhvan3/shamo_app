@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shamo_app/theme.dart';
@@ -28,6 +29,8 @@ class _ProductPageState extends State<ProductPage> {
   ];
 
   int currentIndex = 0;
+
+  bool isWishlist = false;
 
   @override
   Widget build(BuildContext context) {
@@ -168,9 +171,39 @@ class _ProductPageState extends State<ProductPage> {
                       ],
                     ),
                   ),
-                  Image.asset(
-                    'assets/button_wishlist.png',
-                    width: 46,
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isWishlist = !isWishlist;
+                      });
+                      if (isWishlist) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: secondaryColor,
+                            content: Text(
+                              'Has been added to the Wishlist',
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: alertColor,
+                            content: Text(
+                              'Has been removed from the Wishlist',
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                    child: Image.asset(
+                      isWishlist
+                          ? 'assets/button_wishlist_blue.png'
+                          : 'assets/button_wishlist.png',
+                      width: 46,
+                    ),
                   )
                 ],
               ),
@@ -274,6 +307,51 @@ class _ProductPageState extends State<ProductPage> {
                       }).toList(),
                     ),
                   )
+                ],
+              ),
+            ),
+
+            //NOTE : BUTTONS
+            Container(
+              width: double.infinity,
+              margin: EdgeInsets.all(defaultMargin),
+              child: Row(
+                children: [
+                  Container(
+                    width: 54,
+                    height: 54,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/button_chat.png'),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 16,
+                  ),
+                  Expanded(
+                    child: Container(
+                      height: 54,
+                      child: TextButton(
+                        onPressed: () {},
+                        style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              12,
+                            ),
+                          ),
+                          backgroundColor: primaryColor,
+                        ),
+                        child: Text(
+                          'Add to Cart',
+                          style: primaryTextStyle.copyWith(
+                            fontSize: 16,
+                            fontWeight: semiBold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
