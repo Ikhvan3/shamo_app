@@ -44,6 +44,27 @@ class CartPage extends StatelessWidget {
             ),
             Container(
               margin: EdgeInsets.only(top: 20),
+              width: 154,
+              height: 44,
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, '/home', (route) => false);
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: primaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Text(
+                  'Explore Store',
+                  style: primaryTextStyle.copyWith(
+                    fontSize: 16,
+                    fontWeight: medium,
+                  ),
+                ),
+              ),
             ),
           ],
         ),
@@ -51,6 +72,7 @@ class CartPage extends StatelessWidget {
     }
 
     return Scaffold(
+      backgroundColor: backgroundColor3,
       appBar: header(),
       body: emptyCart(),
     );
