@@ -3,8 +3,8 @@ import 'package:http/http.dart' as http;
 
 import 'package:shamo_app/models/user_model.dart';
 
-class AurhServices {
-  String baseUrl = 'https://shamo-backend.buildwithangga.id/api';
+class AuthService {
+  String baseUrl = 'http://shamo-bwa-apk.test/api';
 
   Future<UserModel> register({
     required String name,
@@ -12,7 +12,7 @@ class AurhServices {
     required String email,
     required String password,
   }) async {
-    var url = '$baseUrl/register';
+    var url = Uri.parse('$baseUrl/register');
     var headers = {'Content-Type': 'application/json'};
     var body = jsonEncode(
       {
@@ -24,10 +24,13 @@ class AurhServices {
     );
 
     var response = await http.post(
-      url as Uri,
+      url,
       headers: headers,
       body: body,
     );
+
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body)['data'];
@@ -36,7 +39,7 @@ class AurhServices {
 
       return user;
     } else {
-      throw Exception('Gagal Register');
+      throw Exception('Gagal Register: ${response.body}');
     }
   }
 }
