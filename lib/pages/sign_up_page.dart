@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:shamo_app/providers/auth_provider.dart';
 import 'package:shamo_app/theme.dart';
+import 'package:shamo_app/widgets/loading_button.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -18,11 +19,16 @@ class _SignUpPageState extends State<SignUpPage> {
 
   TextEditingController passwordController = TextEditingController(text: '');
 
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     AuthProvider authProvider = Provider.of<AuthProvider>(context);
 
     Future<void> handleSignUp() async {
+      setState(() {
+        isLoading = true;
+      });
+
       if (await authProvider.register(
         name: nameController.text,
         username: usernameController.text,
@@ -41,6 +47,10 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
         );
       }
+
+      setState(() {
+        isLoading = false;
+      });
     }
 
     Widget header() {
@@ -371,7 +381,7 @@ class _SignUpPageState extends State<SignUpPage> {
               usernameInput(),
               emailInput(),
               passwordInput(),
-              signUpButton(),
+              isLoading ? LoadingButton() : signUpButton(),
               Spacer(),
               footer(),
             ],
