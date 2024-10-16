@@ -22,6 +22,8 @@ class _SplashPageState extends State<SplashPage> {
 
   getInit() async {
     await Provider.of<ProductProvider>(context, listen: false).getProducts();
+    await Future.delayed(
+        Duration(seconds: 1)); // Tambahkan delay untuk memastikan data ter-load
     Navigator.pushNamed(context, '/sign-in');
   }
 

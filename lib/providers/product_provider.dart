@@ -15,9 +15,11 @@ class ProductProvider with ChangeNotifier {
   Future<void> getProducts() async {
     try {
       List<ProductModel> products = await ProductService().getProducts();
+      print('Products fetched: ${products.length}'); // Tambahkan ini untuk cek
       _products = products;
+      notifyListeners();
     } catch (e) {
-      print(e);
+      print('Error fetching products: $e');
     }
   }
 }

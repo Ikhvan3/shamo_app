@@ -210,20 +210,21 @@ class HomePage extends StatelessWidget {
     }
 
     Widget popularProducts() {
+      if (productProvider.products.isEmpty) {
+        // Jika data masih kosong, tampilkan CircularProgressIndicator
+        return Center(child: CircularProgressIndicator());
+      }
+
       return Container(
         margin: EdgeInsets.only(top: 14),
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
-              SizedBox(
-                width: defaultMargin,
-              ),
+              SizedBox(width: defaultMargin),
               Row(
                 children: productProvider.products
-                    .map(
-                      (product) => ProductCard(product),
-                    )
+                    .map((product) => ProductCard(product))
                     .toList(),
               ),
             ],
@@ -231,6 +232,29 @@ class HomePage extends StatelessWidget {
         ),
       );
     }
+
+    // Widget popularProducts() {
+    //   return Container(
+    //     margin: EdgeInsets.only(top: 14),
+    //     child: SingleChildScrollView(
+    //       scrollDirection: Axis.horizontal,
+    //       child: Row(
+    //         children: [
+    //           SizedBox(
+    //             width: defaultMargin,
+    //           ),
+    //           Row(
+    //             children: productProvider.products
+    //                 .map(
+    //                   (product) => ProductCard(product),
+    //                 )
+    //                 .toList(),
+    //           ),
+    //         ],
+    //       ),
+    //     ),
+    //   );
+    // }
 
     Widget newArrivalTitle() {
       return Container(
