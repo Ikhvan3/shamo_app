@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:shamo_app/models/cart_model.dart';
 import 'package:shamo_app/theme.dart';
 
 class CheckoutCard extends StatelessWidget {
-  const CheckoutCard({super.key});
+  final CartModel cart;
+  CheckoutCard(this.cart);
 
   @override
   Widget build(BuildContext context) {
@@ -18,18 +20,36 @@ class CheckoutCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
+          if (cart.product!.galleries!.isNotEmpty)
+            ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              image: DecorationImage(
-                image: AssetImage(
-                  'assets/image_shoes.png',
-                ),
+              child: Image.network(
+                cart.product!.galleries![0].url!,
+                width: 60,
+                height: 60,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  print('Error loading image: $error');
+                  return Image.asset(
+                    'assets/image_shoes.png',
+                    width: 60,
+                    height: 60,
+                    fit: BoxFit.cover,
+                  );
+                },
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Center(child: CircularProgressIndicator());
+                },
               ),
+            )
+          else
+            Image.asset(
+              'assets/image_shoes.png',
+              width: 60,
+              height: 60,
+              fit: BoxFit.cover,
             ),
-          ),
           SizedBox(
             width: 12,
           ),
@@ -38,7 +58,7 @@ class CheckoutCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Terrex Urban Low ',
+                  cart.product!.name!,
                   style: primaryTextStyle.copyWith(
                     fontWeight: semiBold,
                   ),
@@ -48,7 +68,7 @@ class CheckoutCard extends StatelessWidget {
                   height: 2,
                 ),
                 Text(
-                  '\$143,98',
+                  '\$${cart.product!.price}',
                   style: priceTextStyle,
                 ),
               ],
@@ -58,7 +78,7 @@ class CheckoutCard extends StatelessWidget {
             width: 12,
           ),
           Text(
-            '2 Items',
+            '${cart.quantity} Items',
             style: secondaryTextStyle.copyWith(
               fontSize: 12,
             ),
