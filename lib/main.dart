@@ -17,6 +17,17 @@ import 'pages/sign_up_page.dart';
 
 void main(List<String> args) {
   runApp(MyApp());
+
+  ErrorWidget.builder = (FlutterErrorDetails details) {
+    return Container(
+      alignment: Alignment.center,
+      child: Text(
+        'Error!\n${details.exception}',
+        style: TextStyle(color: Colors.red),
+        textAlign: TextAlign.center,
+      ),
+    );
+  };
 }
 
 class MyApp extends StatelessWidget {

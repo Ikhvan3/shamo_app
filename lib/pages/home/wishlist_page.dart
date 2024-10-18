@@ -60,7 +60,9 @@ class WishlistPage extends StatelessWidget {
               Container(
                 height: 44,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/home');
+                  },
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.symmetric(
                       vertical: 10,
@@ -88,26 +90,45 @@ class WishlistPage extends StatelessWidget {
 
     Widget content() {
       return Expanded(
-          child: Container(
-        color: backgroundColor3,
-        child: ListView(
-          padding: EdgeInsets.symmetric(
-            horizontal: defaultMargin,
+        child: Container(
+          color: backgroundColor3,
+          child: ListView(
+            padding: EdgeInsets.symmetric(
+              horizontal: defaultMargin,
+            ),
+            children: wishlistProvider.wishlist != null
+                ? wishlistProvider.wishlist
+                    .map(
+                      (product) => WishListCard(product),
+                    )
+                    .toList()
+                : [],
           ),
-          children: wishlistProvider.wishlist
-              .map(
-                (product) => WishListCard(),
-              )
-              .toList(),
         ),
-      ));
+      );
     }
+    // Widget content() {
+    //   return Expanded(
+    //       child: Container(
+    //     color: backgroundColor3,
+    //     child: ListView(
+    //       padding: EdgeInsets.symmetric(
+    //         horizontal: defaultMargin,
+    //       ),
+    //       children: wishlistProvider.wishlist
+    //           .map(
+    //             (product) => WishListCard(product),
+    //           )
+    //           .toList(),
+    //     ),
+    //   ));
+    // }
 
     return Column(
       children: [
         header(),
         // emptyWishlist(),
-        content(),
+        wishlistProvider.wishlist.length == 0 ? emptyWishlist() : content(),
       ],
     );
   }
