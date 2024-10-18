@@ -81,9 +81,11 @@ class CartPage extends StatelessWidget {
 
     Widget content() {
       return ListView(
-        children: [
-          CartCard(),
-        ],
+        children: cartProvider.carts
+            .map(
+              (cart) => CartCard(cart),
+            )
+            .toList(),
       );
     }
 
