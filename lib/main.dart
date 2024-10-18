@@ -11,6 +11,7 @@ import 'package:shamo_app/pages/sign_in_page.dart';
 import 'package:shamo_app/pages/splash_page.dart';
 import 'package:shamo_app/providers/auth_provider.dart';
 import 'package:shamo_app/providers/product_provider.dart';
+import 'package:shamo_app/providers/wishlist_provider.dart';
 
 import 'pages/sign_up_page.dart';
 
@@ -30,6 +31,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => ProductProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => WishlistProvider(),
         ),
       ],
       child: MaterialApp(
