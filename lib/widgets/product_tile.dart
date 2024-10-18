@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:shamo_app/models/product_model.dart';
+import 'package:shamo_app/pages/product_page.dart';
 import 'package:shamo_app/theme.dart';
 
+import '../pages/product_page.dart';
+
 class ProductTile extends StatelessWidget {
-  const ProductTile({super.key});
+  final ProductModel product;
+  ProductTile(this.product);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/product');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProductPage(product as ProductModel),
+          ),
+        );
       },
       child: Container(
         margin: EdgeInsets.only(
@@ -20,12 +30,7 @@ class ProductTile extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(20),
-              child: Image.asset(
-                'assets/image_shoes.png',
-                width: 120,
-                height: 120,
-                fit: BoxFit.cover,
-              ),
+              child: _buildProductImage(),
             ),
             SizedBox(
               width: 12,
@@ -35,14 +40,14 @@ class ProductTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Football',
+                    product.category!.name!,
                     style: secondaryTextStyle.copyWith(fontSize: 12),
                   ),
                   SizedBox(
                     height: 6,
                   ),
                   Text(
-                    'Predator 20.3 Firm Ground',
+                    product.name!,
                     style: primaryTextStyle.copyWith(
                       fontSize: 16,
                       fontWeight: semiBold,
@@ -52,7 +57,7 @@ class ProductTile extends StatelessWidget {
                     height: 6,
                   ),
                   Text(
-                    '\$68,47',
+                    '\$${product.price}',
                     style: priceTextStyle.copyWith(
                       fontWeight: medium,
                     ),
@@ -61,6 +66,42 @@ class ProductTile extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildProductImage() {
+    if (product.galleries == null || product.galleries!.isEmpty) {
+      return _buildPlaceholder('Tidak ada gambar');
+    }
+
+    return Image.network(
+      product.galleries![1].url.toString(),
+      width: 215,
+      height: 150,
+      fit: BoxFit.cover,
+      errorBuilder: (context, error, stackTrace) {
+        print('Error loading image: $error');
+        return _buildPlaceholder('Gagal memuat gambar');
+      },
+      loadingBuilder: (context, child, loadingProgress) {
+        if (loadingProgress == null) return child;
+        return _buildPlaceholder('Memuat gambar...');
+      },
+    );
+  }
+
+  Widget _buildPlaceholder(String message) {
+    return Container(
+      width: 215,
+      height: 150,
+      color: Colors.grey[300],
+      child: Center(
+        child: Text(
+          message,
+          style: TextStyle(color: Colors.grey[600]),
+          textAlign: TextAlign.center,
         ),
       ),
     );
