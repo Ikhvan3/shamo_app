@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shamo_app/providers/cart_provider.dart';
 import 'package:shamo_app/theme.dart';
+import 'package:shamo_app/widgets/cart_card.dart';
 import 'package:shamo_app/widgets/chat_tile.dart';
 
 class ChatPage extends StatelessWidget {
@@ -7,6 +10,8 @@ class ChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    CartProvider cartProvider = Provider.of<CartProvider>(context);
+
     Widget header() {
       return AppBar(
         backgroundColor: backgroundColor1,
@@ -93,9 +98,11 @@ class ChatPage extends StatelessWidget {
             padding: EdgeInsets.symmetric(
               horizontal: defaultMargin,
             ),
-            children: [
-              ChatTile(),
-            ],
+            children: cartProvider.carts
+                .map(
+                  (cart) => CartCard(cart),
+                )
+                .toList(),
           ),
         ),
       );
