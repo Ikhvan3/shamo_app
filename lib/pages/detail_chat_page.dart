@@ -1,12 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shamo_app/models/product_model.dart';
 import 'package:shamo_app/theme.dart';
 import 'package:shamo_app/widgets/chat_bubble.dart';
 
-class DetailChatPage extends StatelessWidget {
-  const DetailChatPage({super.key});
+class DetailChatPage extends StatefulWidget {
+  ProductModel product;
+  DetailChatPage(this.product);
 
+  @override
+  State<DetailChatPage> createState() => _DetailChatPageState();
+}
+
+class _DetailChatPageState extends State<DetailChatPage> {
   @override
   Widget build(BuildContext context) {
     PreferredSizeWidget header() {
@@ -67,13 +74,36 @@ class DetailChatPage extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.asset(
+            if (widget.product.galleries!.isNotEmpty)
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.network(
+                  widget.product.galleries![0].url!,
+                  width: 60,
+                  height: 60,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    print('Error loading image: $error');
+                    return Image.asset(
+                      'assets/image_shoes.png',
+                      width: 60,
+                      height: 60,
+                      fit: BoxFit.cover,
+                    );
+                  },
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(child: CircularProgressIndicator());
+                  },
+                ),
+              )
+            else
+              Image.asset(
                 'assets/image_shoes.png',
-                width: 54,
+                width: 60,
+                height: 60,
+                fit: BoxFit.cover,
               ),
-            ),
             SizedBox(
               width: 10,
             ),
@@ -83,7 +113,7 @@ class DetailChatPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'COURT VISIO...',
+                    widget.product.name!,
                     style: primaryTextStyle,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -91,7 +121,7 @@ class DetailChatPage extends StatelessWidget {
                     height: 2,
                   ),
                   Text(
-                    '\$57,15',
+                    '\$${widget.product.price}',
                     style: priceTextStyle.copyWith(
                       fontWeight: medium,
                     ),
@@ -99,9 +129,16 @@ class DetailChatPage extends StatelessWidget {
                 ],
               ),
             ),
-            Image.asset(
-              'assets/button_close.png',
-              width: 22,
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  widget.product = UninitializedProductModel();
+                });
+              },
+              child: Image.asset(
+                'assets/button_close.png',
+                width: 22,
+              ),
             ),
           ],
         ),
@@ -115,7 +152,9 @@ class DetailChatPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            productPreview(),
+            widget.product is UninitializedProductModel
+                ? SizedBox()
+                : productPreview(),
             Row(
               children: [
                 Expanded(

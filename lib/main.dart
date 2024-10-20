@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shamo_app/pages/cart_page.dart';
@@ -14,10 +15,12 @@ import 'package:shamo_app/providers/cart_provider.dart';
 import 'package:shamo_app/providers/product_provider.dart';
 import 'package:shamo_app/providers/transaction_provider.dart';
 import 'package:shamo_app/providers/wishlist_provider.dart';
-
+import 'firebase_options.dart';
 import 'pages/sign_up_page.dart';
 
-void main(List<String> args) {
+void main(List<String> args) async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(MyApp());
 
   ErrorWidget.builder = (FlutterErrorDetails details) {
@@ -62,7 +65,6 @@ class MyApp extends StatelessWidget {
           '/sign-in': (context) => SignInPage(),
           '/sign-up': (context) => SignUpPage(),
           '/home': (context) => MainPage(),
-          '/detail-chat': (context) => DetailChatPage(),
           '/edit-profile': (context) => EditProfilePage(),
           '/cart': (context) => CartPage(),
           '/checkout': (context) => CheckoutPage(),
