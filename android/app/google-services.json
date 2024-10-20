@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "89005715065",
+    "project_id": "shamo-e3696",
+    "storage_bucket": "shamo-e3696.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:89005715065:android:269e049e184dab1258eea8",
+        "android_client_info": {
+          "package_name": "com.ikhvan.shamo_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUYfG7EuNXSpyEJG3zS2qKPm9SoI--NoM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
