@@ -1,35 +1,46 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../models/cart_model.dart';
 
 class TransactionService {
-  String baseUrl = 'http://shamo-bwa-apk.test/api';
+  String baseUrl = 'http://192.168.1.16:8000/api';
 
-  Future<bool> checkout(
-      String token, List<CartModel> carts, double totalPrice) async {
+  Future<String?> _getToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+
+  Future<bool> checkout(List<CartModel> carts, double totalPrice) async {
     var url = Uri.parse('$baseUrl/checkout');
+    String? token = await _getToken();
+
+    if (token == null) {
+      print('Token tidak ditemukan. Silakan login terlebih dahulu.');
+      return false;
+    }
+
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': token,
     };
-    print('Token: $token');
 
-    var body = jsonEncode(
-      {
-        'address': 'Marsemoon',
-        'items': carts
-            .map(
-              (cart) => {
-                'id': cart.product!.id,
+    var body = jsonEncode({
+      'address': 'Marsemoon',
+      'items': carts
+          .map((cart) => {
+                'id': cart.product?.id,
                 'quantity': cart.quantity,
-              },
-            )
-            .toList(),
-        'status': "PENDING",
-        'total_price': totalPrice,
-        'shipping_price': 0,
-      },
-    );
+              })
+          .toList(),
+      'status': "PENDING",
+      'total_price': totalPrice,
+      'shipping_price': 0,
+    });
+
+    print('Request Body: $body');
 
     try {
       var response = await http
@@ -38,19 +49,20 @@ class TransactionService {
             headers: headers,
             body: body,
           )
-          .timeout(Duration(seconds: 10)); // Tambahkan batas waktu
+          .timeout(Duration(seconds: 30));
 
-      print('Status respons: ${response.statusCode}');
-      print('Isi respons: ${response.body}');
+      print('Status response: ${response.statusCode}');
+      print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
         return true;
       } else {
-        print('Server merespons dengan kode status: ${response.statusCode}');
+        print('Server responded with status code: ${response.statusCode}');
+        print('Response body: ${response.body}');
         return false;
       }
     } catch (e) {
-      print('Kesalahan selama checkout: $e');
+      print('Error during checkout: $e');
       return false;
     }
   }

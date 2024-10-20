@@ -29,19 +29,92 @@ class _CheckoutPageState extends State<CheckoutPage> {
       setState(() {
         isLoading = true;
       });
-      if (await transactionProvider.checkout(
-        authProvider.user.token!,
-        cartProvider.carts,
-        cartProvider.totalPrice(),
-      )) {
-        cartProvider.carts = [];
-        Navigator.pushNamedAndRemoveUntil(
-            context, '/checkout-success', (route) => false);
+
+      if (cartProvider.carts.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Keranjang kosong')),
+        );
+        setState(() {
+          isLoading = false;
+        });
+        return;
       }
+
+      try {
+        bool success = await transactionProvider.checkout(
+          cartProvider.carts,
+          cartProvider.totalPrice(),
+        );
+
+        if (success) {
+          cartProvider.carts.clear();
+          Navigator.pushNamedAndRemoveUntil(
+              context, '/checkout-success', (route) => false);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Gagal melakukan checkout')),
+          );
+        }
+      } catch (e) {
+        print('Error in handleCheckout: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Terjadi kesalahan: $e')),
+        );
+      }
+
       setState(() {
         isLoading = false;
       });
     }
+    // handleCheckout() async {
+    //   setState(() {
+    //     isLoading = true;
+    //   });
+    //   try {
+    //     bool success = await transactionProvider.checkout(
+    //       authProvider.user.token!,
+    //       cartProvider.carts,
+    //       cartProvider.totalPrice(),
+    //     );
+    //     if (success) {
+    //       cartProvider.carts = [];
+    //       Navigator.pushNamedAndRemoveUntil(
+    //           context, '/checkout-success', (route) => false);
+    //     } else {
+    //       // Show error message
+    //       ScaffoldMessenger.of(context).showSnackBar(
+    //         SnackBar(content: Text('Checkout failed. Please try again.')),
+    //       );
+    //     }
+    //   } catch (e) {
+    //     print('Error in handleCheckout: $e');
+    //     // Show error message
+    //     ScaffoldMessenger.of(context).showSnackBar(
+    //       SnackBar(content: Text('An error occurred. Please try again.')),
+    //     );
+    //   } finally {
+    //     setState(() {
+    //       isLoading = false;
+    //     });
+    //   }
+    // }
+    // handleCheckout() async {
+    //   setState(() {
+    //     isLoading = true;
+    //   });
+    //   if (await transactionProvider.checkout(
+    //     authProvider.user.token!,
+    //     cartProvider.carts,
+    //     cartProvider.totalPrice(),
+    //   )) {
+    //     cartProvider.carts = [];
+    //     Navigator.pushNamedAndRemoveUntil(
+    //         context, '/checkout-success', (route) => false);
+    //   }
+    //   setState(() {
+    //     isLoading = false;
+    //   });
+    // }
 
     PreferredSizeWidget header() {
       return AppBar(

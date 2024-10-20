@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:shamo_app/theme.dart';
 import 'package:shamo_app/widgets/loading_button.dart';
 
+import '../models/user_model.dart';
 import '../providers/auth_provider.dart';
 
 class SignInPage extends StatefulWidget {
@@ -29,17 +30,32 @@ class _SignInPageState extends State<SignInPage> {
         isLoading = true;
       });
 
-      if (await authProvider.login(
-        email: emailController.text,
-        password: passwordController.text,
-      )) {
-        Navigator.pushNamed(context, '/home');
-      } else {
+      try {
+        bool loginBerhasil = await authProvider.login(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+
+        if (loginBerhasil) {
+          Navigator.pushNamed(context, '/home');
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: alertColor,
+              content: Text(
+                'Gagal Login! Periksa email dan password Anda.',
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
+        }
+      } catch (e) {
+        print('Detailed error: $e');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: alertColor,
             content: Text(
-              'Gagal Login!',
+              'Error saat login: ${e.toString()}',
               textAlign: TextAlign.center,
             ),
           ),
