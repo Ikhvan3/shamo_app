@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-
 import '../models/cart_model.dart';
 
 class TransactionService {
@@ -13,6 +12,7 @@ class TransactionService {
       'Content-Type': 'application/json',
       'Authorization': token,
     };
+    print('Token: $token');
 
     var body = jsonEncode(
       {
@@ -31,17 +31,27 @@ class TransactionService {
       },
     );
 
-    var response = await http.post(
-      url,
-      headers: headers,
-      body: body,
-    );
-    print(response.body);
+    try {
+      var response = await http
+          .post(
+            url,
+            headers: headers,
+            body: body,
+          )
+          .timeout(Duration(seconds: 10)); // Tambahkan batas waktu
 
-    if (response.statusCode == 200) {
-      return true;
-    } else {
-      throw Exception('Gagal Melakukan Chcekout');
+      print('Status respons: ${response.statusCode}');
+      print('Isi respons: ${response.body}');
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        print('Server merespons dengan kode status: ${response.statusCode}');
+        return false;
+      }
+    } catch (e) {
+      print('Kesalahan selama checkout: $e');
+      return false;
     }
   }
 }
