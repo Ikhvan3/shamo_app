@@ -66,5 +66,12 @@ class DefaultFirebaseOptions {
     storageBucket: 'shamo-e3696.appspot.com',
     iosBundleId: 'com.example.shamoApp',
   );
-
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyBZ1gnn17MvjInYdesQ_wMipxQG1nq5sys',
+    appId: '1:89005715065:ios:61b04b7275fe1d6958eea8',
+    messagingSenderId: '89005715065',
+    projectId: 'shamo-e3696',
+    storageBucket: 'shamo-e3696.appspot.com',
+    iosBundleId: 'com.example.shamoApp',
+  );
 }

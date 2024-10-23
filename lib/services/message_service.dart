@@ -16,7 +16,7 @@ class MessageService {
         'userId': user!.id,
         'userName': user.name,
         'userImage': user.profilePhotoUrl,
-        'isFromUser': true,
+        'isFromUser': isFromUser,
         'product':
             product is UninitializedProductModel ? {} : product!.toJson(),
         'createdAt': DateTime.now().toString(),
