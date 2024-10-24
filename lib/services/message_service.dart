@@ -9,7 +9,7 @@ class MessageService {
   Stream<List<MessageModel>> getMessageByUserId({int? userId}) {
     try {
       return firestore
-          .collection('message')
+          .collection('messages')
           .where('userId', isEqualTo: userId)
           .snapshots()
           .map((QuerySnapshot list) {

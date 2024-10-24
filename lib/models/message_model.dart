@@ -8,7 +8,7 @@ class MessageModel {
   bool? isFromUser;
   ProductModel? product;
   DateTime? createdAt;
-  DateTime? updateAt;
+  DateTime? updatedAt;
 
   MessageModel({
     this.message,
@@ -18,7 +18,7 @@ class MessageModel {
     this.isFromUser,
     this.product,
     this.createdAt,
-    this.updateAt,
+    this.updatedAt,
   });
 
   MessageModel.fromJson(Map<String, dynamic> json) {
@@ -31,7 +31,7 @@ class MessageModel {
         ? UninitializedProductModel()
         : ProductModel.fromJson(json['product']);
     createdAt = DateTime.parse(json['createdAt']);
-    updateAt = DateTime.parse(json['updateAt']);
+    updatedAt = DateTime.parse(json['updatedAt']);
   }
 
   Map<String, dynamic> toJson() {
@@ -43,7 +43,7 @@ class MessageModel {
       'isFromUser': isFromUser,
       'product': product is UninitializedProductModel ? {} : product!.toJson(),
       'createdAt': createdAt.toString(),
-      'updatedAt': updateAt.toString(),
+      'updatedAt': updatedAt.toString(),
     };
   }
 }

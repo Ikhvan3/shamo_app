@@ -48,7 +48,7 @@ class ChatTile extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'Good night, This item is on...',
+                        message.message!,
                         style: secondaryTextStyle.copyWith(
                           fontWeight: light,
                         ),

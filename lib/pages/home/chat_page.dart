@@ -94,7 +94,10 @@ class ChatPage extends StatelessWidget {
           stream:
               MessageService().getMessageByUserId(userId: authProvider.user.id),
           builder: (context, snapshot) {
-            if (snapshot.hashData) {
+            if (snapshot.hasData) {
+              if (snapshot.data!.length == 0) {
+                return EmptyChat();
+              }
               return Expanded(
                 child: Container(
                   width: double.infinity,
@@ -104,7 +107,7 @@ class ChatPage extends StatelessWidget {
                       horizontal: defaultMargin,
                     ),
                     children: [
-                      ChatTile(),
+                      ChatTile(snapshot.data![snapshot.data!.length - 1]),
                     ],
                   ),
                 ),

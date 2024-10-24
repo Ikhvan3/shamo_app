@@ -224,24 +224,40 @@ class _DetailChatPageState extends State<DetailChatPage> {
           userId: authProvider.user.id,
         ),
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return ListView(
-              padding: EdgeInsets.symmetric(
-                horizontal: defaultMargin,
-              ),
-              children: snapshot.data!
-                  .map((MessageModel message) => ChatBubble(
-                        isSender: message.isFromUser!,
-                        text: message.message!,
-                        product: message.product,
-                      ))
-                  .toList(),
-            );
-          } else {
+          if (snapshot.hasError) {
+            print('Stream error: ${snapshot.error}');
             return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
+
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(
+              child: Text('No messages yet'),
+            );
+          }
+
+          return ListView.builder(
+            padding: EdgeInsets.symmetric(
+              horizontal: defaultMargin,
+            ),
+            // reverse: true, // Tambahkan ini agar chat terbaru ada di bawah
+            itemCount: snapshot.data!.length,
+            itemBuilder: (context, index) {
+              MessageModel message = snapshot.data![index];
+              return ChatBubble(
+                isSender: message.isFromUser!,
+                text: message.message!,
+                product: message.product,
+              );
+            },
+          );
         },
       );
     }
