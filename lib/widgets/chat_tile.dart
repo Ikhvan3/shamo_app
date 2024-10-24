@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shamo_app/models/message_model.dart';
 import 'package:shamo_app/models/product_model.dart';
 import 'package:shamo_app/pages/detail_chat_page.dart';
 import 'package:shamo_app/theme.dart';
 
 class ChatTile extends StatelessWidget {
-  const ChatTile({super.key});
+  final MessageModel message;
+  ChatTile(this.message);
 
   @override
   Widget build(BuildContext context) {
