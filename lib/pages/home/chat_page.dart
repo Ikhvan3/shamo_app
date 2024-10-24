@@ -6,12 +6,15 @@ import 'package:shamo_app/services/message_service.dart';
 import 'package:shamo_app/theme.dart';
 import 'package:shamo_app/widgets/chat_tile.dart';
 
+import '../../providers/page_provider.dart';
+
 class ChatPage extends StatelessWidget {
   const ChatPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     AuthProvider authProvider = Provider.of<AuthProvider>(context);
+    PageProvider pageProvider = Provider.of<PageProvider>(context);
     Widget header() {
       return AppBar(
         backgroundColor: backgroundColor1,
@@ -63,7 +66,9 @@ class ChatPage extends StatelessWidget {
               Container(
                 height: 44,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    pageProvider.currentIndex = 0;
+                  },
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.symmetric(
                       horizontal: 24,
