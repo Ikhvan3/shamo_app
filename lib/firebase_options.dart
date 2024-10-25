@@ -55,7 +55,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '89005715065',
     projectId: 'shamo-e3696',
     storageBucket: 'shamo-e3696.appspot.com',
-    iosBundleId: 'com.example.shamoApp',
+    iosBundleId: 'com.ikhvan.shamoApp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -64,7 +64,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '89005715065',
     projectId: 'shamo-e3696',
     storageBucket: 'shamo-e3696.appspot.com',
-    iosBundleId: 'com.example.shamoApp',
+    iosBundleId: 'com.ikhvan.shamoApp',
   );
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyBZ1gnn17MvjInYdesQ_wMipxQG1nq5sys',
@@ -72,6 +72,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '89005715065',
     projectId: 'shamo-e3696',
     storageBucket: 'shamo-e3696.appspot.com',
-    iosBundleId: 'com.example.shamoApp',
+    iosBundleId: 'com.ikhvan.shamoApp',
   );
 }
