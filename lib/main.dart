@@ -20,11 +20,18 @@ import 'firebase_options.dart';
 import 'pages/sign_up_page.dart';
 
 void main(List<String> args) async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(MyApp());
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
+
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions
+          .currentPlatform, // Gunakan options dari firebase_options.dart
+    );
+
+    runApp(const MyApp());
+  } catch (e) {
+    print('Error during initialization: $e');
+  }
 
   ErrorWidget.builder = (FlutterErrorDetails details) {
     return Container(

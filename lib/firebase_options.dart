@@ -24,19 +24,13 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for android - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return android;
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
         return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -55,7 +49,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '89005715065',
     projectId: 'shamo-e3696',
     storageBucket: 'shamo-e3696.appspot.com',
-    iosBundleId: 'com.ikhvan.shamoApp',
+    iosBundleId: 'com.example.shamoApp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -64,14 +58,34 @@ class DefaultFirebaseOptions {
     messagingSenderId: '89005715065',
     projectId: 'shamo-e3696',
     storageBucket: 'shamo-e3696.appspot.com',
-    iosBundleId: 'com.ikhvan.shamoApp',
+    iosBundleId: 'com.example.shamoApp',
   );
+
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBZ1gnn17MvjInYdesQ_wMipxQG1nq5sys',
-    appId: '1:89005715065:ios:61b04b7275fe1d6958eea8',
+    apiKey: 'AIzaSyBsWq4Ic3sUAJVu0mcrACSo1_0Sn9MiKRg',
+    appId: '1:89005715065:web:d4c05258de0c8b2058eea8',
+    messagingSenderId: '89005715065',
+    projectId: 'shamo-e3696',
+    authDomain: 'shamo-e3696.firebaseapp.com',
+    storageBucket: 'shamo-e3696.appspot.com',
+    measurementId: 'G-8FQJPXKJ0G',
+  );
+
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyDUYfG7EuNXSpyEJG3zS2qKPm9SoI--NoM',
+    appId: '1:89005715065:android:269e049e184dab1258eea8',
     messagingSenderId: '89005715065',
     projectId: 'shamo-e3696',
     storageBucket: 'shamo-e3696.appspot.com',
-    iosBundleId: 'com.ikhvan.shamoApp',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyBsWq4Ic3sUAJVu0mcrACSo1_0Sn9MiKRg',
+    appId: '1:89005715065:web:adf45ece94d396d158eea8',
+    messagingSenderId: '89005715065',
+    projectId: 'shamo-e3696',
+    authDomain: 'shamo-e3696.firebaseapp.com',
+    storageBucket: 'shamo-e3696.appspot.com',
+    measurementId: 'G-V1QSELJD5M',
   );
 }
