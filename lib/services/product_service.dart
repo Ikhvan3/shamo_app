@@ -1,33 +1,29 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import '../helpers/image_url_helper.dart';
 import '../models/product_model.dart';
 
 class ProductService {
-  String baseUrl = 'http://192.168.1.10:8000/api';
-
-  // lib/services/product_service.dart
   Future<List<ProductModel>> getProducts() async {
-    try {
-      var url = Uri.parse('$baseUrl/products');
-      var headers = {'Content-Type': 'application/json'};
+    var url = Uri.parse('${AppConfig.apiUrl}/products');
+    var headers = {'Content-Type': 'application/json'};
 
+    try {
       var response = await http.get(url, headers: headers);
       print('API Response Status: ${response.statusCode}');
       print('API Response Body: ${response.body}');
 
       if (response.statusCode == 200) {
-        var data = jsonDecode(response.body);
-        print('Decoded JSON: $data'); // Untuk debugging
-
+        List data = jsonDecode(response.body)['data']['data'];
         List<ProductModel> products = [];
-        List<dynamic> productList = data['data']['data'];
 
-        for (var item in productList) {
+        for (var item in data) {
           try {
-            ProductModel product = ProductModel.fromJson(item);
+            var product = ProductModel.fromJson(item);
             if (product.galleries != null && product.galleries!.isNotEmpty) {
-              print('Gallery URL: ${product.galleries![0]}');
+              print(
+                  'Product ${product.name} image URL: ${product.galleries![0].url}');
             }
             products.add(product);
           } catch (e) {
@@ -37,11 +33,11 @@ class ProductService {
 
         return products;
       } else {
-        throw Exception('Gagal mendapatkan produk');
+        throw Exception('Gagal Get Products! Status: ${response.statusCode}');
       }
     } catch (e) {
       print('Error in getProducts: $e');
-      rethrow;
+      throw Exception('Gagal melakukan request: $e');
     }
   }
 }

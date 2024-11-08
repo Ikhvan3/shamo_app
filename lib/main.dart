@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +21,17 @@ import 'package:shamo_app/providers/wishlist_provider.dart';
 import 'firebase_options.dart';
 import 'pages/sign_up_page.dart';
 
+// class MyHttpOverrides extends HttpOverrides {
+//   @override
+//   HttpClient createHttpClient(SecurityContext? context) {
+//     final client = super.createHttpClient(context);
+//     client.autoUncompress = true; // Mendukung kompresi otomatis (gzip, deflate)
+//     return client;
+//   }
+// }
+
 void main(List<String> args) async {
+  // HttpOverrides.global = MyHttpOverrides();
   try {
     WidgetsFlutterBinding.ensureInitialized();
 

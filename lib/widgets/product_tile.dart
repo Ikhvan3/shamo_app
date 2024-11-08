@@ -31,10 +31,35 @@ class ProductTile extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(20),
-              child: ImageHelper.loadImage(
-                'storage/gallery/JH7NHZWmIvtqCdrvG4rQqZdPH3dzXLlaRVZLttCZ.png',
-                width: 200,
-                height: 200,
+              child: Image.network(
+                product.galleries![0].url!,
+                width: 215,
+                height: 150,
+                fit: BoxFit.cover,
+                loadingBuilder: (BuildContext context, Widget child,
+                    ImageChunkEvent? loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Center(
+                    child: CircularProgressIndicator(
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes!
+                          : null,
+                    ),
+                  );
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  print('Error loading image: $error');
+                  return Container(
+                    width: 215,
+                    height: 150,
+                    color: Colors.grey[300],
+                    child: Icon(
+                      Icons.error,
+                      color: Colors.red,
+                    ),
+                  );
+                },
               ),
             ),
             SizedBox(
