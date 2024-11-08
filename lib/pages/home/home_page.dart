@@ -224,7 +224,7 @@ class HomePage extends StatelessWidget {
               SizedBox(width: defaultMargin),
               Row(
                 children: productProvider.products
-                    .map((product) => ProductCard(product))
+                    .map((product) => ProductCard(product: product))
                     .toList(),
               ),
             ],

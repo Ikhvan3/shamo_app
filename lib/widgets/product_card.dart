@@ -1,12 +1,37 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:shamo_app/models/product_model.dart';
-import 'package:shamo_app/theme.dart';
 
+import '../helpers/image_url_helper.dart';
+import '../models/product_model.dart';
 import '../pages/product_page.dart';
+import '../theme.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductModel product;
-  ProductCard(this.product);
+
+  const ProductCard({
+    Key? key,
+    required this.product,
+  }) : super(key: key);
+
+  String _getValidImageUrl(String? url) {
+    if (url == null || url.isEmpty) return '';
+
+    print('Original URL from database: $url'); // Debug print
+
+    // Hapus 'public/' jika ada
+    url = url.replaceAll('public/', '');
+
+    // Hapus 'storage/' dari awal URL jika ada
+    url = url.replaceAll('storage/', '');
+
+    // Hapus double slashes jika ada
+    final finalUrl =
+        'http://192.168.1.10:8000/storage/$url'.replaceAll('//', '/');
+
+    print('Final URL: $finalUrl'); // Debug print
+    return finalUrl;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +40,7 @@ class ProductCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProductPage(product as ProductModel),
+            builder: (context) => ProductPage(product),
           ),
         );
       },
@@ -31,7 +56,48 @@ class ProductCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 30),
-            _buildProductImage(),
+            ImageHelper.loadImage(
+              'storage/gallery/V31OUXxetfRZ9Mlz85U0q1ENqxowb8KnH7V4ZGTt.png',
+              width: 200,
+              height: 150,
+            ),
+            // CachedNetworkImage(
+            //   imageUrl: _getValidImageUrl(product.galleries?.isNotEmpty == true
+            //       ? product.galleries![0].url
+            //       : ''),
+            //   httpHeaders: const {
+            //     'Accept': 'application/json',
+            //   },
+            //   fit: BoxFit.cover,
+            //   height: 120,
+            //   width: 215,
+            //   progressIndicatorBuilder: (context, url, progress) {
+            //     print('Loading image from URL: $url'); // Tambahkan ini
+            //     return Center(
+            //       child: CircularProgressIndicator(value: progress.progress),
+            //     );
+            //   },
+            //   errorWidget: (context, url, error) {
+            //     print('Error loading image: $error');
+            //     print('Attempted URL: $url');
+            //     return Container(
+            //       height: 120,
+            //       width: 215,
+            //       color: Colors.grey[300],
+            //       child: Column(
+            //         mainAxisAlignment: MainAxisAlignment.center,
+            //         children: [
+            //           Icon(Icons.error, color: Colors.red),
+            //           SizedBox(height: 4),
+            //           Text(
+            //             'Gambar tidak tersedia',
+            //             style: TextStyle(fontSize: 12),
+            //           ),
+            //         ],
+            //       ),
+            //     );
+            //   },
+            // ),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20),
               child: Column(
@@ -62,42 +128,6 @@ class ProductCard extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildProductImage() {
-    if (product.galleries == null || product.galleries!.isEmpty) {
-      return _buildPlaceholder('Tidak ada gambar');
-    }
-
-    return Image.network(
-      product.galleries![1].url.toString(),
-      width: 215,
-      height: 150,
-      fit: BoxFit.cover,
-      errorBuilder: (context, error, stackTrace) {
-        print('Error loading image: $error');
-        return _buildPlaceholder('Gagal memuat gambar');
-      },
-      loadingBuilder: (context, child, loadingProgress) {
-        if (loadingProgress == null) return child;
-        return _buildPlaceholder('Memuat gambar...');
-      },
-    );
-  }
-
-  Widget _buildPlaceholder(String message) {
-    return Container(
-      width: 215,
-      height: 150,
-      color: Colors.grey[300],
-      child: Center(
-        child: Text(
-          message,
-          style: TextStyle(color: Colors.grey[600]),
-          textAlign: TextAlign.center,
         ),
       ),
     );

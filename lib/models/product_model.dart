@@ -79,6 +79,15 @@ class ProductModel {
       'update_at': updateAt.toString(),
     };
   }
+
+  String? getFirstGalleryUrl() {
+    if (galleries?.isNotEmpty == true) {
+      final url = galleries![0].url;
+      print('Gallery URL: $url'); // Untuk debugging
+      return url;
+    }
+    return null;
+  }
 }
 
 class UninitializedProductModel extends ProductModel {}

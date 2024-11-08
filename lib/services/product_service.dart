@@ -4,39 +4,44 @@ import 'package:http/http.dart' as http;
 import '../models/product_model.dart';
 
 class ProductService {
-  String baseUrl = 'http://192.168.1.14:8000/api';
+  String baseUrl = 'http://192.168.1.10:8000/api';
 
+  // lib/services/product_service.dart
   Future<List<ProductModel>> getProducts() async {
-    var url = Uri.parse('$baseUrl/products');
-    var headers = {'Content-Type': 'application/json'};
+    try {
+      var url = Uri.parse('$baseUrl/products');
+      var headers = {'Content-Type': 'application/json'};
 
-    var response = await http.get(url, headers: headers);
+      var response = await http.get(url, headers: headers);
+      print('API Response Status: ${response.statusCode}');
+      print('API Response Body: ${response.body}');
 
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        print('Decoded JSON: $data'); // Untuk debugging
 
-    if (response.statusCode == 200) {
-      var jsonResponse = jsonDecode(response.body);
-      print('JSON Response: $jsonResponse'); // Lihat semua data respons
+        List<ProductModel> products = [];
+        List<dynamic> productList = data['data']['data'];
 
-      List data = jsonResponse['data']['data'];
-      print('Product Data: $data'); // Lihat data produk
-
-      List<ProductModel> products = [];
-
-      for (var item in data) {
-        try {
-          products.add(ProductModel.fromJson(item));
-        } catch (e) {
-          print(
-              'Error parsing product: $e'); // Tampilkan error spesifik untuk item tertentu
+        for (var item in productList) {
+          try {
+            ProductModel product = ProductModel.fromJson(item);
+            if (product.galleries != null && product.galleries!.isNotEmpty) {
+              print('Gallery URL: ${product.galleries![0]}');
+            }
+            products.add(product);
+          } catch (e) {
+            print('Error parsing product: $e');
+          }
         }
-      }
 
-      return products;
-    } else {
-      throw Exception(
-          'Failed to get products. Status code: ${response.statusCode}');
+        return products;
+      } else {
+        throw Exception('Gagal mendapatkan produk');
+      }
+    } catch (e) {
+      print('Error in getProducts: $e');
+      rethrow;
     }
   }
 }
