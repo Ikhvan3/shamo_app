@@ -20,25 +20,25 @@ class EditProfilePage extends StatelessWidget {
           leading: IconButton(
             icon: const Icon(
               Icons.close,
-              color: Color.fromARGB(255, 255, 255, 255),
+              color: Color.fromARGB(255, 94, 94, 94),
             ),
             onPressed: () {
               Navigator.pop(context);
             },
           ),
-          backgroundColor: backgroundColor1,
+          backgroundColor: primaryTextColor,
           elevation: 0,
           centerTitle: true,
           title: Text(
             'Edit Profile',
-            style: primaryTextStyle,
+            style: subtitleTextStyle,
           ),
           actions: [
             IconButton(
               onPressed: () {},
               icon: Icon(
                 Icons.check,
-                color: primaryColor,
+                color: backgroundColor8,
               ),
             ),
           ],
@@ -56,15 +56,15 @@ class EditProfilePage extends StatelessWidget {
           children: [
             Text(
               'Name',
-              style: secondaryTextStyle.copyWith(
+              style: subtitleTextStyle.copyWith(
                 fontSize: 13,
               ),
             ),
             TextFormField(
-              style: primaryTextStyle,
+              style: subtitleTextStyle,
               decoration: InputDecoration(
                 hintText: user.name,
-                hintStyle: primaryTextStyle,
+                hintStyle: subtitleTextStyle,
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
                     color: subtitleColor,
@@ -87,15 +87,15 @@ class EditProfilePage extends StatelessWidget {
           children: [
             Text(
               'Username',
-              style: secondaryTextStyle.copyWith(
+              style: subtitleTextStyle.copyWith(
                 fontSize: 13,
               ),
             ),
             TextFormField(
-              style: primaryTextStyle,
+              style: subtitleTextStyle,
               decoration: InputDecoration(
                 hintText: '@${user.username}',
-                hintStyle: primaryTextStyle,
+                hintStyle: subtitleTextStyle,
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
                     color: subtitleColor,
@@ -118,15 +118,15 @@ class EditProfilePage extends StatelessWidget {
           children: [
             Text(
               'Email',
-              style: secondaryTextStyle.copyWith(
+              style: subtitleTextStyle.copyWith(
                 fontSize: 13,
               ),
             ),
             TextFormField(
-              style: primaryTextStyle,
+              style: subtitleTextStyle,
               decoration: InputDecoration(
                 hintText: user.email,
-                hintStyle: primaryTextStyle,
+                hintStyle: subtitleTextStyle,
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
                     color: subtitleColor,
@@ -173,7 +173,7 @@ class EditProfilePage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: backgroundColor3,
+      backgroundColor: backgroundColor1,
       appBar: header(),
       body: content(),
       resizeToAvoidBottomInset: false,

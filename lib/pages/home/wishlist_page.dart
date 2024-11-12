@@ -15,11 +15,11 @@ class WishlistPage extends StatelessWidget {
     PageProvider pageProvider = Provider.of<PageProvider>(context);
     Widget header() {
       return AppBar(
-        backgroundColor: backgroundColor1,
+        backgroundColor: primaryTextColor,
         centerTitle: true,
         title: Text(
-          'Favorite Shoes',
-          style: primaryTextStyle,
+          'Sayuran Favorit',
+          style: subtitleTextStyle,
         ),
         elevation: 0,
         automaticallyImplyLeading: false,
@@ -30,7 +30,7 @@ class WishlistPage extends StatelessWidget {
       return Expanded(
         child: Container(
           width: double.infinity,
-          color: backgroundColor3,
+          color: backgroundColor1,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -43,7 +43,7 @@ class WishlistPage extends StatelessWidget {
               ),
               Text(
                 'You don\'t have dream shoes?',
-                style: primaryTextStyle.copyWith(
+                style: subtitleTextStyle.copyWith(
                   fontSize: 16,
                   fontWeight: medium,
                 ),
@@ -53,7 +53,7 @@ class WishlistPage extends StatelessWidget {
               ),
               Text(
                 'Let\'s find your favorite shoes',
-                style: secondaryTextStyle,
+                style: subtitleTextStyle,
               ),
               SizedBox(
                 height: 20,
@@ -69,7 +69,7 @@ class WishlistPage extends StatelessWidget {
                       vertical: 10,
                       horizontal: 24,
                     ),
-                    backgroundColor: primaryColor,
+                    backgroundColor: backgroundColor8,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -92,7 +92,7 @@ class WishlistPage extends StatelessWidget {
     Widget content() {
       return Expanded(
         child: Container(
-          color: backgroundColor3,
+          color: backgroundColor1,
           child: ListView(
             padding: EdgeInsets.symmetric(
               horizontal: defaultMargin,

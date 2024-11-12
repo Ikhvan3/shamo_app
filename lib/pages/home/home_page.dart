@@ -200,7 +200,7 @@ class HomePage extends StatelessWidget {
           right: defaultMargin,
         ),
         child: Text(
-          'Popular Products',
+          'Sayuran Terlaris',
           style: transparentColorText.copyWith(
             fontSize: 22,
             fontWeight: semiBold,
@@ -241,7 +241,7 @@ class HomePage extends StatelessWidget {
           right: defaultMargin,
         ),
         child: Text(
-          'New Arrivals',
+          'Sayuran Baru',
           style: transparentColorText.copyWith(
             fontSize: 22,
             fontWeight: semiBold,

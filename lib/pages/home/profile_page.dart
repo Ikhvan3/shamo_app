@@ -17,7 +17,7 @@ class ProfilePage extends StatelessWidget {
 
     Widget header() {
       return AppBar(
-        backgroundColor: backgroundColor1,
+        backgroundColor: primaryTextColor,
         automaticallyImplyLeading: false,
         elevation: 0,
         flexibleSpace: SafeArea(
@@ -40,7 +40,7 @@ class ProfilePage extends StatelessWidget {
                     children: [
                       Text(
                         'Hallo, ${user.name}',
-                        style: primaryTextStyle.copyWith(
+                        style: subtitleTextStyle.copyWith(
                           fontSize: 24,
                           fontWeight: semiBold,
                         ),
@@ -81,13 +81,13 @@ class ProfilePage extends StatelessWidget {
           children: [
             Text(
               text,
-              style: secondaryTextStyle.copyWith(
+              style: subtitleTextStyle.copyWith(
                 fontSize: 13,
               ),
             ),
             Icon(
               Icons.chevron_right,
-              color: primaryTextColor,
+              color: subtitleColor,
             ),
           ],
         ),
@@ -101,7 +101,7 @@ class ProfilePage extends StatelessWidget {
           padding: EdgeInsets.symmetric(
             horizontal: defaultMargin,
           ),
-          decoration: BoxDecoration(color: backgroundColor3),
+          decoration: BoxDecoration(color: backgroundColor1),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -109,8 +109,8 @@ class ProfilePage extends StatelessWidget {
                 height: 20,
               ),
               Text(
-                'Account',
-                style: primaryTextStyle.copyWith(
+                'Akun',
+                style: subtitleTextStyle.copyWith(
                   fontSize: 16,
                   fontWeight: semiBold,
                 ),
@@ -134,7 +134,7 @@ class ProfilePage extends StatelessWidget {
               ),
               Text(
                 'General',
-                style: primaryTextStyle.copyWith(
+                style: subtitleTextStyle.copyWith(
                   fontSize: 16,
                   fontWeight: semiBold,
                 ),

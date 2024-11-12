@@ -22,7 +22,7 @@ class CartCard extends StatelessWidget {
         vertical: 10,
       ),
       decoration: BoxDecoration(
-        color: backgroundColor4,
+        color: HijauTextColor,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(

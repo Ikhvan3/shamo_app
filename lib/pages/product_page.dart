@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:shamo_app/models/product_model.dart';
+import 'package:shamo_app/pages/cart_page.dart';
 import 'package:shamo_app/pages/detail_chat_page.dart';
 import 'package:shamo_app/providers/cart_provider.dart';
 import 'package:shamo_app/providers/wishlist_provider.dart';
@@ -24,14 +25,14 @@ class _ProductPageState extends State<ProductPage> {
   ];
 
   List familiarShoes = [
-    'assets/image_shoes.png',
-    'assets/image_shoes2.png',
-    'assets/image_shoes3.png',
-    'assets/image_shoes4.png',
-    'assets/image_shoes5.png',
-    'assets/image_shoes6.png',
-    'assets/image_shoes7.png',
-    'assets/image_shoes8.png',
+    'assets/image_bayam.png',
+    'assets/image_buncis.png',
+    'assets/image_cabai.png',
+    'assets/image_kacangpanjang.png',
+    'assets/image_kentang.png',
+    'assets/image_sawi.png',
+    'assets/image_terong.png',
+    'assets/image_wortel.png',
   ];
 
   int currentIndex = 0;
@@ -46,7 +47,7 @@ class _ProductPageState extends State<ProductPage> {
         builder: (BuildContext context) => Container(
           width: MediaQuery.of(context).size.width - (2 * defaultMargin),
           child: AlertDialog(
-            backgroundColor: backgroundColor3,
+            backgroundColor: backgroundColor8,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30),
             ),
@@ -84,7 +85,7 @@ class _ProductPageState extends State<ProductPage> {
                   ),
                   Text(
                     'Item added successfully',
-                    style: secondaryTextStyle,
+                    style: primaryTextStyle,
                   ),
                   SizedBox(
                     height: 20,
@@ -97,14 +98,14 @@ class _ProductPageState extends State<ProductPage> {
                         Navigator.pushNamed(context, '/cart');
                       },
                       style: TextButton.styleFrom(
-                        backgroundColor: primaryColor,
+                        backgroundColor: backgroundColor7,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
                       child: Text(
                         'View My Cart',
-                        style: primaryTextStyle.copyWith(
+                        style: hijauTextStyle.copyWith(
                           fontSize: 16,
                           fontWeight: medium,
                         ),
@@ -128,7 +129,7 @@ class _ProductPageState extends State<ProductPage> {
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: currentIndex == index ? primaryColor : Color(0xffC4C4C4),
+          color: currentIndex == index ? backgroundColor8 : Color(0xffC4C4C4),
         ),
       );
     }
@@ -171,9 +172,18 @@ class _ProductPageState extends State<ProductPage> {
                     Icons.chevron_left,
                   ),
                 ),
-                Icon(
-                  Icons.shopping_bag,
-                  color: backgroundColor1,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CartPage(),
+                        ));
+                  },
+                  child: Icon(
+                    Icons.shopping_bag,
+                    color: backgroundColor8,
+                  ),
                 ),
               ],
             ),
@@ -242,7 +252,7 @@ class _ProductPageState extends State<ProductPage> {
                       children: [
                         Text(
                           widget.product.name!,
-                          style: primaryTextStyle.copyWith(
+                          style: subtitleTextStyle.copyWith(
                             fontSize: 18,
                             fontWeight: semiBold,
                           ),
@@ -306,17 +316,17 @@ class _ProductPageState extends State<ProductPage> {
               ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4),
-                color: backgroundColor2,
+                color: backgroundColor8,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Price start from',
+                    'Harga mulai dari',
                     style: primaryTextStyle,
                   ),
                   Text(
-                    '\$${widget.product.price}',
+                    '\Rp${widget.product.price}',
                     style: priceTextStyle.copyWith(
                       fontSize: 16,
                       fontWeight: semiBold,
@@ -336,8 +346,8 @@ class _ProductPageState extends State<ProductPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Description',
-                    style: primaryTextStyle.copyWith(
+                    'Deskripsi',
+                    style: subtitleTextStyle.copyWith(
                       fontWeight: medium,
                     ),
                   ),
@@ -369,8 +379,8 @@ class _ProductPageState extends State<ProductPage> {
                       horizontal: defaultMargin,
                     ),
                     child: Text(
-                      'Familiar Shoes',
-                      style: primaryTextStyle.copyWith(
+                      'Sayuran Serupa',
+                      style: subtitleTextStyle.copyWith(
                         fontWeight: medium,
                       ),
                     ),
@@ -437,7 +447,7 @@ class _ProductPageState extends State<ProductPage> {
                               12,
                             ),
                           ),
-                          backgroundColor: primaryColor,
+                          backgroundColor: backgroundColor8,
                         ),
                         child: Text(
                           'Add to Cart',

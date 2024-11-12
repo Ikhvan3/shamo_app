@@ -14,11 +14,11 @@ class CartPage extends StatelessWidget {
     CartProvider cartProvider = Provider.of<CartProvider>(context);
     PreferredSizeWidget header() {
       return AppBar(
-        backgroundColor: backgroundColor1,
+        backgroundColor: primaryTextColor,
         centerTitle: true,
         title: Text(
           'Your Cart',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Color.fromARGB(255, 94, 94, 94)),
         ),
         elevation: 0,
       );
@@ -60,7 +60,7 @@ class CartPage extends StatelessWidget {
                       context, '/home', (route) => false);
                 },
                 style: TextButton.styleFrom(
-                  backgroundColor: primaryColor,
+                  backgroundColor: backgroundColor8,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -103,10 +103,10 @@ class CartPage extends StatelessWidget {
                 children: [
                   Text(
                     'Subtotal',
-                    style: primaryTextStyle,
+                    style: subtitleTextStyle,
                   ),
                   Text(
-                    '\$${cartProvider.totalPrice()}',
+                    '\Rp${cartProvider.totalPrice()}',
                     style: priceTextStyle.copyWith(
                       fontSize: 16,
                       fontWeight: semiBold,
@@ -135,7 +135,7 @@ class CartPage extends StatelessWidget {
                   Navigator.pushNamed(context, '/checkout');
                 },
                 style: TextButton.styleFrom(
-                  backgroundColor: primaryColor,
+                  backgroundColor: backgroundColor8,
                   padding: EdgeInsets.symmetric(
                     horizontal: 20,
                   ),
@@ -167,7 +167,7 @@ class CartPage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: backgroundColor3,
+      backgroundColor: backgroundColor1,
       appBar: header(),
       body: cartProvider.carts.length == 0 ? emptyCart() : content(),
       bottomNavigationBar:

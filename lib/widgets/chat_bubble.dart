@@ -28,7 +28,7 @@ class ChatBubble extends StatelessWidget {
             bottomLeft: Radius.circular(12),
             bottomRight: Radius.circular(12),
           ),
-          color: isSender ? backgroundColor5 : backgroundColor4,
+          color: isSender ? HijauTuaTextColor : HijauTextColor,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,7 +46,7 @@ class ChatBubble extends StatelessWidget {
                       errorBuilder: (context, error, stackTrace) {
                         print('Error loading image: $error');
                         return Image.asset(
-                          'assets/image_shoes.png',
+                          'assets/image_bayam.png',
                           width: 70,
                           fit: BoxFit.cover,
                         );
@@ -59,7 +59,7 @@ class ChatBubble extends StatelessWidget {
                   )
                 else
                   Image.asset(
-                    'assets/image_shoes.png',
+                    'assets/image_bayam.png',
                     width: 60,
                     height: 60,
                     fit: BoxFit.cover,
@@ -98,7 +98,7 @@ class ChatBubble extends StatelessWidget {
                   onPressed: () {},
                   style: OutlinedButton.styleFrom(
                     side: BorderSide(
-                      color: primaryColor,
+                      color: backgroundColor8,
                     ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -106,7 +106,7 @@ class ChatBubble extends StatelessWidget {
                   ),
                   child: Text(
                     'Add to cart',
-                    style: purpleTextStyle,
+                    style: primaryTextStyle,
                   ),
                 ),
                 SizedBox(
@@ -115,7 +115,7 @@ class ChatBubble extends StatelessWidget {
                 TextButton(
                   onPressed: () {},
                   style: TextButton.styleFrom(
-                    backgroundColor: primaryColor,
+                    backgroundColor: backgroundColor8,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -123,7 +123,7 @@ class ChatBubble extends StatelessWidget {
                   child: Text(
                     'Buy Now',
                     style: GoogleFonts.poppins(
-                      color: backgroundColor5,
+                      color: HijauTuaTextColor,
                       fontWeight: medium,
                       fontSize: 12,
                     ),
@@ -166,7 +166,7 @@ class ChatBubble extends StatelessWidget {
                       bottomLeft: Radius.circular(12),
                       bottomRight: Radius.circular(12),
                     ),
-                    color: isSender ? backgroundColor5 : backgroundColor4,
+                    color: isSender ? HijauTuaTextColor : HijauTextColor,
                   ),
                   child: Text(
                     text,

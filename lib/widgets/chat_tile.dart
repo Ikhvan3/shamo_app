@@ -43,13 +43,13 @@ class ChatTile extends StatelessWidget {
                     children: [
                       Text(
                         'Shoe Store',
-                        style: primaryTextStyle.copyWith(
+                        style: subtitleTextStyle.copyWith(
                           fontSize: 15,
                         ),
                       ),
                       Text(
                         message.message!,
-                        style: secondaryTextStyle.copyWith(
+                        style: subtitleTextStyle.copyWith(
                           fontWeight: light,
                         ),
                         overflow: TextOverflow.ellipsis,
@@ -59,7 +59,7 @@ class ChatTile extends StatelessWidget {
                 ),
                 Text(
                   'Now',
-                  style: secondaryTextStyle.copyWith(
+                  style: subtitleTextStyle.copyWith(
                     fontSize: 10,
                   ),
                 ),

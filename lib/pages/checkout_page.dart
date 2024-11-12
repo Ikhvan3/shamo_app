@@ -66,64 +66,15 @@ class _CheckoutPageState extends State<CheckoutPage> {
         isLoading = false;
       });
     }
-    // handleCheckout() async {
-    //   setState(() {
-    //     isLoading = true;
-    //   });
-    //   try {
-    //     bool success = await transactionProvider.checkout(
-    //       authProvider.user.token!,
-    //       cartProvider.carts,
-    //       cartProvider.totalPrice(),
-    //     );
-    //     if (success) {
-    //       cartProvider.carts = [];
-    //       Navigator.pushNamedAndRemoveUntil(
-    //           context, '/checkout-success', (route) => false);
-    //     } else {
-    //       // Show error message
-    //       ScaffoldMessenger.of(context).showSnackBar(
-    //         SnackBar(content: Text('Checkout failed. Please try again.')),
-    //       );
-    //     }
-    //   } catch (e) {
-    //     print('Error in handleCheckout: $e');
-    //     // Show error message
-    //     ScaffoldMessenger.of(context).showSnackBar(
-    //       SnackBar(content: Text('An error occurred. Please try again.')),
-    //     );
-    //   } finally {
-    //     setState(() {
-    //       isLoading = false;
-    //     });
-    //   }
-    // }
-    // handleCheckout() async {
-    //   setState(() {
-    //     isLoading = true;
-    //   });
-    //   if (await transactionProvider.checkout(
-    //     authProvider.user.token!,
-    //     cartProvider.carts,
-    //     cartProvider.totalPrice(),
-    //   )) {
-    //     cartProvider.carts = [];
-    //     Navigator.pushNamedAndRemoveUntil(
-    //         context, '/checkout-success', (route) => false);
-    //   }
-    //   setState(() {
-    //     isLoading = false;
-    //   });
-    // }
 
     PreferredSizeWidget header() {
       return AppBar(
-        backgroundColor: backgroundColor1,
+        backgroundColor: primaryTextColor,
         elevation: 0,
         centerTitle: true,
         title: Text(
           'Checkout Details',
-          style: primaryTextStyle,
+          style: subtitleTextStyle,
         ),
       );
     }
@@ -144,9 +95,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
               children: [
                 Text(
                   'List Items',
-                  style: primaryTextStyle.copyWith(
+                  style: subtitleTextStyle.copyWith(
                     fontSize: 16,
-                    fontWeight: medium,
+                    fontWeight: bold,
                   ),
                 ),
                 Column(
@@ -167,15 +118,15 @@ class _CheckoutPageState extends State<CheckoutPage> {
             ),
             padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: backgroundColor4,
+              color: backgroundColor3,
               borderRadius: BorderRadius.circular(12),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Address Details',
-                  style: primaryTextStyle.copyWith(
+                  'Detail Alamat',
+                  style: subtitleTextStyle.copyWith(
                     fontSize: 16,
                     fontWeight: medium,
                   ),
@@ -208,15 +159,15 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Store Location',
-                          style: secondaryTextStyle.copyWith(
+                          'Lokasi Toko',
+                          style: subtitleTextStyle.copyWith(
                             fontSize: 12,
                             fontWeight: light,
                           ),
                         ),
                         Text(
-                          'Adidas Core',
-                          style: primaryTextStyle.copyWith(
+                          'Semarang',
+                          style: subtitleTextStyle.copyWith(
                             fontWeight: medium,
                           ),
                         ),
@@ -224,15 +175,15 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           height: defaultMargin,
                         ),
                         Text(
-                          'Your Address',
-                          style: secondaryTextStyle.copyWith(
+                          'Alamat Anda',
+                          style: subtitleTextStyle.copyWith(
                             fontSize: 12,
                             fontWeight: light,
                           ),
                         ),
                         Text(
-                          'Marsemoon',
-                          style: primaryTextStyle.copyWith(
+                          'Semarang',
+                          style: subtitleTextStyle.copyWith(
                             fontWeight: medium,
                           ),
                         ),
@@ -251,15 +202,15 @@ class _CheckoutPageState extends State<CheckoutPage> {
             ),
             padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: backgroundColor4,
+              color: backgroundColor3,
               borderRadius: BorderRadius.circular(12),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Payment Summary',
-                  style: primaryTextStyle.copyWith(
+                  'Ringkasan Pembayaran',
+                  style: subtitleTextStyle.copyWith(
                     fontSize: 16,
                     fontWeight: medium,
                   ),
@@ -271,14 +222,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Product Quantity',
-                      style: secondaryTextStyle.copyWith(
+                      'Total Sayuran',
+                      style: subtitleTextStyle.copyWith(
                         fontSize: 12,
                       ),
                     ),
                     Text(
-                      '${cartProvider.totalItems()} Items',
-                      style: primaryTextStyle.copyWith(
+                      '${cartProvider.totalItems()} Item',
+                      style: subtitleTextStyle.copyWith(
                         fontWeight: medium,
                       ),
                     ),
@@ -291,14 +242,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Product Price',
-                      style: secondaryTextStyle.copyWith(
+                      'Harga Sayuran',
+                      style: subtitleTextStyle.copyWith(
                         fontSize: 12,
                       ),
                     ),
                     Text(
-                      '\$${cartProvider.totalPrice()}',
-                      style: primaryTextStyle.copyWith(
+                      '\Rp${cartProvider.totalPrice()}',
+                      style: subtitleTextStyle.copyWith(
                         fontWeight: medium,
                       ),
                     ),
@@ -311,14 +262,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Shipping',
-                      style: secondaryTextStyle.copyWith(
+                      'Pengiriman',
+                      style: subtitleTextStyle.copyWith(
                         fontSize: 12,
                       ),
                     ),
                     Text(
-                      'Free',
-                      style: primaryTextStyle.copyWith(
+                      'Gratis',
+                      style: subtitleTextStyle.copyWith(
                         fontWeight: medium,
                       ),
                     ),
@@ -344,7 +295,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       ),
                     ),
                     Text(
-                      '\$${cartProvider.totalPrice()}',
+                      '\Rp${cartProvider.totalPrice()}',
                       style: priceTextStyle.copyWith(
                         fontWeight: semiBold,
                       ),
@@ -377,7 +328,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   child: TextButton(
                     onPressed: handleCheckout,
                     style: TextButton.styleFrom(
-                      backgroundColor: primaryColor,
+                      backgroundColor: backgroundColor8,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -396,7 +347,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
     }
 
     return Scaffold(
-      backgroundColor: backgroundColor3,
+      backgroundColor: backgroundColor1,
       appBar: header(),
       body: content(),
     );

@@ -40,7 +40,7 @@ class _DetailChatPageState extends State<DetailChatPage> {
 
     PreferredSizeWidget header() {
       return AppBar(
-        backgroundColor: backgroundColor1,
+        backgroundColor: primaryTextColor,
         centerTitle: false,
         title: Row(
           children: [
@@ -56,7 +56,7 @@ class _DetailChatPageState extends State<DetailChatPage> {
               children: [
                 Text(
                   'Shoe Store',
-                  style: primaryTextStyle.copyWith(
+                  style: subtitleTextStyle.copyWith(
                     fontWeight: medium,
                     fontSize: 14,
                   ),
@@ -87,10 +87,10 @@ class _DetailChatPageState extends State<DetailChatPage> {
           10,
         ),
         decoration: BoxDecoration(
-          color: backgroundColor5,
+          color: HijauTextColor,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: primaryColor,
+            color: backgroundColor8,
           ),
         ),
         child: Row(
@@ -186,7 +186,7 @@ class _DetailChatPageState extends State<DetailChatPage> {
                       horizontal: 16,
                     ),
                     decoration: BoxDecoration(
-                      color: backgroundColor4,
+                      color: primaryTextColor,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Center(
@@ -263,7 +263,7 @@ class _DetailChatPageState extends State<DetailChatPage> {
     }
 
     return Scaffold(
-      backgroundColor: backgroundColor3,
+      backgroundColor: backgroundColor1,
       appBar: header(),
       bottomNavigationBar: chatInput(),
       body: content(),

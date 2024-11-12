@@ -9,11 +9,11 @@ class CheckoutSuccessPage extends StatelessWidget {
   Widget build(BuildContext context) {
     PreferredSizeWidget header() {
       return AppBar(
-        backgroundColor: backgroundColor1,
+        backgroundColor: primaryTextColor,
         centerTitle: true,
         title: Text(
           'Checkout Success',
-          style: primaryTextStyle,
+          style: subtitleTextStyle,
         ),
         elevation: 0,
       );
@@ -33,7 +33,7 @@ class CheckoutSuccessPage extends StatelessWidget {
             ),
             Text(
               'You made a transaction',
-              style: primaryTextStyle.copyWith(
+              style: subtitleTextStyle.copyWith(
                 fontSize: 16,
                 fontWeight: medium,
               ),
@@ -43,7 +43,7 @@ class CheckoutSuccessPage extends StatelessWidget {
             ),
             Text(
               'Stay at home while we\n prepare your dream shoes',
-              style: secondaryTextStyle,
+              style: subtitleTextStyle,
               textAlign: TextAlign.center,
             ),
             Container(
@@ -56,7 +56,7 @@ class CheckoutSuccessPage extends StatelessWidget {
                       context, '/home', (route) => false);
                 },
                 style: TextButton.styleFrom(
-                  backgroundColor: primaryColor,
+                  backgroundColor: backgroundColor8,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -79,7 +79,7 @@ class CheckoutSuccessPage extends StatelessWidget {
               child: TextButton(
                 onPressed: () {},
                 style: TextButton.styleFrom(
-                  backgroundColor: Color(0xff39374B),
+                  backgroundColor: Color.fromARGB(255, 136, 136, 136),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -89,7 +89,7 @@ class CheckoutSuccessPage extends StatelessWidget {
                   style: primaryTextStyle.copyWith(
                     fontSize: 16,
                     fontWeight: medium,
-                    color: Color(0xffB7B6BF),
+                    color: Color.fromARGB(255, 255, 255, 255),
                   ),
                 ),
               ),
@@ -100,7 +100,7 @@ class CheckoutSuccessPage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: backgroundColor3,
+      backgroundColor: backgroundColor1,
       appBar: header(),
       body: content(),
     );
