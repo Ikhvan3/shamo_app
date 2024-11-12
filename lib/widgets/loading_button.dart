@@ -16,7 +16,7 @@ class LoadingButton extends StatelessWidget {
       child: TextButton(
         onPressed: () {},
         style: TextButton.styleFrom(
-          backgroundColor: primaryColor,
+          backgroundColor: HijauTextColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(
               12,

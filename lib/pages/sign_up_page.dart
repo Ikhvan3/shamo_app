@@ -61,7 +61,7 @@ class _SignUpPageState extends State<SignUpPage> {
           children: [
             Text(
               'Sign Up',
-              style: primaryTextStyle.copyWith(
+              style: utamaTextStyle.copyWith(
                 fontSize: 24,
                 fontWeight: semiBold,
               ),
@@ -71,7 +71,7 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             Text(
               'Register and Happy Shoping',
-              style: subtitleTextStyle,
+              style: utamaTextStyle,
             ),
           ],
         ),
@@ -88,7 +88,7 @@ class _SignUpPageState extends State<SignUpPage> {
           children: [
             Text(
               'Full Name',
-              style: primaryTextStyle.copyWith(
+              style: subtitleTextStyle.copyWith(
                 fontSize: 16,
                 fontWeight: medium,
               ),
@@ -102,7 +102,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 horizontal: 16,
               ),
               decoration: BoxDecoration(
-                color: backgroundColor2,
+                color: primaryTextColor,
                 borderRadius: BorderRadius.circular(
                   12,
                 ),
@@ -119,7 +119,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     Expanded(
                         child: TextFormField(
-                      style: primaryTextStyle,
+                      style: secondaryTextStyle,
                       controller: nameController,
                       decoration: InputDecoration.collapsed(
                         hintText: 'Your Full Name',
@@ -145,7 +145,7 @@ class _SignUpPageState extends State<SignUpPage> {
           children: [
             Text(
               'Username',
-              style: primaryTextStyle.copyWith(
+              style: subtitleTextStyle.copyWith(
                 fontSize: 16,
                 fontWeight: medium,
               ),
@@ -159,7 +159,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 horizontal: 16,
               ),
               decoration: BoxDecoration(
-                color: backgroundColor2,
+                color: primaryTextColor,
                 borderRadius: BorderRadius.circular(
                   12,
                 ),
@@ -176,7 +176,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     Expanded(
                       child: TextFormField(
-                        style: primaryTextStyle,
+                        style: subtitleTextStyle,
                         controller: usernameController,
                         decoration: InputDecoration.collapsed(
                           hintText: 'Your Username',
@@ -203,7 +203,7 @@ class _SignUpPageState extends State<SignUpPage> {
           children: [
             Text(
               'Email Address',
-              style: primaryTextStyle.copyWith(
+              style: subtitleTextStyle.copyWith(
                 fontSize: 16,
                 fontWeight: medium,
               ),
@@ -217,7 +217,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 horizontal: 16,
               ),
               decoration: BoxDecoration(
-                color: backgroundColor2,
+                color: primaryTextColor,
                 borderRadius: BorderRadius.circular(
                   12,
                 ),
@@ -234,7 +234,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     Expanded(
                         child: TextFormField(
-                      style: primaryTextStyle,
+                      style: subtitleTextStyle,
                       controller: emailController,
                       decoration: InputDecoration.collapsed(
                         hintText: 'Your Email Address',
@@ -260,7 +260,7 @@ class _SignUpPageState extends State<SignUpPage> {
           children: [
             Text(
               'Password',
-              style: primaryTextStyle.copyWith(
+              style: subtitleTextStyle.copyWith(
                 fontSize: 16,
                 fontWeight: medium,
               ),
@@ -274,7 +274,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 horizontal: 16,
               ),
               decoration: BoxDecoration(
-                color: backgroundColor2,
+                color: primaryTextColor,
                 borderRadius: BorderRadius.circular(
                   12,
                 ),
@@ -318,7 +318,7 @@ class _SignUpPageState extends State<SignUpPage> {
         child: TextButton(
           onPressed: handleSignUp,
           style: TextButton.styleFrom(
-            backgroundColor: primaryColor,
+            backgroundColor: backgroundColor8,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(
                 12,
@@ -354,7 +354,7 @@ class _SignUpPageState extends State<SignUpPage> {
               },
               child: Text(
                 'Sign In',
-                style: purpleTextStyle.copyWith(
+                style: utamaTextStyle.copyWith(
                   fontSize: 12,
                   fontWeight: medium,
                 ),

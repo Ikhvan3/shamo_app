@@ -75,9 +75,9 @@ class _SignInPageState extends State<SignInPage> {
           children: [
             Text(
               'Login',
-              style: primaryTextStyle.copyWith(
+              style: utamaTextStyle.copyWith(
                 fontSize: 24,
-                fontWeight: semiBold,
+                fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(
@@ -85,7 +85,7 @@ class _SignInPageState extends State<SignInPage> {
             ),
             Text(
               'Sign In to Continue',
-              style: subtitleTextStyle,
+              style: utamaTextStyle,
             ),
           ],
         ),
@@ -102,7 +102,7 @@ class _SignInPageState extends State<SignInPage> {
           children: [
             Text(
               'Email Address',
-              style: primaryTextStyle.copyWith(
+              style: subtitleTextStyle.copyWith(
                 fontSize: 16,
                 fontWeight: medium,
               ),
@@ -116,7 +116,7 @@ class _SignInPageState extends State<SignInPage> {
                 horizontal: 16,
               ),
               decoration: BoxDecoration(
-                color: backgroundColor2,
+                color: primaryTextColor,
                 borderRadius: BorderRadius.circular(
                   12,
                 ),
@@ -133,11 +133,11 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                     Expanded(
                         child: TextFormField(
-                      style: primaryTextStyle,
+                      style: subtitleTextStyle,
                       controller: emailController,
                       decoration: InputDecoration.collapsed(
                         hintText: 'Your Email Address',
-                        hintStyle: subtitleTextStyle,
+                        hintStyle: secondaryTextStyle,
                       ),
                     ))
                   ],
@@ -159,7 +159,7 @@ class _SignInPageState extends State<SignInPage> {
           children: [
             Text(
               'Password',
-              style: primaryTextStyle.copyWith(
+              style: subtitleTextStyle.copyWith(
                 fontSize: 16,
                 fontWeight: medium,
               ),
@@ -173,7 +173,7 @@ class _SignInPageState extends State<SignInPage> {
                 horizontal: 16,
               ),
               decoration: BoxDecoration(
-                color: backgroundColor2,
+                color: primaryTextColor,
                 borderRadius: BorderRadius.circular(
                   12,
                 ),
@@ -191,11 +191,11 @@ class _SignInPageState extends State<SignInPage> {
                     Expanded(
                         child: TextFormField(
                       obscureText: true,
-                      style: primaryTextStyle,
+                      style: subtitleTextStyle,
                       controller: passwordController,
                       decoration: InputDecoration.collapsed(
                         hintText: 'Your Password',
-                        hintStyle: subtitleTextStyle,
+                        hintStyle: secondaryTextStyle,
                       ),
                     ))
                   ],
@@ -217,7 +217,7 @@ class _SignInPageState extends State<SignInPage> {
         child: TextButton(
           onPressed: handleSignIn,
           style: TextButton.styleFrom(
-            backgroundColor: primaryColor,
+            backgroundColor: backgroundColor8,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(
                 12,
@@ -253,7 +253,7 @@ class _SignInPageState extends State<SignInPage> {
               },
               child: Text(
                 'Sign Up',
-                style: purpleTextStyle.copyWith(
+                style: hijauTextStyle.copyWith(
                   fontSize: 12,
                   fontWeight: medium,
                 ),
