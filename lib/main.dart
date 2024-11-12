@@ -65,13 +65,13 @@ class MyApp extends StatelessWidget {
           create: (context) => WishlistProvider(),
         ),
         ChangeNotifierProvider(
+          create: (context) => PageProvider(),
+        ),
+        ChangeNotifierProvider(
           create: (context) => CartProvider(),
         ),
         ChangeNotifierProvider(
           create: (context) => TransactionProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => PageProvider(),
         ),
       ],
       child: MaterialApp(

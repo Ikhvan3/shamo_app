@@ -63,6 +63,14 @@ class HomePage extends StatelessWidget {
     }
 
     Widget categories() {
+      List<String> categoryList = [
+        'Semua Sayuran',
+        'Daun',
+        'Buah',
+        'Umbi',
+        'Kacang',
+      ];
+
       return Container(
         margin: EdgeInsets.only(
           top: defaultMargin,
@@ -74,118 +82,45 @@ class HomePage extends StatelessWidget {
               SizedBox(
                 width: defaultMargin,
               ),
-              Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 10,
-                ),
-                margin: EdgeInsets.only(
-                  right: 16,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: backgroundColor8,
-                ),
-                child: Text(
-                  'Semua Sayuran',
-                  style: primaryTextStyle.copyWith(
-                    fontSize: 13,
-                    fontWeight: medium,
-                  ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 10,
-                ),
-                margin: EdgeInsets.only(
-                  right: 16,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  // border: Border.all(
-                  //   color: subtitleColor,
-                  // ),
-                  color: backgroundColor7,
-                ),
-                child: Text(
-                  'Daun',
-                  style: subtitleTextStyle.copyWith(
-                    fontSize: 13,
-                    fontWeight: medium,
-                  ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 10,
-                ),
-                margin: EdgeInsets.only(
-                  right: 16,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  // border: Border.all(
-                  //   color: subtitleColor,
-                  // ),
-                  color: backgroundColor7,
-                ),
-                child: Text(
-                  'Buah',
-                  style: subtitleTextStyle.copyWith(
-                    fontSize: 13,
-                    fontWeight: medium,
-                  ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 10,
-                ),
-                margin: EdgeInsets.only(
-                  right: 16,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  // border: Border.all(
-                  //   color: subtitleColor,
-                  // ),
-                  color: backgroundColor7,
-                ),
-                child: Text(
-                  'Umbi',
-                  style: subtitleTextStyle.copyWith(
-                    fontSize: 13,
-                    fontWeight: medium,
-                  ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 10,
-                ),
-                margin: EdgeInsets.only(
-                  right: 16,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  // border: Border.all(
-                  //   color: subtitleColor,
-                  // ),
-                  color: backgroundColor7,
-                ),
-                child: Text(
-                  'Kacang',
-                  style: subtitleTextStyle.copyWith(
-                    fontSize: 13,
-                    fontWeight: medium,
-                  ),
-                ),
-              ),
+              ...categoryList
+                  .map((category) => GestureDetector(
+                        onTap: () {
+                          Provider.of<ProductProvider>(context, listen: false)
+                              .setSelectedCategory(category);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 10,
+                          ),
+                          margin: EdgeInsets.only(
+                            right: 16,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Provider.of<ProductProvider>(context)
+                                        .selectedCategory ==
+                                    category
+                                ? backgroundColor8
+                                : backgroundColor7,
+                          ),
+                          child: Text(
+                            category,
+                            style: Provider.of<ProductProvider>(context)
+                                        .selectedCategory ==
+                                    category
+                                ? primaryTextStyle.copyWith(
+                                    fontSize: 13,
+                                    fontWeight: medium,
+                                  )
+                                : subtitleTextStyle.copyWith(
+                                    fontSize: 13,
+                                    fontWeight: medium,
+                                  ),
+                          ),
+                        ),
+                      ))
+                  .toList(),
             ],
           ),
         ),
@@ -199,6 +134,7 @@ class HomePage extends StatelessWidget {
           left: defaultMargin,
           right: defaultMargin,
         ),
+        alignment: Alignment.centerLeft,
         child: Text(
           'Sayuran Terlaris',
           style: transparentColorText.copyWith(
@@ -240,6 +176,7 @@ class HomePage extends StatelessWidget {
           left: defaultMargin,
           right: defaultMargin,
         ),
+        alignment: Alignment.centerLeft,
         child: Text(
           'Sayuran Baru',
           style: transparentColorText.copyWith(
@@ -250,11 +187,26 @@ class HomePage extends StatelessWidget {
       );
     }
 
-    Widget newArrivals() {
+    // Widget newArrivals() {
+    //   return Container(
+    //     margin: EdgeInsets.only(
+    //       top: 14,
+    //     ),
+    //     child: Column(
+    //       children: productProvider.products
+    //           .map((product) => ProductTile(product))
+    //           .toList(),
+    //     ),
+    //   );
+    // }
+
+    Widget filteredProducts() {
+      if (productProvider.products.isEmpty) {
+        return Center(child: CircularProgressIndicator());
+      }
+
       return Container(
-        margin: EdgeInsets.only(
-          top: 14,
-        ),
+        margin: EdgeInsets.only(top: 14),
         child: Column(
           children: productProvider.products
               .map((product) => ProductTile(product))
@@ -263,14 +215,35 @@ class HomePage extends StatelessWidget {
       );
     }
 
+    Widget content() {
+      // Jika kategori yang dipilih bukan "Semua Sayuran", tampilkan hanya ProductTile
+      if (productProvider.selectedCategory != 'Semua Sayuran') {
+        return filteredProducts();
+      }
+
+      // Jika "Semua Sayuran", tampilkan layout lengkap
+      return Column(
+        children: [
+          popularProductsTitle(),
+          popularProducts(),
+          newArrivalTitle(),
+          Container(
+            margin: EdgeInsets.only(top: 14),
+            child: Column(
+              children: productProvider.products
+                  .map((product) => ProductTile(product))
+                  .toList(),
+            ),
+          ),
+        ],
+      );
+    }
+
     return ListView(
       children: [
         header(),
         categories(),
-        popularProductsTitle(),
-        popularProducts(),
-        newArrivalTitle(),
-        newArrivals(),
+        content(),
       ],
     );
   }
