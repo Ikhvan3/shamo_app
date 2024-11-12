@@ -7,20 +7,25 @@ Color primaryColor = Color(0xff6C5ECF);
 Color secondaryColor = Color(0xff38ABBE);
 Color alertColor = Color(0xffED6363);
 Color priceColor = Color(0xff2C96F1);
-Color backgroundColor1 = Color(0xff1F1D2B);
+Color backgroundColor1 = Color.fromARGB(255, 199, 221, 207);
 Color backgroundColor2 = Color(0xff2B2937);
 Color backgroundColor3 = Color(0xff242231);
 Color backgroundColor4 = Color(0xff252836);
 Color backgroundColor5 = Color(0xff2B2844);
 Color backgroundColor6 = Color(0xffECEDEF);
+Color backgroundColor7 = Color.fromARGB(255, 255, 255, 255);
+Color backgroundColor8 = Color.fromARGB(255, 0, 177, 71);
 Color primaryTextColor = Color(0xffF1F0F2);
 Color secondaryTextColor = Color(0xff999999);
 Color subtitleColor = Color(0xff504F5E);
-Color transparentColor = Colors.transparent;
+Color transparentColor = const Color.fromARGB(255, 0, 0, 0);
 Color blackColor = Color(0xff2E2E2E);
 
 TextStyle primaryTextStyle = GoogleFonts.poppins(
   color: primaryTextColor,
+);
+TextStyle transparentColorText = GoogleFonts.poppins(
+  color: transparentColor,
 );
 
 TextStyle secondaryTextStyle = GoogleFonts.poppins(

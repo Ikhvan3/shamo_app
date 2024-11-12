@@ -108,22 +108,6 @@ class WishlistPage extends StatelessWidget {
         ),
       );
     }
-    // Widget content() {
-    //   return Expanded(
-    //       child: Container(
-    //     color: backgroundColor3,
-    //     child: ListView(
-    //       padding: EdgeInsets.symmetric(
-    //         horizontal: defaultMargin,
-    //       ),
-    //       children: wishlistProvider.wishlist
-    //           .map(
-    //             (product) => WishListCard(product),
-    //           )
-    //           .toList(),
-    //     ),
-    //   ));
-    // }
 
     return Column(
       children: [

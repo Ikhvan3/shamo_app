@@ -31,7 +31,7 @@ class HomePage extends StatelessWidget {
                 children: [
                   Text(
                     'Hallo, ${user.name}',
-                    style: primaryTextStyle.copyWith(
+                    style: transparentColorText.copyWith(
                       fontSize: 24,
                       fontWeight: semiBold,
                     ),
@@ -84,10 +84,10 @@ class HomePage extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: primaryColor,
+                  color: backgroundColor8,
                 ),
                 child: Text(
-                  'All Shoes',
+                  'Semua Sayuran',
                   style: primaryTextStyle.copyWith(
                     fontSize: 13,
                     fontWeight: medium,
@@ -104,13 +104,13 @@ class HomePage extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: subtitleColor,
-                  ),
-                  color: transparentColor,
+                  // border: Border.all(
+                  //   color: subtitleColor,
+                  // ),
+                  color: backgroundColor7,
                 ),
                 child: Text(
-                  'Running',
+                  'Daun',
                   style: subtitleTextStyle.copyWith(
                     fontSize: 13,
                     fontWeight: medium,
@@ -127,13 +127,13 @@ class HomePage extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: subtitleColor,
-                  ),
-                  color: transparentColor,
+                  // border: Border.all(
+                  //   color: subtitleColor,
+                  // ),
+                  color: backgroundColor7,
                 ),
                 child: Text(
-                  'Training',
+                  'Buah',
                   style: subtitleTextStyle.copyWith(
                     fontSize: 13,
                     fontWeight: medium,
@@ -150,13 +150,13 @@ class HomePage extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: subtitleColor,
-                  ),
-                  color: transparentColor,
+                  // border: Border.all(
+                  //   color: subtitleColor,
+                  // ),
+                  color: backgroundColor7,
                 ),
                 child: Text(
-                  'Basketball',
+                  'Umbi',
                   style: subtitleTextStyle.copyWith(
                     fontSize: 13,
                     fontWeight: medium,
@@ -173,13 +173,13 @@ class HomePage extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: subtitleColor,
-                  ),
-                  color: transparentColor,
+                  // border: Border.all(
+                  //   color: subtitleColor,
+                  // ),
+                  color: backgroundColor7,
                 ),
                 child: Text(
-                  'Hiking',
+                  'Kacang',
                   style: subtitleTextStyle.copyWith(
                     fontSize: 13,
                     fontWeight: medium,
@@ -201,7 +201,7 @@ class HomePage extends StatelessWidget {
         ),
         child: Text(
           'Popular Products',
-          style: primaryTextStyle.copyWith(
+          style: transparentColorText.copyWith(
             fontSize: 22,
             fontWeight: semiBold,
           ),
@@ -233,29 +233,6 @@ class HomePage extends StatelessWidget {
       );
     }
 
-    // Widget popularProducts() {
-    //   return Container(
-    //     margin: EdgeInsets.only(top: 14),
-    //     child: SingleChildScrollView(
-    //       scrollDirection: Axis.horizontal,
-    //       child: Row(
-    //         children: [
-    //           SizedBox(
-    //             width: defaultMargin,
-    //           ),
-    //           Row(
-    //             children: productProvider.products
-    //                 .map(
-    //                   (product) => ProductCard(product),
-    //                 )
-    //                 .toList(),
-    //           ),
-    //         ],
-    //       ),
-    //     ),
-    //   );
-    // }
-
     Widget newArrivalTitle() {
       return Container(
         margin: EdgeInsets.only(
@@ -265,7 +242,7 @@ class HomePage extends StatelessWidget {
         ),
         child: Text(
           'New Arrivals',
-          style: primaryTextStyle.copyWith(
+          style: transparentColorText.copyWith(
             fontSize: 22,
             fontWeight: semiBold,
           ),

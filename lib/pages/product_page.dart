@@ -458,7 +458,7 @@ class _ProductPageState extends State<ProductPage> {
     }
 
     return Scaffold(
-      backgroundColor: backgroundColor6,
+      backgroundColor: Colors.white,
       body: ListView(
         children: [
           header(),

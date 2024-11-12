@@ -6,10 +6,10 @@ import 'package:provider/provider.dart';
 import 'package:shamo_app/pages/cart_page.dart';
 import 'package:shamo_app/pages/checkout_page.dart';
 import 'package:shamo_app/pages/checkout_success_page.dart';
-import 'package:shamo_app/pages/detail_chat_page.dart';
+
 import 'package:shamo_app/pages/edit_profile.dart';
 import 'package:shamo_app/pages/home/main_page.dart';
-import 'package:shamo_app/pages/product_page.dart';
+
 import 'package:shamo_app/pages/sign_in_page.dart';
 import 'package:shamo_app/pages/splash_page.dart';
 import 'package:shamo_app/providers/auth_provider.dart';
@@ -20,15 +20,6 @@ import 'package:shamo_app/providers/transaction_provider.dart';
 import 'package:shamo_app/providers/wishlist_provider.dart';
 import 'firebase_options.dart';
 import 'pages/sign_up_page.dart';
-
-// class MyHttpOverrides extends HttpOverrides {
-//   @override
-//   HttpClient createHttpClient(SecurityContext? context) {
-//     final client = super.createHttpClient(context);
-//     client.autoUncompress = true; // Mendukung kompresi otomatis (gzip, deflate)
-//     return client;
-//   }
-// }
 
 void main(List<String> args) async {
   // HttpOverrides.global = MyHttpOverrides();

@@ -24,7 +24,7 @@ class _MainPageState extends State<MainPage> {
         onPressed: () {
           Navigator.pushNamed(context, '/cart');
         },
-        backgroundColor: secondaryColor,
+        backgroundColor: backgroundColor8,
         child: Image.asset(
           'assets/icon_cart.png',
           width: 20,
@@ -38,7 +38,7 @@ class _MainPageState extends State<MainPage> {
           top: Radius.circular(30),
         ),
         child: BottomAppBar(
-          color: Color.fromARGB(255, 33, 35, 44),
+          color: Color.fromARGB(255, 255, 255, 255),
           shape: CircularNotchedRectangle(),
           notchMargin: 10,
           clipBehavior: Clip.antiAlias,
@@ -48,7 +48,7 @@ class _MainPageState extends State<MainPage> {
               print(value);
               pageProvider.currentIndex = value;
             },
-            backgroundColor: backgroundColor4,
+            backgroundColor: Colors.white,
             type: BottomNavigationBarType.fixed,
             elevation: 0,
             items: [
@@ -59,7 +59,7 @@ class _MainPageState extends State<MainPage> {
                     'assets/icon_home.png',
                     width: 21,
                     color: pageProvider.currentIndex == 0
-                        ? primaryColor
+                        ? backgroundColor8
                         : Color(0xff808191),
                   ),
                 ),
@@ -72,7 +72,7 @@ class _MainPageState extends State<MainPage> {
                     'assets/icon_chat.png',
                     width: 20,
                     color: pageProvider.currentIndex == 1
-                        ? primaryColor
+                        ? backgroundColor8
                         : Color(0xff808191),
                   ),
                 ),
@@ -85,7 +85,7 @@ class _MainPageState extends State<MainPage> {
                     'assets/icon_whislist.png',
                     width: 20,
                     color: pageProvider.currentIndex == 2
-                        ? primaryColor
+                        ? backgroundColor8
                         : Color(0xff808191),
                   ),
                 ),
@@ -98,7 +98,7 @@ class _MainPageState extends State<MainPage> {
                     'assets/icon_profile.png',
                     width: 18,
                     color: pageProvider.currentIndex == 3
-                        ? primaryColor
+                        ? backgroundColor8
                         : Color(0xff808191),
                   ),
                 ),

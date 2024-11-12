@@ -5,6 +5,17 @@ import '../helpers/image_url_helper.dart';
 import '../models/product_model.dart';
 
 class ProductService {
+  void debugUrl(String imageUrl) {
+    print('Checking Image URL: $imageUrl');
+    // Coba hit URL untuk memeriksa response
+    http.get(Uri.parse(imageUrl)).then((response) {
+      print('Response status: ${response.statusCode}');
+      print('Response headers: ${response.headers}');
+    }).catchError((error) {
+      print('Error accessing URL: $error');
+    });
+  }
+
   Future<List<ProductModel>> getProducts() async {
     var url = Uri.parse('${AppConfig.apiUrl}/products');
     var headers = {'Content-Type': 'application/json'};
