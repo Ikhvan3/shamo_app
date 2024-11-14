@@ -20,6 +20,7 @@ import 'package:shamo_app/providers/transaction_provider.dart';
 import 'package:shamo_app/providers/wishlist_provider.dart';
 import 'firebase_options.dart';
 import 'pages/sign_up_page.dart';
+import 'providers/scan_provider.dart';
 
 void main(List<String> args) async {
   // HttpOverrides.global = MyHttpOverrides();
@@ -72,6 +73,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => TransactionProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ScannerProvider(),
         ),
       ],
       child: MaterialApp(

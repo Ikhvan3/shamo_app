@@ -7,6 +7,7 @@ import 'package:shamo_app/widgets/product_card.dart';
 import 'package:shamo_app/widgets/product_tile.dart';
 
 import '../../providers/auth_provider.dart';
+import '../scanner/scan_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -45,16 +46,11 @@ class HomePage extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
-              width: 54,
-              height: 54,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: NetworkImage(
-                    user.profilePhotoUrl.toString(),
-                  ),
-                ),
+            IconButton(
+              icon: Icon(Icons.qr_code_scanner),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => ScannerPage()),
               ),
             ),
           ],

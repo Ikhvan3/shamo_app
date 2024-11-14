@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/cart_model.dart';
 
 class TransactionService {
-  String baseUrl = 'http://192.168.1.20:8000/api';
+  String baseUrl = 'http://192.168.182.195:8000/api';
 
   Future<String?> _getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
