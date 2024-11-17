@@ -6,7 +6,7 @@ import 'package:shamo_app/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  String baseUrl = 'http://192.168.182.195:8000/api';
+  String baseUrl = 'http://192.168.1.38:8000/api';
 
   // Fungsi untuk menyimpan token ke SharedPreferences
   Future<void> _saveToken(String token) async {
