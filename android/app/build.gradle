@@ -47,7 +47,8 @@ flutter {
 dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.5.0"))
     implementation("com.google.firebase:firebase-analytics")
-    
+     implementation 'androidx.appcompat:appcompat:1.6.1' // Pastikan versi ini sesuai dengan konfigurasi SDK Anda
+    implementation 'com.google.android.material:material:1.9.0' // 
 
 }
 

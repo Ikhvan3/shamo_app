@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:midtrans_snap/midtrans_snap.dart';
+import 'package:midtrans_snap/models.dart';
 import 'package:provider/provider.dart';
 import 'package:shamo_app/providers/auth_provider.dart';
 import 'package:shamo_app/providers/cart_provider.dart';
@@ -41,18 +43,51 @@ class _CheckoutPageState extends State<CheckoutPage> {
       }
 
       try {
-        bool success = await transactionProvider.checkout(
+        // Proses checkout dan dapatkan snap token
+        Map<String, dynamic>? checkoutResult =
+            await transactionProvider.checkout(
           cartProvider.carts,
           cartProvider.totalPrice(),
         );
 
-        if (success) {
-          cartProvider.carts.clear();
-          Navigator.pushNamedAndRemoveUntil(
-              context, '/checkout-success', (route) => false);
+        if (checkoutResult != null && checkoutResult['snap_token'] != null) {
+          String snapToken = checkoutResult['snap_token'];
+
+          // Tampilkan halaman Midtrans
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MidtransSnap(
+                mode: MidtransEnvironment.sandbox,
+                token: snapToken,
+                midtransClientKey: 'SB-Mid-client-9IcCzu63pO9YgHmi',
+                onPageFinished: (url) => print("Page Finished: $url"),
+                onPageStarted: (url) => print("Page Started: $url"),
+                onResponse: (response) {
+                  print("Payment Response: ${response.toJson()}");
+                  if (response.statusCode == '200') {
+                    cartProvider.carts.clear();
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      '/checkout-success',
+                      (route) => false,
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Pembayaran gagal!')),
+                    );
+                  }
+                },
+              ),
+            ),
+          );
+
+          if (result == null) {
+            print('Pembayaran dibatalkan.');
+          }
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Gagal melakukan checkout')),
+            SnackBar(content: Text('Gagal mendapatkan Snap Token')),
           );
         }
       } catch (e) {

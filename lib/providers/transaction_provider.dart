@@ -3,21 +3,26 @@ import 'package:shamo_app/services/transaction_service.dart';
 import '../models/cart_model.dart';
 
 class TransactionProvider with ChangeNotifier {
-  Future<bool> checkout(List<CartModel> carts, double totalPrice) async {
+  Future<Map<String, dynamic>?> checkout(
+      List<CartModel> carts, double totalPrice) async {
     try {
       if (carts.isEmpty) {
         print('Keranjang kosong');
-        return false;
+        return null;
       }
 
-      bool result = await TransactionService().checkout(carts, totalPrice);
-      if (result) {
+      // Metode ini harus mengembalikan String? karena snapToken adalah String?
+      Map<String, dynamic>? snapToken =
+          await TransactionService().checkout(carts, totalPrice);
+
+      if (snapToken != null) {
         notifyListeners();
       }
-      return result;
+
+      return snapToken;
     } catch (e) {
       print('Kesalahan di TransactionProvider: $e');
-      return false;
+      return null;
     }
   }
 }
