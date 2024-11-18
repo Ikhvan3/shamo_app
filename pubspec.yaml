@@ -45,7 +45,7 @@ dependencies:
   firebase_core: ^3.4.0
   image_picker: ^0.8.6
   mobile_scanner: ^6.0.2
-  midtrans_sdk: ^1.0.0
+  midtrans_sdk: ^0.4.0
 
 dev_dependencies:
   flutter_test:

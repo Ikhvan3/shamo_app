@@ -1,7 +1,15 @@
+buildscript {
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.0.0' // atau lebih tinggi
+    }
+}
+
+
 allprojects {
     repositories {
         google()
         mavenCentral()
+        jcenter()
     }
 }
 
