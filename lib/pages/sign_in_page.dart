@@ -6,6 +6,7 @@ import 'package:shamo_app/widgets/loading_button.dart';
 
 import '../models/user_model.dart';
 import '../providers/auth_provider.dart';
+import '../providers/cart_provider.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -24,6 +25,8 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     AuthProvider authProvider = Provider.of<AuthProvider>(context);
+    CartProvider cartProvider =
+        Provider.of<CartProvider>(context, listen: false);
 
     Future<void> handleSignIn() async {
       setState(() {
@@ -34,6 +37,7 @@ class _SignInPageState extends State<SignInPage> {
         bool loginBerhasil = await authProvider.login(
           email: emailController.text,
           password: passwordController.text,
+          cartProvider: cartProvider,
         );
 
         if (loginBerhasil) {

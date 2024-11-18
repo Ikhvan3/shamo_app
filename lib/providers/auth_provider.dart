@@ -3,6 +3,8 @@ import 'package:shamo_app/services/auth_service.dart';
 import '../models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'cart_provider.dart';
+
 class AuthProvider with ChangeNotifier {
   late UserModel _user;
   String? _token;
@@ -86,6 +88,7 @@ class AuthProvider with ChangeNotifier {
   Future<bool> login({
     required String email,
     required String password,
+    required CartProvider cartProvider, // Tambahkan parameter ini
   }) async {
     try {
       UserModel user = await AuthService().login(
@@ -105,7 +108,10 @@ class AuthProvider with ChangeNotifier {
       String? permanentToken = await AuthService().getPermanentToken();
       if (permanentToken != null) {
         await _savePermanentToken(permanentToken);
+        // Update cart provider dengan permanent token baru
+        await cartProvider.updatePermanentToken(permanentToken);
       }
+
       return true;
     } catch (e) {
       print('Error during login: $e');

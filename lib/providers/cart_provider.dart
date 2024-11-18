@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shamo_app/models/product_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../models/cart_model.dart';
 
 class CartProvider with ChangeNotifier {
   List<CartModel> _carts = [];
-  String _userToken = ''; // Menyimpan token pengguna yang sedang login
+  String _permanentToken = ''; // Menggunakan permanent token sebagai identifier
   List<CartModel> get carts => _carts;
 
   // Constructor
@@ -14,29 +13,61 @@ class CartProvider with ChangeNotifier {
     _loadCart();
   }
 
-  // Ambil token dari SharedPreferences dan muat data cart
+  // Load cart berdasarkan permanent token
   Future<void> _loadCart() async {
     final prefs = await SharedPreferences.getInstance();
-    _userToken = prefs.getString('user_token') ??
-        ''; // Ambil token dari penyimpanan lokal
-    _fetchCartFromServer(); // Ambil data cart berdasarkan token
+    _permanentToken = prefs.getString('permanent_token') ?? '';
+
+    if (_permanentToken.isNotEmpty) {
+      // Load cart data dari SharedPreferences berdasarkan permanent token
+      final String cartKey = 'cart_$_permanentToken';
+      final String? cartData = prefs.getString(cartKey);
+
+      if (cartData != null) {
+        // Convert string data menjadi List<CartModel>
+        // Implementasikan konversi sesuai format penyimpanan Anda
+        _carts = _deserializeCart(cartData);
+        notifyListeners();
+      }
+    }
   }
 
-  // Ambil data cart dari server atau database sesuai dengan token pengguna
-  Future<void> _fetchCartFromServer() async {
-    if (_userToken.isNotEmpty) {
-      // Panggil API untuk mengambil data cart berdasarkan token pengguna
-      // Misalnya, menggunakan `http` atau API lain sesuai kebutuhan
-      // Contoh:
-      // final response = await api.fetchCart(_userToken);
-      // if (response.statusCode == 200) {
-      //   _carts = response.cartItems;
-      // }
+  // Simpan cart ke SharedPreferences
+  Future<void> _saveCart() async {
+    if (_permanentToken.isNotEmpty) {
+      final prefs = await SharedPreferences.getInstance();
+      final String cartKey = 'cart_$_permanentToken';
+
+      // Convert cart data menjadi string untuk disimpan
+      final String cartData = _serializeCart(_carts);
+      await prefs.setString(cartKey, cartData);
     }
+  }
+
+  // Helper method untuk mengubah cart menjadi string
+  String _serializeCart(List<CartModel> carts) {
+    // Implementasikan serialisasi sesuai kebutuhan
+    // Contoh sederhana (Anda perlu menyesuaikan dengan model Anda):
+    return carts
+        .map((cart) => {
+              'id': cart.id,
+              'product_id': cart.product?.id,
+              'quantity': cart.quantity,
+              // tambahkan field lain yang diperlukan
+            })
+        .toString();
+  }
+
+  // Helper method untuk mengubah string menjadi List<CartModel>
+  List<CartModel> _deserializeCart(String cartData) {
+    // Implementasikan deserialisasi sesuai kebutuhan
+    // Ini hanya contoh, sesuaikan dengan format penyimpanan Anda
+    return []; // Implementasikan konversi yang sesuai
   }
 
   set carts(List<CartModel> carts) {
     _carts = carts;
+    _saveCart(); // Simpan setiap kali cart diupdate
     notifyListeners();
   }
 
@@ -54,17 +85,19 @@ class CartProvider with ChangeNotifier {
         ),
       );
     }
-
+    _saveCart(); // Simpan perubahan
     notifyListeners();
   }
 
   removeCart(int id) {
     _carts.removeAt(id);
+    _saveCart(); // Simpan perubahan
     notifyListeners();
   }
 
   addQuantity(int id) {
     _carts[id].quantity = (_carts[id].quantity ?? 0) + 1;
+    _saveCart(); // Simpan perubahan
     notifyListeners();
   }
 
@@ -73,6 +106,7 @@ class CartProvider with ChangeNotifier {
     if (_carts[id].quantity == 0) {
       _carts.removeAt(id);
     }
+    _saveCart(); // Simpan perubahan
     notifyListeners();
   }
 
@@ -101,12 +135,18 @@ class CartProvider with ChangeNotifier {
     }
   }
 
-  // Fungsi untuk logout dan menghapus data cart
+  // Fungsi untuk logout
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('user_token'); // Hapus token pengguna
-    _userToken = ''; // Reset token
-    _carts.clear(); // Hapus data cart
+    // Tidak perlu menghapus cart data karena kita ingin mempertahankannya
+    // Cukup clear data di memory
+    _carts.clear();
     notifyListeners();
+  }
+
+  // Fungsi untuk mengupdate permanent token (dipanggil setelah login)
+  Future<void> updatePermanentToken(String newToken) async {
+    _permanentToken = newToken;
+    await _loadCart(); // Reload cart data dengan token baru
   }
 }
