@@ -25,7 +25,7 @@ class TransactionService {
 
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'token',
+      'Authorization': 'Bearer $token',
     };
 
     var body = jsonEncode({
@@ -43,6 +43,10 @@ class TransactionService {
     });
 
     try {
+      print('Checkout URL: $url');
+      print('Headers: $headers');
+      print('Body: $body');
+
       var response = await http.post(
         url,
         headers: headers,

@@ -1,12 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:shamo_app/theme.dart';
+
+import '../models/order_model.dart';
+import '../providers/cart_provider.dart';
+import '../providers/order_provider.dart';
+import 'viewmyorder_page.dart';
 
 class CheckoutSuccessPage extends StatelessWidget {
   const CheckoutSuccessPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    CartProvider cartProvider = Provider.of<CartProvider>(context);
+    OrderProvider orderProvider = Provider.of<OrderProvider>(context);
+
+    // Assume the order has been placed and add to OrderProvider
+    OrderModel order = OrderModel(
+      orderId: 'ORD123',
+      items: cartProvider.carts,
+      totalPrice: cartProvider.totalPrice(),
+      status: 'settlement',
+      paymentMethod: 'Midtrans',
+      orderDate: DateTime.now(),
+      deliveryAddress: 'Semarang', // Replace with real address
+    );
+    orderProvider.addOrder(order); // Store the order after successful payment
+
     PreferredSizeWidget header() {
       return AppBar(
         backgroundColor: primaryTextColor,
@@ -77,7 +98,15 @@ class CheckoutSuccessPage extends StatelessWidget {
                 top: 12,
               ),
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ViewMyOrderPage(
+                          order: order), // Navigate to View Order page
+                    ),
+                  );
+                },
                 style: TextButton.styleFrom(
                   backgroundColor: Color.fromARGB(255, 136, 136, 136),
                   shape: RoundedRectangleBorder(

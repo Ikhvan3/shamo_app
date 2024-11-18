@@ -17,6 +17,10 @@ class AuthProvider with ChangeNotifier {
 
   // Fungsi untuk menyimpan token
   Future<void> _saveToken(String token) async {
+    if (token == null || token.isEmpty) {
+      print('Token is null or empty, skipping save.');
+      return;
+    }
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('token', token);
     _token = token;
@@ -29,6 +33,19 @@ class AuthProvider with ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _token = prefs.getString('token');
     return _token;
+  }
+
+  // Fungsi untuk menyimpan permanent token
+  Future _savePermanentToken(String permanentToken) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('permanent_token', permanentToken);
+    notifyListeners();
+  }
+
+  // Fungsi untuk mengambil permanent token
+  Future<String?> getPermanentToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('permanent_token');
   }
 
   Future<bool> register({
@@ -46,10 +63,19 @@ class AuthProvider with ChangeNotifier {
       );
 
       _user = user;
-      // Simpan token setelah register
-      await _saveToken(
-        await AuthService().getToken().toString(),
-      );
+
+      // Ambil dan simpan token
+      String? token = await AuthService().getToken();
+      if (token != null) {
+        await _saveToken(token);
+      }
+
+      // Ambil dan simpan permanent token
+      String? permanentToken = await AuthService().getPermanentToken();
+      if (permanentToken != null) {
+        await _savePermanentToken(permanentToken);
+      }
+
       return true;
     } catch (e) {
       print('Error during registration: $e');
@@ -68,9 +94,17 @@ class AuthProvider with ChangeNotifier {
       );
 
       _user = user;
+
+      // Ambil dan simpan token
       String? token = await AuthService().getToken();
       if (token != null) {
         await _saveToken(token);
+      }
+
+      // Ambil dan simpan permanent token
+      String? permanentToken = await AuthService().getPermanentToken();
+      if (permanentToken != null) {
+        await _savePermanentToken(permanentToken);
       }
       return true;
     } catch (e) {
@@ -79,11 +113,11 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  // // Fungsi untuk logout
-  // Future<void> logout() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   await prefs.remove('token');
-  //   _token = null;
-  //   notifyListeners();
-  // }
+  // Fungsi untuk logout
+  Future<void> logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
+    _token = null;
+    notifyListeners();
+  }
 }

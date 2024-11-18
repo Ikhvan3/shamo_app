@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/user_model.dart';
 import '../../providers/auth_provider.dart';
+import '../../providers/order_provider.dart';
 import '../../theme.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -14,7 +15,8 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     AuthProvider authProvider = Provider.of<AuthProvider>(context);
     UserModel user = authProvider.user;
-
+    OrderProvider orderProvider = Provider.of<OrderProvider>(context);
+    var order = orderProvider.orders; // Mendapatkan order dari provider
     Widget header() {
       return AppBar(
         backgroundColor: primaryTextColor,
@@ -56,6 +58,14 @@ class ProfilePage extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
+                    // Ambil instance AuthProvider
+                    final authProvider =
+                        Provider.of<AuthProvider>(context, listen: false);
+
+                    // Panggil fungsi logout
+                    authProvider.logout();
+
+                    // Navigasi ke halaman sign-in dan hapus semua rute sebelumnya
                     Navigator.pushNamedAndRemoveUntil(
                         context, '/sign-in', (route) => false);
                   },
@@ -63,7 +73,7 @@ class ProfilePage extends StatelessWidget {
                     'assets/button_exit.png',
                     width: 20,
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -123,8 +133,24 @@ class ProfilePage extends StatelessWidget {
                   'Edit Profile',
                 ),
               ),
-              menuItem(
-                'Your Orders',
+              GestureDetector(
+                onTap: () {
+                  if (orderProvider.orders.isNotEmpty) {
+                    Navigator.pushNamed(
+                      context,
+                      '/view-order',
+                      arguments:
+                          orderProvider.orders.first, // Ambil pesanan pertama
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('No orders found')),
+                    );
+                  }
+                },
+                child: menuItem(
+                  'Your Order',
+                ),
               ),
               menuItem(
                 'Help',

@@ -53,7 +53,15 @@ class AuthService {
       String token = 'Bearer ' + data['access_token'];
 
       // Simpan token setelah register
+      // Simpan permanent token jika ada
+      String? permanentToken = data['user']['permanent_token'];
       await _saveToken(token);
+
+      // Simpan permanent token terpisah jika diperlukan
+      if (permanentToken != null) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('permanent_token', permanentToken);
+      }
 
       return user;
     } else {
@@ -91,8 +99,17 @@ class AuthService {
         UserModel user = UserModel.fromJson(data['user']);
         String token = 'Bearer ' + data['access_token'];
 
+        // Simpan permanent token jika ada
+        String? permanentToken = data['user']['permanent_token'];
+
         debugPrint('Login successful. Saving token.');
         await _saveToken(token);
+
+        // Simpan permanent token terpisah jika diperlukan
+        if (permanentToken != null) {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setString('permanent_token', permanentToken);
+        }
 
         return user;
       } else {
@@ -102,5 +119,11 @@ class AuthService {
       debugPrint('Error during login: $error');
       throw Exception('Error during login: $error');
     }
+  }
+
+  // Fungsi baru untuk mengambil permanent token
+  Future<String?> getPermanentToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('permanent_token');
   }
 }

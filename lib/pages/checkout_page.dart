@@ -65,7 +65,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 onPageStarted: (url) => print("Page Started: $url"),
                 onResponse: (response) {
                   print("Payment Response: ${response.toJson()}");
-                  if (response.statusCode == '200') {
+                  print("Status Code: ${response.statusCode}");
+                  if (response.transactionStatus == 'settlement' ||
+                      response.transactionStatus == 'capture') {
                     cartProvider.carts.clear();
                     Navigator.pushNamedAndRemoveUntil(
                       context,

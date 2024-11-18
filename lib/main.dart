@@ -17,7 +17,10 @@ import 'package:shamo_app/providers/product_provider.dart';
 import 'package:shamo_app/providers/transaction_provider.dart';
 import 'package:shamo_app/providers/wishlist_provider.dart';
 import 'firebase_options.dart';
+import 'models/order_model.dart';
 import 'pages/sign_up_page.dart';
+import 'pages/viewmyorder_page.dart';
+import 'providers/order_provider.dart';
 import 'providers/scan_provider.dart';
 
 void main(List<String> args) async {
@@ -75,6 +78,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => ScannerProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => OrderProvider(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -87,6 +93,9 @@ class MyApp extends StatelessWidget {
           '/cart': (context) => CartPage(),
           '/checkout': (context) => CheckoutPage(),
           '/checkout-success': (context) => CheckoutSuccessPage(),
+          '/view-order': (context) => ViewMyOrderPage(
+                order: ModalRoute.of(context)!.settings.arguments as OrderModel,
+              ),
         },
       ),
     );

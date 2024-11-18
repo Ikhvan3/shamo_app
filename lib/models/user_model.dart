@@ -5,6 +5,7 @@ class UserModel {
   String? username;
   String? profilePhotoUrl;
   String? token;
+  String? permanentToken;
 
   UserModel({
     required this.id,
@@ -13,6 +14,7 @@ class UserModel {
     required this.username,
     this.profilePhotoUrl,
     this.token,
+    this.permanentToken,
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -22,6 +24,7 @@ class UserModel {
     username = json['username'];
     profilePhotoUrl = json['profile_photo_url'];
     token = json['token'];
+    permanentToken = json['permanent_token'];
   }
 
   Map<String, dynamic> toJson() {
@@ -32,6 +35,7 @@ class UserModel {
       'username': username,
       'profile_photo_url': profilePhotoUrl,
       'token': token,
+      'permanent_token': permanentToken,
     };
   }
 }
