@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "com.ikhvan.shamo_app-merged_res-70:/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "com.ikhvan.shamo_app-main-72:/mipmap-hdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.ikhvan.shamo_app-merged_res-70:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "com.ikhvan.shamo_app-main-72:/mipmap-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.ikhvan.shamo_app-merged_res-70:/mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "com.ikhvan.shamo_app-main-72:/mipmap-xxxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.ikhvan.shamo_app-merged_res-70:/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "com.ikhvan.shamo_app-main-72:/mipmap-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.ikhvan.shamo_app-merged_res-70:/drawable-v21_launch_background.xml.flat",
+        "source": "com.ikhvan.shamo_app-main-72:/drawable-v21/launch_background.xml"
+    },
+    {
+        "merged": "com.ikhvan.shamo_app-merged_res-70:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "com.ikhvan.shamo_app-main-72:/mipmap-xxhdpi/ic_launcher.png"
+    }
+]
