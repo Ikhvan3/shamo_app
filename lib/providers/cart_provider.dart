@@ -17,9 +17,17 @@ class CartProvider with ChangeNotifier {
 
   Future<void> initializeCart(UserModel user) async {
     _user = user;
-    _carts = (await cartService.getCartByUserId(userId: user.id.toString()))
-        as List<CartModel>;
-    notifyListeners();
+    try {
+      cartService
+          .getCartByUserId(userId: user.id.toString())
+          .listen((cartList) {
+        _carts = cartList; // Pastikan data diterima dengan benar
+        notifyListeners();
+      });
+      print('Cart list fetched: $_carts');
+    } catch (e) {
+      print('Error initializing cart: $e');
+    }
   }
 
   Future<void> addCart(ProductModel product) async {
