@@ -23,28 +23,25 @@ class CartProvider with ChangeNotifier {
   }
 
   Future<void> addCart(ProductModel product) async {
-    if (_user == null) return; // Pastikan user terautentikasi
+    if (_user == null) return;
     try {
       if (productExist(product)) {
         int index =
             _carts.indexWhere((element) => element.product!.id == product.id);
+        _carts[index].quantity = (_carts[index].quantity ?? 0) + 1;
         await cartService.updateCartItem(
           cartId: _carts[index].id.toString(),
-          quantity: (_carts[index].quantity ?? 0) + 1,
+          quantity: _carts[index].quantity!,
         );
       } else {
-        // Buat dokumen baru di Firestore
         CartModel newCart = CartModel(
           product: product,
           quantity: 1,
         );
         await cartService.addToCart(user: _user!, cart: newCart);
+        _carts.add(newCart);
       }
-      // Update _carts dengan data terbaru dari Firestore
-      _carts = await cartService
-          .getCartByUserId(userId: _user!.id.toString())
-          .first; // Mengambil snapshot awal
-      notifyListeners(); // Update UI
+      notifyListeners();
     } catch (e) {
       print('Error adding to cart: $e');
     }
