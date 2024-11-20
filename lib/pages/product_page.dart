@@ -10,6 +10,8 @@ import 'package:shamo_app/providers/cart_provider.dart';
 import 'package:shamo_app/providers/wishlist_provider.dart';
 import 'package:shamo_app/theme.dart';
 
+import '../providers/auth_provider.dart';
+
 class ProductPage extends StatefulWidget {
   final ProductModel product;
   ProductPage(this.product);
@@ -37,88 +39,128 @@ class _ProductPageState extends State<ProductPage> {
 
   int currentIndex = 0;
 
+  void showSuccessDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => Container(
+        width: MediaQuery.of(context).size.width - (2 * defaultMargin),
+        child: AlertDialog(
+          backgroundColor: backgroundColor3,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Icon(
+                      Icons.close,
+                      color: primaryTextColor,
+                    ),
+                  ),
+                ),
+                Image.asset(
+                  'assets/icon_success.png',
+                  width: 100,
+                ),
+                SizedBox(height: 12),
+                Text(
+                  'Success!',
+                  style: primaryTextStyle.copyWith(
+                    fontSize: 18,
+                    fontWeight: semiBold,
+                  ),
+                ),
+                SizedBox(height: 12),
+                Text(
+                  'Item added successfully',
+                  style: secondaryTextStyle,
+                ),
+                SizedBox(height: 20),
+                Container(
+                  width: 154,
+                  height: 44,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/cart');
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: backgroundColor8,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: Text(
+                      'View My Cart',
+                      style: primaryTextStyle.copyWith(
+                        fontSize: 16,
+                        fontWeight: medium,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void showLoginRequiredDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: backgroundColor3,
+        title: Text(
+          'Login Required',
+          style: primaryTextStyle.copyWith(
+            fontSize: 18,
+            fontWeight: semiBold,
+          ),
+        ),
+        content: Text(
+          'Please login to add items to cart',
+          style: secondaryTextStyle,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/sign-in');
+            },
+            child: Text(
+              'Login',
+              style: primaryTextStyle.copyWith(
+                color: primaryColor,
+                fontWeight: medium,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text(
+              'Cancel',
+              style: secondaryTextStyle,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     WishlistProvider wishlistProvider = Provider.of<WishlistProvider>(context);
     CartProvider cartProvider = Provider.of<CartProvider>(context);
-    Future<void> showSuccesDialog() async {
-      return showDialog(
-        context: context,
-        builder: (BuildContext context) => Container(
-          width: MediaQuery.of(context).size.width - (2 * defaultMargin),
-          child: AlertDialog(
-            backgroundColor: backgroundColor8,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            ),
-            content: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(
-                        Icons.close,
-                        color: primaryTextColor,
-                      ),
-                    ),
-                  ),
-                  Image.asset(
-                    'assets/icon_success.png',
-                    width: 100,
-                  ),
-                  SizedBox(
-                    height: 12,
-                  ),
-                  Text(
-                    'Hurray :)',
-                    style: primaryTextStyle.copyWith(
-                      fontSize: 18,
-                      fontWeight: semiBold,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 12,
-                  ),
-                  Text(
-                    'Item added successfully',
-                    style: primaryTextStyle,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    width: 154,
-                    height: 44,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/cart');
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: backgroundColor7,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: Text(
-                        'View My Cart',
-                        style: hijauTextStyle.copyWith(
-                          fontSize: 16,
-                          fontWeight: medium,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      );
-    }
+    AuthProvider authProvider = Provider.of<AuthProvider>(context);
 
     Widget indicator(int index) {
       return Container(
@@ -404,65 +446,78 @@ class _ProductPageState extends State<ProductPage> {
                 ],
               ),
             ),
+          ],
+        ),
+      );
+    }
 
-            //NOTE : BUTTONS
-            Container(
-              width: double.infinity,
-              margin: EdgeInsets.all(defaultMargin),
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailChatPage(widget.product),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      width: 54,
-                      height: 54,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/button_chat.png'),
-                        ),
+    Widget buttonchat() {
+      return GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DetailChatPage(widget.product),
+            ),
+          );
+        },
+        child: Container(
+          width: 54,
+          height: 54,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/button_chat.png'),
+            ),
+          ),
+        ),
+      );
+    }
+
+    Widget addToCartButton(
+        CartProvider cartProvider, AuthProvider authProvider) {
+      return Expanded(
+        child: Container(
+          height: 54,
+          child: TextButton(
+            onPressed: () async {
+              try {
+                // Pastikan user sudah login
+                if (authProvider.user != null) {
+                  await cartProvider.addCart(widget.product);
+                  showSuccessDialog();
+                } else {
+                  // Tampilkan dialog untuk login jika belum login
+                  showLoginRequiredDialog();
+                }
+              } catch (e) {
+                // Tampilkan error jika gagal menambahkan ke cart
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: alertColor,
+                    content: Text(
+                      'Failed to add product to cart',
+                      style: primaryTextStyle.copyWith(
+                        color: backgroundColor1,
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  Expanded(
-                    child: Container(
-                      height: 54,
-                      child: TextButton(
-                        onPressed: () {
-                          cartProvider.addCart(widget.product);
-                          showSuccesDialog();
-                        },
-                        style: TextButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              12,
-                            ),
-                          ),
-                          backgroundColor: backgroundColor8,
-                        ),
-                        child: Text(
-                          'Add to Cart',
-                          style: primaryTextStyle.copyWith(
-                            fontSize: 16,
-                            fontWeight: semiBold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                );
+              }
+            },
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              backgroundColor: backgroundColor8,
+            ),
+            child: Text(
+              'Add to Cart',
+              style: primaryTextStyle.copyWith(
+                fontSize: 16,
+                fontWeight: semiBold,
               ),
             ),
-          ],
+          ),
         ),
       );
     }
@@ -474,6 +529,22 @@ class _ProductPageState extends State<ProductPage> {
           header(),
           content(),
         ],
+      ),
+      bottomNavigationBar: Container(
+        padding: EdgeInsets.all(30),
+        height: 165,
+        decoration: BoxDecoration(
+          color: backgroundColor2,
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(24),
+          ),
+        ),
+        child: Row(
+          children: [
+            buttonchat(),
+            addToCartButton(cartProvider, authProvider),
+          ],
+        ),
       ),
     );
   }

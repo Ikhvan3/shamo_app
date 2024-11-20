@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:shamo_app/providers/cart_provider.dart';
 import 'package:shamo_app/theme.dart';
 
+import '../providers/auth_provider.dart';
 import '../widgets/cart_card.dart';
 
 class CartPage extends StatelessWidget {
@@ -12,6 +13,7 @@ class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CartProvider cartProvider = Provider.of<CartProvider>(context);
+    AuthProvider authProvider = Provider.of<AuthProvider>(context);
     PreferredSizeWidget header() {
       return AppBar(
         backgroundColor: primaryTextColor,
@@ -80,12 +82,14 @@ class CartPage extends StatelessWidget {
     }
 
     Widget content() {
-      return ListView(
-        children: cartProvider.carts
-            .map(
-              (cart) => CartCard(cart),
-            )
-            .toList(),
+      return RefreshIndicator(
+        onRefresh: () async {
+          // Refresh cart data
+          await cartProvider.initializeCart(authProvider.user);
+        },
+        child: ListView(
+          children: cartProvider.carts.map((cart) => CartCard(cart)).toList(),
+        ),
       );
     }
 
