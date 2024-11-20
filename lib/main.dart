@@ -57,13 +57,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (context) => CartProvider(),
+        ),
         ChangeNotifierProxyProvider<CartProvider, AuthProvider>(
           create: (context) => AuthProvider(
-            cartProvider: context.read<CartProvider>(),
+            cartProvider: Provider.of<CartProvider>(context, listen: false),
           ),
-          update: (context, cart, auth) => AuthProvider(
-            cartProvider: cart,
-          ),
+          update: (context, cart, auth) {
+            auth ??= AuthProvider(cartProvider: cart);
+            return auth;
+          },
         ),
         ChangeNotifierProvider(
           create: (context) => ProductProvider(),
@@ -73,9 +77,6 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => PageProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => CartProvider(),
         ),
         ChangeNotifierProvider(
           create: (context) => TransactionProvider(),

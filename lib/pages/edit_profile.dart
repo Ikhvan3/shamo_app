@@ -11,7 +11,7 @@ class EditProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AuthProvider authProvider = Provider.of<AuthProvider>(context);
-    UserModel user = authProvider.user;
+    UserModel user = authProvider.user!;
 
     PreferredSizeWidget header() {
       return PreferredSize(

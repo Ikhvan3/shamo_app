@@ -24,7 +24,13 @@ class OrderModel {
     return OrderModel(
       orderId: json['orderId'],
       items: List<CartModel>.from(
-          json['items'].map((item) => CartModel.fromJson(item))),
+        json['items'].map(
+          (item) => CartModel.fromJson(
+            {'id': item['cartId']}, // Data tambahan
+            item, // Data utama
+          ),
+        ),
+      ),
       totalPrice: json['totalPrice'],
       status: json['status'],
       paymentMethod: json['paymentMethod'],

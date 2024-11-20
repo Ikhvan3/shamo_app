@@ -42,70 +42,71 @@ class _ProductPageState extends State<ProductPage> {
   void showSuccessDialog() {
     showDialog(
       context: context,
-      builder: (context) => Container(
-        width: MediaQuery.of(context).size.width - (2 * defaultMargin),
-        child: AlertDialog(
-          backgroundColor: backgroundColor3,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-          content: SingleChildScrollView(
-            child: Column(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
+      builder: (BuildContext dialogContext) => Dialog(
+        backgroundColor: backgroundColor3,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: Container(
+          width: MediaQuery.of(dialogContext).size.width - (2 * defaultMargin),
+          padding: EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(dialogContext).pop();
+                },
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Icon(
+                    Icons.close,
+                    color: primaryTextColor,
+                  ),
+                ),
+              ),
+              Image.asset(
+                'assets/icon_success.png',
+                width: 100,
+              ),
+              SizedBox(height: 12),
+              Text(
+                'Success!',
+                style: primaryTextStyle.copyWith(
+                  fontSize: 18,
+                  fontWeight: semiBold,
+                ),
+              ),
+              SizedBox(height: 12),
+              Text(
+                'Item added successfully',
+                style: secondaryTextStyle,
+              ),
+              SizedBox(height: 20),
+              SizedBox(
+                width: 154,
+                height: 44,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.of(dialogContext).pop();
+                    Navigator.pushNamed(context, '/cart');
                   },
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Icon(
-                      Icons.close,
-                      color: primaryTextColor,
+                  style: TextButton.styleFrom(
+                    backgroundColor: backgroundColor8,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: Text(
+                    'View My Cart',
+                    style: primaryTextStyle.copyWith(
+                      fontSize: 16,
+                      fontWeight: medium,
                     ),
                   ),
                 ),
-                Image.asset(
-                  'assets/icon_success.png',
-                  width: 100,
-                ),
-                SizedBox(height: 12),
-                Text(
-                  'Success!',
-                  style: primaryTextStyle.copyWith(
-                    fontSize: 18,
-                    fontWeight: semiBold,
-                  ),
-                ),
-                SizedBox(height: 12),
-                Text(
-                  'Item added successfully',
-                  style: secondaryTextStyle,
-                ),
-                SizedBox(height: 20),
-                Container(
-                  width: 154,
-                  height: 44,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/cart');
-                    },
-                    style: TextButton.styleFrom(
-                      backgroundColor: backgroundColor8,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    child: Text(
-                      'View My Cart',
-                      style: primaryTextStyle.copyWith(
-                        fontSize: 16,
-                        fontWeight: medium,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -115,7 +116,7 @@ class _ProductPageState extends State<ProductPage> {
   void showLoginRequiredDialog() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (BuildContext dialogContext) => AlertDialog(
         backgroundColor: backgroundColor3,
         title: Text(
           'Login Required',
@@ -131,7 +132,7 @@ class _ProductPageState extends State<ProductPage> {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.of(dialogContext).pop();
               Navigator.pushNamed(context, '/sign-in');
             },
             child: Text(
@@ -144,7 +145,7 @@ class _ProductPageState extends State<ProductPage> {
           ),
           TextButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.of(dialogContext).pop();
             },
             child: Text(
               'Cancel',
@@ -158,10 +159,6 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
-    WishlistProvider wishlistProvider = Provider.of<WishlistProvider>(context);
-    CartProvider cartProvider = Provider.of<CartProvider>(context);
-    AuthProvider authProvider = Provider.of<AuthProvider>(context);
-
     Widget indicator(int index) {
       return Container(
         width: currentIndex == index ? 16 : 4,
@@ -264,7 +261,7 @@ class _ProductPageState extends State<ProductPage> {
       );
     }
 
-    Widget content() {
+    Widget content(WishlistProvider wishlistProvider) {
       int index = -1;
       return Container(
         width: double.infinity,
@@ -522,30 +519,34 @@ class _ProductPageState extends State<ProductPage> {
       );
     }
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: ListView(
-        children: [
-          header(),
-          content(),
-        ],
-      ),
-      bottomNavigationBar: Container(
-        padding: EdgeInsets.all(30),
-        height: 165,
-        decoration: BoxDecoration(
-          color: backgroundColor2,
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(24),
+    return Consumer3<WishlistProvider, CartProvider, AuthProvider>(
+      builder: (context, wishlistProvider, cartProvider, authProvider, child) {
+        return Scaffold(
+          backgroundColor: Colors.white,
+          body: ListView(
+            children: [
+              header(),
+              content(wishlistProvider),
+            ],
           ),
-        ),
-        child: Row(
-          children: [
-            buttonchat(),
-            addToCartButton(cartProvider, authProvider),
-          ],
-        ),
-      ),
+          bottomNavigationBar: Container(
+            padding: EdgeInsets.all(30),
+            height: 165,
+            decoration: BoxDecoration(
+              color: backgroundColor2,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(24),
+              ),
+            ),
+            child: Row(
+              children: [
+                buttonchat(),
+                addToCartButton(cartProvider, authProvider),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

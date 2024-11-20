@@ -12,8 +12,6 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CartProvider cartProvider = Provider.of<CartProvider>(context);
-    AuthProvider authProvider = Provider.of<AuthProvider>(context);
     PreferredSizeWidget header() {
       return AppBar(
         backgroundColor: primaryTextColor,
@@ -84,98 +82,121 @@ class CartPage extends StatelessWidget {
     Widget content() {
       return RefreshIndicator(
         onRefresh: () async {
-          // Refresh cart data
-          await cartProvider.initializeCart(authProvider.user);
+          final authProvider =
+              Provider.of<AuthProvider>(context, listen: false);
+          final cartProvider =
+              Provider.of<CartProvider>(context, listen: false);
+          await cartProvider
+              .initializeCart(authProvider.user); // Refresh cart data
         },
-        child: ListView(
-          children: cartProvider.carts.map((cart) => CartCard(cart)).toList(),
+        child: Consumer<CartProvider>(
+          builder: (context, cartProvider, child) {
+            if (cartProvider.carts.isEmpty) {
+              return emptyCart();
+            } else {
+              return ListView(
+                children:
+                    cartProvider.carts.map((cart) => CartCard(cart)).toList(),
+              );
+            }
+          },
         ),
       );
     }
 
     Widget customBottomNav() {
-      return Container(
-        height: 180,
-        child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.symmetric(
-                horizontal: defaultMargin,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Subtotal',
-                    style: subtitleTextStyle,
+      return Consumer<CartProvider>(
+        builder: (context, cartProvider, child) {
+          return Container(
+            height: 180,
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: defaultMargin,
                   ),
-                  Text(
-                    '\Rp${cartProvider.totalPrice()}',
-                    style: priceTextStyle.copyWith(
-                      fontSize: 16,
-                      fontWeight: semiBold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            Divider(
-              thickness: 0.3,
-              color: subtitleColor,
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            Container(
-              height: 50,
-              margin: EdgeInsets.symmetric(
-                horizontal: defaultMargin,
-              ),
-              child: TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/checkout');
-                },
-                style: TextButton.styleFrom(
-                  backgroundColor: backgroundColor8,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Subtotal',
+                        style: subtitleTextStyle,
+                      ),
+                      Text(
+                        '\Rp${cartProvider.totalPrice()}',
+                        style: priceTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: semiBold,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Continue to Checkout',
-                      style: primaryTextStyle.copyWith(
-                        fontSize: 16,
-                        fontWeight: semiBold,
+                SizedBox(
+                  height: 30,
+                ),
+                Divider(
+                  thickness: 0.3,
+                  color: subtitleColor,
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Container(
+                  height: 50,
+                  margin: EdgeInsets.symmetric(
+                    horizontal: defaultMargin,
+                  ),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/checkout');
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: backgroundColor8,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 20,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    Icon(
-                      Icons.arrow_forward,
-                      color: primaryTextColor,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Continue to Checkout',
+                          style: primaryTextStyle.copyWith(
+                            fontSize: 16,
+                            fontWeight: semiBold,
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_forward,
+                          color: primaryTextColor,
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       );
     }
 
     return Scaffold(
       backgroundColor: backgroundColor1,
       appBar: header(),
-      body: cartProvider.carts.length == 0 ? emptyCart() : content(),
+      body: Consumer<CartProvider>(
+        builder: (context, cartProvider, child) {
+          return cartProvider.carts.isEmpty ? emptyCart() : content();
+        },
+      ),
       bottomNavigationBar:
-          cartProvider.carts.length == 0 ? SizedBox() : customBottomNav(),
+          Consumer<CartProvider>(builder: (context, cartProvider, child) {
+        return cartProvider.carts.isEmpty ? SizedBox() : customBottomNav();
+      }),
     );
   }
 }

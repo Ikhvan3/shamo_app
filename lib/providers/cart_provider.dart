@@ -17,16 +17,13 @@ class CartProvider with ChangeNotifier {
 
   Future<void> initializeCart(UserModel user) async {
     _user = user;
-    // Listen to cart changes from Firestore
-    cartService.getCartByUserId(userId: user.id.toString()).listen((cartList) {
-      _carts = cartList;
-      notifyListeners();
-    });
+    _carts = (await cartService.getCartByUserId(userId: user.id.toString()))
+        as List<CartModel>;
+    notifyListeners();
   }
 
   Future<void> addCart(ProductModel product) async {
-    if (_user == null) return;
-
+    if (_user == null) return; // Pastikan user terautentikasi
     try {
       if (productExist(product)) {
         int index =
@@ -36,13 +33,18 @@ class CartProvider with ChangeNotifier {
           quantity: (_carts[index].quantity ?? 0) + 1,
         );
       } else {
-        CartModel cart = CartModel(
-          id: _carts.length,
+        // Buat dokumen baru di Firestore
+        CartModel newCart = CartModel(
           product: product,
           quantity: 1,
         );
-        await cartService.addToCart(user: _user!, cart: cart);
+        await cartService.addToCart(user: _user!, cart: newCart);
       }
+      // Update _carts dengan data terbaru dari Firestore
+      _carts = await cartService
+          .getCartByUserId(userId: _user!.id.toString())
+          .first; // Mengambil snapshot awal
+      notifyListeners(); // Update UI
     } catch (e) {
       print('Error adding to cart: $e');
     }
@@ -51,6 +53,10 @@ class CartProvider with ChangeNotifier {
   Future<void> removeCart(int id) async {
     try {
       await cartService.removeFromCart(cartId: id.toString());
+      // Mengambil ulang data cart setelah item dihapus
+      _carts =
+          await cartService.getCartByUserId(userId: _user!.id.toString()).first;
+      notifyListeners(); // Update UI
     } catch (e) {
       print('Error removing from cart: $e');
     }

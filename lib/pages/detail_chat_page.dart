@@ -221,7 +221,7 @@ class _DetailChatPageState extends State<DetailChatPage> {
     Widget content() {
       return StreamBuilder<List<MessageModel>>(
         stream: MessageService().getMessageByUserId(
-          userId: authProvider.user.id,
+          userId: authProvider.user!.id,
         ),
         builder: (context, snapshot) {
           if (snapshot.hasError) {

@@ -13,7 +13,11 @@ class CartService {
           .snapshots()
           .map((QuerySnapshot list) {
         var result = list.docs.map<CartModel>((DocumentSnapshot cart) {
-          return CartModel.fromJson(cart.data() as Map<String, dynamic>);
+          print('Fetched cart: ${cart.data()}');
+          return CartModel.fromJson(
+            {'cartId': cart.id}, // Data tambahan dengan ID dokumen
+            cart.data() as Map<String, dynamic>, // Data utama
+          );
         }).toList();
         return result;
       });
@@ -27,17 +31,17 @@ class CartService {
     required CartModel cart,
   }) async {
     try {
-      firestore.collection('carts').add({
+      var docRef = firestore.collection('carts').doc(); // Generate ID
+      await docRef.set({
         'userId': user.id,
         'userName': user.name,
-        'id': cart.id,
+        'cartId': docRef.id, // Simpan ID dokumen
         'product': cart.product!.toJson(),
         'quantity': cart.quantity,
         'createdAt': DateTime.now().toString(),
         'updatedAt': DateTime.now().toString(),
-      }).then(
-        (value) => print('Item successfully added to cart'),
-      );
+      });
+      print('Item successfully added to cart with ID: ${docRef.id}');
     } catch (e) {
       throw Exception('Failed to add item to cart');
     }
