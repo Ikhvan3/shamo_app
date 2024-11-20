@@ -37,7 +37,6 @@ class _SignInPageState extends State<SignInPage> {
         bool loginBerhasil = await authProvider.login(
           email: emailController.text,
           password: passwordController.text,
-          cartProvider: cartProvider,
         );
 
         if (loginBerhasil) {

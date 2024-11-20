@@ -1,26 +1,22 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:shamo_app/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
   String baseUrl = 'http://192.168.1.16:8000/api';
 
-  // Fungsi untuk menyimpan token ke SharedPreferences
   Future<void> _saveToken(String token) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('token', token);
   }
 
-  // Fungsi untuk mengambil token dari SharedPreferences
   Future<String?> getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('token');
   }
 
-  // Fungsi register
   Future<UserModel> register({
     required String name,
     required String username,
@@ -29,47 +25,40 @@ class AuthService {
   }) async {
     var url = Uri.parse('$baseUrl/register');
     var headers = {'Content-Type': 'application/json'};
-    var body = jsonEncode(
-      {
-        'name': name,
-        'username': username,
-        'email': email,
-        'password': password,
-      },
-    );
+    var body = jsonEncode({
+      'name': name,
+      'username': username,
+      'email': email,
+      'password': password,
+    });
 
-    var response = await http.post(
-      url,
-      headers: headers,
-      body: body,
-    );
+    try {
+      var response = await http.post(
+        url,
+        headers: headers,
+        body: body,
+      );
 
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
 
-    if (response.statusCode == 200) {
-      var data = jsonDecode(response.body)['data'];
-      UserModel user = UserModel.fromJson(data['user']);
-      String token = 'Bearer ' + data['access_token'];
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body)['data'];
+        UserModel user = UserModel.fromJson(data['user']);
+        String token = 'Bearer ' + data['access_token'];
 
-      // Simpan token setelah register
-      // Simpan permanent token jika ada
-      String? permanentToken = data['user']['permanent_token'];
-      await _saveToken(token);
+        await _saveToken(token);
 
-      // Simpan permanent token terpisah jika diperlukan
-      if (permanentToken != null) {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('permanent_token', permanentToken);
+        return user;
+      } else {
+        throw Exception('Registration failed: ${response.body}');
       }
-
-      return user;
-    } else {
-      throw Exception('Gagal Register: ${response.body}');
+    } catch (e) {
+      print('Error during registration: $e');
+      throw Exception('Registration failed: $e');
     }
   }
 
-  // Fungsi login
   Future<UserModel> login({
     required String email,
     required String password,
@@ -99,31 +88,16 @@ class AuthService {
         UserModel user = UserModel.fromJson(data['user']);
         String token = 'Bearer ' + data['access_token'];
 
-        // Simpan permanent token jika ada
-        String? permanentToken = data['user']['permanent_token'];
-
         debugPrint('Login successful. Saving token.');
         await _saveToken(token);
 
-        // Simpan permanent token terpisah jika diperlukan
-        if (permanentToken != null) {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          await prefs.setString('permanent_token', permanentToken);
-        }
-
         return user;
       } else {
-        throw Exception('Gagal Login: ${response.body}');
+        throw Exception('Login failed: ${response.body}');
       }
     } catch (error) {
       debugPrint('Error during login: $error');
-      throw Exception('Error during login: $error');
+      throw Exception('Login failed: $error');
     }
-  }
-
-  // Fungsi baru untuk mengambil permanent token
-  Future<String?> getPermanentToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('permanent_token');
   }
 }

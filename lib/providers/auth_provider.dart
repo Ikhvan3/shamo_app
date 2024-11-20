@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:shamo_app/services/auth_service.dart';
 import '../models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'cart_provider.dart';
 
 class AuthProvider with ChangeNotifier {
   late UserModel _user;
   String? _token;
+  final CartProvider cartProvider;
+
+  AuthProvider({required this.cartProvider});
 
   UserModel get user => _user;
   String? get token => _token;
@@ -17,10 +19,9 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // Fungsi untuk menyimpan token
   Future<void> _saveToken(String token) async {
-    if (token == null || token.isEmpty) {
-      print('Token is null or empty, skipping save.');
+    if (token.isEmpty) {
+      print('Token is empty, skipping save.');
       return;
     }
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -29,25 +30,11 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // Fungsi untuk mengambil token
   Future<String?> getToken() async {
     if (_token != null) return _token;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _token = prefs.getString('token');
     return _token;
-  }
-
-  // Fungsi untuk menyimpan permanent token
-  Future _savePermanentToken(String permanentToken) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('permanent_token', permanentToken);
-    notifyListeners();
-  }
-
-  // Fungsi untuk mengambil permanent token
-  Future<String?> getPermanentToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('permanent_token');
   }
 
   Future<bool> register({
@@ -66,17 +53,13 @@ class AuthProvider with ChangeNotifier {
 
       _user = user;
 
-      // Ambil dan simpan token
       String? token = await AuthService().getToken();
       if (token != null) {
         await _saveToken(token);
       }
 
-      // Ambil dan simpan permanent token
-      String? permanentToken = await AuthService().getPermanentToken();
-      if (permanentToken != null) {
-        await _savePermanentToken(permanentToken);
-      }
+      // Initialize cart for new user
+      await cartProvider.initializeCart(user);
 
       return true;
     } catch (e) {
@@ -88,7 +71,6 @@ class AuthProvider with ChangeNotifier {
   Future<bool> login({
     required String email,
     required String password,
-    required CartProvider cartProvider, // Tambahkan parameter ini
   }) async {
     try {
       UserModel user = await AuthService().login(
@@ -98,19 +80,13 @@ class AuthProvider with ChangeNotifier {
 
       _user = user;
 
-      // Ambil dan simpan token
       String? token = await AuthService().getToken();
       if (token != null) {
         await _saveToken(token);
       }
 
-      // Ambil dan simpan permanent token
-      String? permanentToken = await AuthService().getPermanentToken();
-      if (permanentToken != null) {
-        await _savePermanentToken(permanentToken);
-        // Update cart provider dengan permanent token baru
-        await cartProvider.updatePermanentToken(permanentToken);
-      }
+      // Initialize cart for logged in user
+      await cartProvider.initializeCart(user);
 
       return true;
     } catch (e) {
@@ -119,11 +95,19 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  // Fungsi untuk logout
   Future<void> logout() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove('token');
-    _token = null;
-    notifyListeners();
+    try {
+      // Clear cart data
+      await cartProvider.clearCart();
+
+      // Clear local storage
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.remove('token');
+      _token = null;
+
+      notifyListeners();
+    } catch (e) {
+      print('Error during logout: $e');
+    }
   }
 }
