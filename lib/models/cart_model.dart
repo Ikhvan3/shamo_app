@@ -1,7 +1,7 @@
 import 'package:shamo_app/models/product_model.dart';
 
 class CartModel {
-  String? id; // Sesuaikan tipe data ke String
+  String? id;
   ProductModel? product;
   int? quantity;
 
@@ -13,7 +13,7 @@ class CartModel {
 
   factory CartModel.fromJson(Map<String, dynamic> json, [item]) {
     return CartModel(
-      id: json['cartId'], // Pastikan tipe data sesuai dengan Firestore
+      id: json['cartId'],
       product: json['product'] != null
           ? ProductModel.fromJson(json['product'])
           : null,

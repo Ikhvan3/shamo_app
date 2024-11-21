@@ -9,7 +9,7 @@ class CartService {
     try {
       return firestore
           .collection('carts')
-          .where('userId', isEqualTo: userId) // Filter berdasarkan userId
+          .where('userId', isEqualTo: userId)
           .snapshots()
           .map((QuerySnapshot list) {
         return list.docs.map<CartModel>((DocumentSnapshot cart) {
@@ -28,7 +28,7 @@ class CartService {
     try {
       var docRef = firestore.collection('carts').doc(); // Generate ID unik
       await docRef.set({
-        'cartId': docRef.id, // Gunakan ID dokumen
+        'cartId': docRef.id,
         'userId': user.id.toString(),
         'product': cart.product!.toJson(),
         'quantity': cart.quantity,
