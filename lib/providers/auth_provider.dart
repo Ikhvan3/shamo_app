@@ -97,9 +97,6 @@ class AuthProvider with ChangeNotifier {
 
   Future<void> logout() async {
     try {
-      // Clear cart data
-      await cartProvider.clearCart();
-
       // Clear local storage
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.remove('token');
@@ -109,5 +106,9 @@ class AuthProvider with ChangeNotifier {
     } catch (e) {
       print('Error during logout: $e');
     }
+  }
+
+  void onUserLogin(UserModel user) {
+    cartProvider.initializeCart(user); // Load ulang cart sesuai user
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:shamo_app/models/product_model.dart';
 import 'package:shamo_app/models/cart_model.dart';
@@ -21,10 +23,9 @@ class CartProvider with ChangeNotifier {
       cartService
           .getCartByUserId(userId: user.id.toString())
           .listen((cartList) {
-        _carts = cartList; // Pastikan data diterima dengan benar
+        _carts = cartList;
         notifyListeners();
       });
-      print('Cart list fetched: $_carts');
     } catch (e) {
       print('Error initializing cart: $e');
     }
@@ -34,11 +35,10 @@ class CartProvider with ChangeNotifier {
     if (_user == null) return;
     try {
       if (productExist(product)) {
-        int index =
-            _carts.indexWhere((element) => element.product!.id == product.id);
+        int index = _carts.indexWhere((cart) => cart.product!.id == product.id);
         _carts[index].quantity = (_carts[index].quantity ?? 0) + 1;
         await cartService.updateCartItem(
-          cartId: _carts[index].id.toString(),
+          cartId: _carts[index].id!,
           quantity: _carts[index].quantity!,
         );
       } else {
@@ -55,39 +55,49 @@ class CartProvider with ChangeNotifier {
     }
   }
 
-  Future<void> removeCart(int id) async {
+  Future<void> removeCart(String cartId) async {
     try {
-      await cartService.removeFromCart(cartId: id.toString());
-      // Mengambil ulang data cart setelah item dihapus
-      _carts =
-          await cartService.getCartByUserId(userId: _user!.id.toString()).first;
-      notifyListeners(); // Update UI
+      await cartService.removeFromCart(cartId: cartId);
+      _carts.removeWhere((cart) => cart.id == cartId);
+      notifyListeners();
     } catch (e) {
       print('Error removing from cart: $e');
     }
   }
 
-  Future<void> addQuantity(int id) async {
+  Future<void> addQuantity(String cartId) async {
     try {
-      await cartService.updateCartItem(
-        cartId: id.toString(),
-        quantity: (_carts[id].quantity ?? 0) + 1,
-      );
+      int index = _carts.indexWhere((cart) => cart.id == cartId);
+      if (index != -1) {
+        int newQuantity = (_carts[index].quantity ?? 0) + 1;
+        _carts[index].quantity = newQuantity;
+
+        await cartService.updateCartItem(
+          cartId: cartId,
+          quantity: newQuantity,
+        );
+        notifyListeners();
+      }
     } catch (e) {
       print('Error updating quantity: $e');
     }
   }
 
-  Future<void> reduceQuantity(int id) async {
+  Future<void> reduceQuantity(String cartId) async {
     try {
-      int newQuantity = (_carts[id].quantity ?? 0) - 1;
-      if (newQuantity <= 0) {
-        await removeCart(id);
-      } else {
-        await cartService.updateCartItem(
-          cartId: id.toString(),
-          quantity: newQuantity,
-        );
+      int index = _carts.indexWhere((cart) => cart.id == cartId);
+      if (index != -1) {
+        int newQuantity = (_carts[index].quantity ?? 0) - 1;
+        if (newQuantity <= 0) {
+          await removeCart(cartId);
+        } else {
+          _carts[index].quantity = newQuantity;
+          await cartService.updateCartItem(
+            cartId: cartId,
+            quantity: newQuantity,
+          );
+          notifyListeners();
+        }
       }
     } catch (e) {
       print('Error updating quantity: $e');
@@ -111,16 +121,6 @@ class CartProvider with ChangeNotifier {
   }
 
   bool productExist(ProductModel product) {
-    return _carts.indexWhere((element) => element.product!.id == product.id) !=
-        -1;
-  }
-
-  Future<void> clearCart() async {
-    if (_user == null) return;
-    try {
-      await cartService.clearCart(userId: _user!.id.toString());
-    } catch (e) {
-      print('Error clearing cart: $e');
-    }
+    return _carts.indexWhere((cart) => cart.product!.id == product.id) != -1;
   }
 }

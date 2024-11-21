@@ -5,24 +5,19 @@ import 'package:shamo_app/models/user_model.dart';
 class CartService {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  Stream<List<CartModel>> getCartByUserId({String? userId}) {
+  Stream<List<CartModel>> getCartByUserId({required String userId}) {
     try {
       return firestore
           .collection('carts')
-          .where('userId', isEqualTo: userId)
+          .where('userId', isEqualTo: userId) // Filter berdasarkan userId
           .snapshots()
           .map((QuerySnapshot list) {
-        var result = list.docs.map<CartModel>((DocumentSnapshot cart) {
-          print('Fetched cart: ${cart.data()}');
-          return CartModel.fromJson(
-            {'cartId': cart.id}, // Data tambahan dengan ID dokumen
-            cart.data() as Map<String, dynamic>, // Data utama
-          );
+        return list.docs.map<CartModel>((DocumentSnapshot cart) {
+          return CartModel.fromJson(cart.data() as Map<String, dynamic>);
         }).toList();
-        return result;
       });
     } catch (e) {
-      throw Exception('Failed to get cart data');
+      throw Exception('Failed to get cart data: $e');
     }
   }
 
@@ -31,19 +26,17 @@ class CartService {
     required CartModel cart,
   }) async {
     try {
-      var docRef = firestore.collection('carts').doc(); // Generate ID
+      var docRef = firestore.collection('carts').doc(); // Generate ID unik
       await docRef.set({
-        'userId': user.id,
-        'userName': user.name,
-        'cartId': docRef.id, // Simpan ID dokumen
+        'cartId': docRef.id, // Gunakan ID dokumen
+        'userId': user.id.toString(),
         'product': cart.product!.toJson(),
         'quantity': cart.quantity,
-        'createdAt': DateTime.now().toString(),
-        'updatedAt': DateTime.now().toString(),
+        'createdAt': DateTime.now().toIso8601String(),
+        'updatedAt': DateTime.now().toIso8601String(),
       });
-      print('Item successfully added to cart with ID: ${docRef.id}');
     } catch (e) {
-      throw Exception('Failed to add item to cart');
+      throw Exception('Failed to add item to cart: $e');
     }
   }
 
@@ -52,44 +45,20 @@ class CartService {
     required int quantity,
   }) async {
     try {
-      firestore.collection('carts').doc(cartId).update({
+      await firestore.collection('carts').doc(cartId).update({
         'quantity': quantity,
-        'updatedAt': DateTime.now().toString(),
-      }).then(
-        (value) => print('Cart item successfully updated'),
-      );
+        'updatedAt': DateTime.now().toIso8601String(),
+      });
     } catch (e) {
-      throw Exception('Failed to update cart item');
+      throw Exception('Failed to update cart item: $e');
     }
   }
 
-  Future<void> removeFromCart({
-    required String cartId,
-  }) async {
+  Future<void> removeFromCart({required String cartId}) async {
     try {
-      firestore.collection('carts').doc(cartId).delete().then(
-            (value) => print('Item successfully removed from cart'),
-          );
+      await firestore.collection('carts').doc(cartId).delete();
     } catch (e) {
-      throw Exception('Failed to remove item from cart');
-    }
-  }
-
-  Future<void> clearCart({
-    required String userId,
-  }) async {
-    try {
-      var cartSnapshots = await firestore
-          .collection('carts')
-          .where('userId', isEqualTo: userId)
-          .get();
-
-      for (var doc in cartSnapshots.docs) {
-        await doc.reference.delete();
-      }
-      print('Cart successfully cleared');
-    } catch (e) {
-      throw Exception('Failed to clear cart');
+      throw Exception('Failed to remove item from cart: $e');
     }
   }
 }
