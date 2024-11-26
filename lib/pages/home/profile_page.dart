@@ -36,14 +36,15 @@ class ProfilePage extends StatelessWidget {
         child: Row(
           children: [
             ClipOval(
-              child: Image.network(
-                user.profilePhotoUrl.toString(),
-                width: 64,
-                height: 64, // Tambahkan height untuk memastikan aspect ratio
-                fit: BoxFit.cover, // Pastikan gambar terisi dengan baik
+              child: Image.asset(
+                'assets/icon_profile.png',
+
+                // width: 64,
+                // height: 64, // Tambahkan height untuk memastikan aspect ratio
+                // fit: BoxFit.cover, // Pastikan gambar terisi dengan baik
               ),
             ),
-            SizedBox(width: 16),
+            SizedBox(width: 30),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,18 +52,21 @@ class ProfilePage extends StatelessWidget {
                   Text(
                     'Hallo, ${user.name}',
                     style: subtitleTextStyle.copyWith(
-                      fontSize: 24,
+                      fontSize: 20,
                       fontWeight: semiBold,
                     ),
                   ),
                   Text(
-                    '@${user.username}',
+                    '@${user.name}',
                     style: subtitleTextStyle.copyWith(
                       fontSize: 16,
                     ),
                   ),
                 ],
               ),
+            ),
+            SizedBox(
+              width: 20,
             ),
             ElevatedButton(
               onPressed: () => _handleLogout(context, authProvider),
@@ -73,6 +77,7 @@ class ProfilePage extends StatelessWidget {
               child: Text(
                 'Logout',
                 style: TextStyle(
+                  color: Colors.white,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),

@@ -38,7 +38,7 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '@${user.username}',
+                    '@${user.name}',
                     style: subtitleTextStyle.copyWith(
                       fontSize: 16,
                     ),

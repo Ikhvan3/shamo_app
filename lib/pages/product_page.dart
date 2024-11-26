@@ -405,6 +405,9 @@ class _ProductPageState extends State<ProductPage> {
             ),
 
             //NOTE : FAMILIAR SHOES
+            SizedBox(
+              height: 80,
+            ),
             Container(
               width: double.infinity,
               margin: EdgeInsets.only(
@@ -442,6 +445,9 @@ class _ProductPageState extends State<ProductPage> {
                   )
                 ],
               ),
+            ),
+            SizedBox(
+              height: 30,
             ),
           ],
         ),
@@ -529,18 +535,23 @@ class _ProductPageState extends State<ProductPage> {
               content(wishlistProvider),
             ],
           ),
-          bottomNavigationBar: Container(
-            padding: EdgeInsets.all(30),
-            height: 165,
-            decoration: BoxDecoration(
-              color: backgroundColor2,
-              borderRadius: BorderRadius.vertical(
-                top: Radius.circular(24),
-              ),
-            ),
+          bottomNavigationBar:
+              //Container(
+              //   decoration: BoxDecoration(
+              //     color: backgroundColor2,
+              //     borderRadius: BorderRadius.vertical(
+              //       top: Radius.circular(24),
+              //     ),
+              //   ),
+              //   child:
+              Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
                 buttonchat(),
+                SizedBox(
+                  width: 20,
+                ),
                 addToCartButton(cartProvider, authProvider),
               ],
             ),
