@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shamo_app/providers/wishlist_provider.dart';
+
 import 'package:shamo_app/services/auth_service.dart';
 import '../models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -111,5 +111,10 @@ class AuthProvider with ChangeNotifier {
 
   void onUserLogin(UserModel user) {
     cartProvider.initializeCart(user); // Load ulang cart sesuai user
+  }
+
+  String? get userId {
+    return _user.id
+        ?.toString(); // Pastikan id dikonversi menjadi String jika Firestore memerlukan
   }
 }

@@ -42,10 +42,12 @@ dependencies:
   dio: ^4.0.6
   shared_preferences: ^2.2.3
   cloud_firestore: ^5.4.0
-  firebase_core: ^3.4.0
+
   image_picker: ^0.8.6
   mobile_scanner: ^6.0.2
   midtrans_snap: ^1.0.1
+  firebase_core: ^3.8.0
+  firebase_auth: ^5.3.3
 dev_dependencies:
   flutter_test:
     sdk: flutter

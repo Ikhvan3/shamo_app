@@ -1,35 +1,71 @@
 import 'package:flutter/material.dart';
-import 'package:shamo_app/models/product_model.dart';
 
+import '../models/product_model.dart';
+import '../models/user_model.dart';
 import '../services/wishlist_service.dart';
+import 'auth_provider.dart';
 
 class WishlistProvider with ChangeNotifier {
   List<ProductModel> _wishlist = [];
-  final String _userId = '';
+  final WishlistService _wishlistService;
+  final AuthProvider _authProvider;
+  UserModel? _user;
+
+  WishlistProvider({
+    required WishlistService wishlistService,
+    required AuthProvider authProvider,
+  })  : _wishlistService = wishlistService,
+        _authProvider = authProvider {
+    // Automatically set user from auth provider
+    _user = _authProvider.user;
+  }
 
   List<ProductModel> get wishlist => _wishlist;
 
-  set wishlist(List<ProductModel> wishlist) {
-    _wishlist = wishlist;
+  void setUser(UserModel? user) {
+    _user = user;
     notifyListeners();
   }
 
-  setProduct(ProductModel product) {
-    if (!isWishlist(product)) {
+  // Stream to load wishlist
+  Stream<List<ProductModel>> loadWishlist() {
+    if (_user == null) {
+      throw Exception('User not set');
+    }
+
+    return _wishlistService.getWishlistByUserId(_user!.id).map((products) {
+      _wishlist = products;
+      notifyListeners();
+      return products;
+    });
+  }
+
+  // Toggle product in wishlist
+  Future<void> toggleWishlist(ProductModel product) async {
+    if (_user == null) {
+      throw Exception('User not set');
+    }
+
+    bool isCurrentlyInWishlist =
+        await _wishlistService.isInWishlist(user: _user, product: product);
+
+    if (!isCurrentlyInWishlist) {
+      await _wishlistService.addToWishlist(user: _user, product: product);
       _wishlist.add(product);
-      WishlistService().addToWishlist(_userId, product);
     } else {
-      _wishlist.removeWhere((element) => element.id == product.id);
-      WishlistService().removeFromWishlist(_userId, product.id.toString());
+      await _wishlistService.removeFromWishlist(user: _user, product: product);
+      _wishlist.removeWhere((p) => p.id == product.id);
     }
+
     notifyListeners();
   }
 
-  isWishlist(ProductModel product) {
-    if (_wishlist.indexWhere((element) => element.id == product.id) == -1) {
-      return false;
-    } else {
-      return true;
+  // Check if product is in wishlist
+  Future<bool> isWishlist(ProductModel product) async {
+    if (_user == null) {
+      throw Exception('User not set');
     }
+
+    return await _wishlistService.isInWishlist(user: _user, product: product);
   }
 }

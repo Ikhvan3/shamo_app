@@ -1,97 +1,100 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:shamo_app/models/product_model.dart';
-import 'package:shamo_app/models/gallery_model.dart';
+import 'package:shamo_app/models/user_model.dart';
 
 class WishlistService {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  FirebaseAuth auth = FirebaseAuth.instance;
 
-  // Menambahkan produk ke wishlist
-  Future<void> addToWishlist(String userId, ProductModel product) async {
+  // Mendapatkan wishlist berdasarkan user ID
+  Stream<List<ProductModel>> getWishlistByUserId(int? userId) {
     try {
-      // Convert galleries ke format yang bisa disimpan di Firestore
-      List<Map<String, dynamic>> galleriesData = product.galleries
-              ?.map((gallery) => {
-                    'id': gallery.id,
-                    'url': gallery.url,
-                  })
-              .toList() ??
-          [];
+      return firestore
+          .collection('wishlists')
+          .where('userId', isEqualTo: userId)
+          .snapshots()
+          .map((QuerySnapshot list) {
+        var result =
+            list.docs.map<ProductModel>((DocumentSnapshot wishlistItem) {
+          print(wishlistItem.data());
+          return ProductModel.fromJson(
+              wishlistItem.data() as Map<String, dynamic>);
+        }).toList();
 
-      await _firestore
-          .collection('users')
-          .doc(userId)
-          .collection('wishlist')
-          .doc(product.id.toString())
-          .set({
-        'id': product.id,
-        'name': product.name,
-        'price': product.price,
-        'description': product.description,
-        'category': product.category,
-        'galleries': galleriesData, // Simpan sebagai List<Map>
-        'createdAt': DateTime.now().toString(),
+        return result;
       });
     } catch (e) {
-      throw Exception('Gagal menambahkan ke wishlist: $e');
+      throw Exception('Gagal mengambil wishlist');
     }
   }
 
-  // Mengambil semua produk wishlist user
-  Stream<List<ProductModel>> getWishlist(int? userId) {
-    return _firestore
-        .collection('wishlist')
-        .where('userId', isEqualTo: userId)
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        Map<String, dynamic> data = doc.data();
+  // Menambahkan produk ke wishlist
+  Future<void> addToWishlist(
+      {required UserModel? user, required ProductModel? product}) async {
+    try {
+      // Cek apakah produk sudah ada di wishlist
+      QuerySnapshot existingWishlist = await firestore
+          .collection('wishlists')
+          .where('userId', isEqualTo: user!.id)
+          .where('id', isEqualTo: product!.id)
+          .get();
 
-        // Convert galleries data kembali ke List<GalleryModel>
-        List<GalleryModel> galleries = (data['galleries'] as List)
-            .map((galleryData) => GalleryModel(
-                  id: galleryData['id'],
-                  url: galleryData['url'],
-                ))
-            .toList();
-
-        return ProductModel(
-          id: data['id'],
-          name: data['name'],
-          price: data['price'],
-          description: data['description'],
-          category: data['category'],
-          galleries: galleries,
+      // Jika produk belum ada di wishlist, tambahkan
+      if (existingWishlist.docs.isEmpty) {
+        await firestore.collection('wishlists').add({
+          'userId': user.id,
+          'userName': user.name,
+          'userEmail': user.email,
+          // Tambahkan seluruh detail produk
+          ...product.toJson(),
+          'addedAt': DateTime.now().toString(),
+        }).then(
+          (value) => print('Produk Berhasil Ditambahkan ke Wishlist'),
         );
-      }).toList();
-    });
+      }
+    } catch (e) {
+      throw Exception('Gagal Menambahkan ke Wishlist!');
+    }
   }
 
   // Menghapus produk dari wishlist
-  Future<void> removeFromWishlist(String userId, String productId) async {
+  Future<void> removeFromWishlist(
+      {required UserModel? user, required ProductModel? product}) async {
     try {
-      await _firestore
-          .collection('users')
-          .doc(userId)
-          .collection('wishlist')
-          .doc(productId)
-          .delete();
+      // Cari dokumen wishlist yang sesuai
+      QuerySnapshot wishlistItems = await firestore
+          .collection('wishlists')
+          .where('userId', isEqualTo: user!.id)
+          .where('id', isEqualTo: product!.id)
+          .get();
+
+      // Hapus dokumen jika ditemukan
+      for (var doc in wishlistItems.docs) {
+        await doc.reference.delete();
+      }
+
+      print('Produk Berhasil Dihapus dari Wishlist');
     } catch (e) {
-      throw Exception('Gagal menghapus dari wishlist: $e');
+      throw Exception('Gagal Menghapus dari Wishlist!');
     }
   }
 
-  // Mengecek apakah produk ada di wishlist
-  Future<bool> isInWishlist(String userId, String productId) async {
+  // Memeriksa apakah produk ada di wishlist
+  Future<bool> isInWishlist(
+      {required UserModel? user, required ProductModel? product}) async {
     try {
-      final doc = await _firestore
-          .collection('users')
-          .doc(userId)
-          .collection('wishlist')
-          .doc(productId)
+      QuerySnapshot wishlistItems = await firestore
+          .collection('wishlists')
+          .where('userId', isEqualTo: user!.id)
+          .where('id', isEqualTo: product!.id)
           .get();
-      return doc.exists;
+
+      return wishlistItems.docs.isNotEmpty;
     } catch (e) {
-      throw Exception('Gagal mengecek wishlist: $e');
+      print('Gagal memeriksa wishlist: $e');
+      return false;
     }
   }
 }

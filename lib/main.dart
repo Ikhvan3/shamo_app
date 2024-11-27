@@ -4,10 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:shamo_app/pages/cart_page.dart';
 import 'package:shamo_app/pages/checkout_page.dart';
 import 'package:shamo_app/pages/checkout_success_page.dart';
-
 import 'package:shamo_app/pages/edit_profile.dart';
 import 'package:shamo_app/pages/home/main_page.dart';
-
 import 'package:shamo_app/pages/sign_in_page.dart';
 import 'package:shamo_app/pages/splash_page.dart';
 import 'package:shamo_app/providers/auth_provider.dart';
@@ -22,15 +20,14 @@ import 'pages/sign_up_page.dart';
 import 'pages/viewmyorder_page.dart';
 import 'providers/order_provider.dart';
 import 'providers/scan_provider.dart';
+import 'services/wishlist_service.dart';
 
 void main(List<String> args) async {
-  // HttpOverrides.global = MyHttpOverrides();
   try {
     WidgetsFlutterBinding.ensureInitialized();
 
     await Firebase.initializeApp(
-      options: DefaultFirebaseOptions
-          .currentPlatform, // Gunakan options dari firebase_options.dart
+      options: DefaultFirebaseOptions.currentPlatform,
     );
 
     runApp(const MyApp());
@@ -69,11 +66,21 @@ class MyApp extends StatelessWidget {
             return auth;
           },
         ),
-        ChangeNotifierProvider(
-          create: (context) => ProductProvider(),
+        ChangeNotifierProxyProvider<AuthProvider, WishlistProvider>(
+          create: (context) => WishlistProvider(
+            wishlistService: WishlistService(),
+            authProvider: Provider.of<AuthProvider>(context, listen: false),
+          ),
+          update: (context, auth, wishlist) {
+            wishlist ??= WishlistProvider(
+              wishlistService: WishlistService(),
+              authProvider: auth,
+            );
+            return wishlist;
+          },
         ),
         ChangeNotifierProvider(
-          create: (context) => WishlistProvider(),
+          create: (context) => ProductProvider(),
         ),
         ChangeNotifierProvider(
           create: (context) => PageProvider(),

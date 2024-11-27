@@ -101,7 +101,7 @@ class WishListCard extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                wishlistProvider.setProduct(product);
+                wishlistProvider.toggleWishlist(product);
               },
               child: Image.asset(
                 'assets/button_wishlist_blue.png',

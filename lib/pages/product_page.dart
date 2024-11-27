@@ -20,6 +20,31 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
+  bool _isInWishlist = false;
+  @override
+  void initState() {
+    super.initState();
+
+    // Pastikan user sudah di-set di WishlistProvider
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AuthProvider authProvider =
+          Provider.of<AuthProvider>(context, listen: false);
+      WishlistProvider wishlistProvider =
+          Provider.of<WishlistProvider>(context, listen: false);
+
+      // Set user ke wishlist provider
+      wishlistProvider.setUser(authProvider.user);
+    });
+  }
+
+  // Method untuk memeriksa status wishlist
+  Future<void> _checkWishlistStatus(WishlistProvider wishlistProvider) async {
+    bool isInWishlist = await wishlistProvider.isWishlist(widget.product);
+    setState(() {
+      _isInWishlist = isInWishlist;
+    });
+  }
+
   List images = [
     'assets/image_shoes.png',
     'assets/image_shoes.png',
@@ -159,6 +184,7 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
+    WishlistProvider wishlistProvider = Provider.of<WishlistProvider>(context);
     Widget indicator(int index) {
       return Container(
         width: currentIndex == index ? 16 : 4,
@@ -306,38 +332,38 @@ class _ProductPageState extends State<ProductPage> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      wishlistProvider.setProduct(widget.product);
+                    onTap: () async {
+                      await wishlistProvider.toggleWishlist(widget.product);
 
-                      if (wishlistProvider.isWishlist(widget.product)) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            backgroundColor: secondaryColor,
-                            content: Text(
-                              'Has been added to the Wishlist',
-                              textAlign: TextAlign.center,
-                            ),
+                      // Periksa ulang status wishlist setelah perubahan
+                      bool isInWishlist =
+                          await wishlistProvider.isWishlist(widget.product);
+                      setState(() {
+                        _isInWishlist = isInWishlist;
+                      });
+
+                      // Tampilkan snackbar
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor:
+                              _isInWishlist ? secondaryColor : alertColor,
+                          content: Text(
+                            _isInWishlist
+                                ? 'Has been added to the Wishlist'
+                                : 'Has been removed from the Wishlist',
+                            textAlign: TextAlign.center,
                           ),
-                        );
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            backgroundColor: alertColor,
-                            content: Text(
-                              'Has been removed from the Wishlist',
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        );
-                      }
+                        ),
+                      );
                     },
                     child: Image.asset(
-                      wishlistProvider.isWishlist(widget.product)
+                      // Gunakan variabel lokal _isInWishlist
+                      _isInWishlist
                           ? 'assets/button_wishlist_blue.png'
                           : 'assets/button_wishlist.png',
                       width: 46,
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
