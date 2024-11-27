@@ -11,7 +11,7 @@ class GalleryModel {
     id = json['id'];
 
     // Pastikan URL menggunakan format yang benar dengan /storage/
-    String baseUrl = 'http://192.168.1.24:8000';
+    String baseUrl = 'http://192.168.1.13:8000';
     String imagePath = json['url'] ?? '';
 
     // Jika URL sudah lengkap, gunakan URL tersebut
