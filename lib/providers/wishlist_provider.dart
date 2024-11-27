@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shamo_app/models/product_model.dart';
 
+import '../services/wishlist_service.dart';
+
 class WishlistProvider with ChangeNotifier {
   List<ProductModel> _wishlist = [];
+  final String _userId = '';
 
   List<ProductModel> get wishlist => _wishlist;
 
@@ -14,10 +17,11 @@ class WishlistProvider with ChangeNotifier {
   setProduct(ProductModel product) {
     if (!isWishlist(product)) {
       _wishlist.add(product);
+      WishlistService().addToWishlist(_userId, product);
     } else {
       _wishlist.removeWhere((element) => element.id == product.id);
+      WishlistService().removeFromWishlist(_userId, product.id.toString());
     }
-
     notifyListeners();
   }
 
