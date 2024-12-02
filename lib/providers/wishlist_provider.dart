@@ -10,6 +10,7 @@ class WishlistProvider with ChangeNotifier {
   final WishlistService _wishlistService;
   final AuthProvider _authProvider;
   UserModel? _user;
+  bool _isLoaded = false;
 
   WishlistProvider({
     required WishlistService wishlistService,
@@ -24,6 +25,7 @@ class WishlistProvider with ChangeNotifier {
 
   void setUser(UserModel? user) {
     _user = user;
+    _isLoaded = false;
     notifyListeners();
   }
 
@@ -33,8 +35,13 @@ class WishlistProvider with ChangeNotifier {
       throw Exception('User not set');
     }
 
+    if (_isLoaded) {
+      return Stream.value(_wishlist); // Return cached data if already loaded
+    }
+
     return _wishlistService.getWishlistByUserId(_user!.id).map((products) {
       _wishlist = products;
+      _isLoaded = true;
       notifyListeners();
       return products;
     });
