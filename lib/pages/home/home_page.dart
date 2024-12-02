@@ -9,8 +9,15 @@ import 'package:shamo_app/widgets/product_tile.dart';
 import '../../providers/auth_provider.dart';
 import '../scanner/scan_page.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  String query = '';
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +65,38 @@ class HomePage extends StatelessWidget {
       );
     }
 
+    Widget searchField() {
+      return Container(
+        margin: EdgeInsets.symmetric(
+          horizontal: defaultMargin,
+          vertical: 10,
+        ),
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        decoration: BoxDecoration(
+          color: backgroundColor7,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: TextField(
+          onChanged: (value) {
+            setState(() {
+              query = value.toLowerCase();
+            });
+          },
+          decoration: InputDecoration(
+            hintText: 'Cari sayuran...',
+            border: InputBorder.none,
+            hintStyle: subtitleTextStyle,
+            icon: Icon(Icons.search, color: subtitleTextStyle.color),
+          ),
+          style: primaryTextStyle,
+        ),
+      );
+    }
+
     Widget categories() {
+      if (query.isNotEmpty) {
+        return SizedBox(); // Sembunyikan kategori saat ada query pencarian
+      }
       List<String> categoryList = [
         'Semua Sayuran',
         'Daun',
@@ -81,8 +119,9 @@ class HomePage extends StatelessWidget {
               ...categoryList
                   .map((category) => GestureDetector(
                         onTap: () {
-                          Provider.of<ProductProvider>(context, listen: false)
-                              .setSelectedCategory(category);
+                          setState(() {
+                            productProvider.setSelectedCategory(category);
+                          });
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(
@@ -212,12 +251,12 @@ class HomePage extends StatelessWidget {
     }
 
     Widget content() {
-      // Jika kategori yang dipilih bukan "Semua Sayuran", tampilkan hanya ProductTile
-      if (productProvider.selectedCategory != 'Semua Sayuran') {
+      if (query.isNotEmpty ||
+          productProvider.selectedCategory != 'Semua Sayuran') {
         return filteredProducts();
       }
 
-      // Jika "Semua Sayuran", tampilkan layout lengkap
+      // Jika "Semua Sayuran" dan tidak ada query, tampilkan layout lengkap
       return Column(
         children: [
           popularProductsTitle(),
@@ -238,6 +277,7 @@ class HomePage extends StatelessWidget {
     return ListView(
       children: [
         header(),
+        searchField(),
         categories(),
         content(),
       ],

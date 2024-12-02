@@ -11,19 +11,6 @@ class ProductProvider with ChangeNotifier {
       _filteredProducts.isEmpty ? _products : _filteredProducts;
   String get selectedCategory => _selectedCategory;
 
-  // Method untuk menangani pencarian produk
-  void searchProducts(String query) {
-    if (query.isEmpty) {
-      _filteredProducts = products;
-    } else {
-      _filteredProducts = products
-          .where((product) =>
-              product.name!.toLowerCase().contains(query.toLowerCase()))
-          .toList();
-    }
-    notifyListeners(); // Memberitahu widget untuk memperbarui UI
-  }
-
   void setSelectedCategory(String category) {
     _selectedCategory = category;
     if (category == 'Semua Sayuran') {
