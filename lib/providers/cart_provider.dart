@@ -34,21 +34,28 @@ class CartProvider with ChangeNotifier {
   Future<void> addCart(ProductModel product) async {
     if (_user == null) return;
     try {
-      if (productExist(product)) {
-        int index = _carts.indexWhere((cart) => cart.product!.id == product.id);
-        _carts[index].quantity = (_carts[index].quantity ?? 0) + 1;
+      // Cek apakah produk sudah ada dalam cart
+      int existingIndex =
+          _carts.indexWhere((cart) => cart.product!.id == product.id);
+
+      if (existingIndex != -1) {
+        // Jika produk sudah ada, update quantity
+        _carts[existingIndex].quantity =
+            (_carts[existingIndex].quantity ?? 0) + 1;
         await cartService.updateCartItem(
-          cartId: _carts[index].id!,
-          quantity: _carts[index].quantity!,
+          cartId: _carts[existingIndex].id!,
+          quantity: _carts[existingIndex].quantity!,
         );
       } else {
+        // Jika produk belum ada, tambahkan produk baru ke cart
         CartModel newCart = CartModel(
           product: product,
           quantity: 1,
         );
         await cartService.addToCart(user: _user!, cart: newCart);
-        _carts.add(newCart);
+        // _carts.add(newCart);
       }
+      // Mengupdate tampilan setelah penambahan cart
       notifyListeners();
     } catch (e) {
       print('Error adding to cart: $e');
