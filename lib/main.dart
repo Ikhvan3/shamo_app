@@ -92,7 +92,7 @@ class MyApp extends StatelessWidget {
           create: (context) => ScannerProvider(),
         ),
         ChangeNotifierProvider(
-          create: (context) => OrderProvider(),
+          create: (context) => OrderProvider()..fetchOrders(),
         ),
       ],
       child: MaterialApp(
@@ -107,7 +107,7 @@ class MyApp extends StatelessWidget {
           '/checkout': (context) => CheckoutPage(),
           '/checkout-success': (context) => CheckoutSuccessPage(),
           '/view-order': (context) => ViewMyOrderPage(
-                order: ModalRoute.of(context)!.settings.arguments as OrderModel,
+                orders: Provider.of<OrderProvider>(context).orders,
               ),
         },
       ),

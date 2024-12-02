@@ -5,14 +5,14 @@ import '../theme.dart';
 import '../widgets/checkout_card.dart';
 
 class ViewMyOrderPage extends StatelessWidget {
-  const ViewMyOrderPage({super.key, required OrderModel order});
+  const ViewMyOrderPage({super.key, required this.orders});
+
+  final List<OrderModel> orders; // Menerima daftar pesanan
 
   @override
   Widget build(BuildContext context) {
-    final order = ModalRoute.of(context)?.settings.arguments as OrderModel?;
-
     // Menambahkan pengecekan untuk null
-    if (order == null) {
+    if (orders.isEmpty) {
       return Scaffold(
         appBar: AppBar(
           backgroundColor: primaryTextColor,
@@ -21,14 +21,14 @@ class ViewMyOrderPage extends StatelessWidget {
         ),
         body: Center(
           child: Text(
-            'Order not found.',
+            'No orders found.',
             style: TextStyle(fontSize: 16, color: Colors.grey),
           ),
         ),
       );
     }
 
-    // Jika order tidak null, tampilkan detail order
+    // Jika ada pesanan, tampilkan daftar pesanan
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryTextColor,
@@ -37,33 +37,55 @@ class ViewMyOrderPage extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: defaultMargin),
-        child: Column(
-          children: [
-            // Order ID
-            Text('Order ID: ${order.orderId}', style: subtitleTextStyle),
-            SizedBox(height: 20),
-            // List of items in the order
-            Expanded(
-              child: ListView.builder(
-                itemCount: order.items.length,
-                itemBuilder: (context, index) {
-                  CartModel cart = order.items[index];
-                  return CheckoutCard(cart); // Reusing the CheckoutCard widget
-                },
+        child: ListView.builder(
+          itemCount: orders.length, // Menampilkan daftar pesanan
+          itemBuilder: (context, index) {
+            final order = orders[index];
+
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 16.0),
+              child: Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(defaultMargin),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Order ID
+                      Text('Order ID: ${order.orderId}',
+                          style: subtitleTextStyle),
+                      SizedBox(height: 10),
+                      // List of items in the order
+                      Text('Items:', style: subtitleTextStyle),
+                      SizedBox(height: 10),
+                      // List of cart items in the order
+                      Column(
+                        children: order.items.map((cartItem) {
+                          return CheckoutCard(
+                              cartItem); // Reusing the CheckoutCard widget
+                        }).toList(),
+                      ),
+                      // Total price
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Total:', style: subtitleTextStyle),
+                          Text('Rp${order.totalPrice}', style: priceTextStyle),
+                        ],
+                      ),
+                      SizedBox(height: 5),
+                      // Order status
+                      Text('Status: ${order.status}', style: subtitleTextStyle),
+                    ],
+                  ),
+                ),
               ),
-            ),
-            // Total price
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Total:', style: subtitleTextStyle),
-                  Text('\Rp${order.totalPrice}', style: priceTextStyle),
-                ],
-              ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );

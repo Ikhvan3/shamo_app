@@ -19,7 +19,7 @@ class OrderModel {
     required this.deliveryAddress,
   });
 
-  // You can add a method to convert from JSON if you get the data from an API
+  // Method to convert from JSON
   factory OrderModel.fromJson(Map<String, dynamic> json) {
     return OrderModel(
       orderId: json['orderId'],
@@ -37,5 +37,20 @@ class OrderModel {
       orderDate: DateTime.parse(json['orderDate']),
       deliveryAddress: json['deliveryAddress'],
     );
+  }
+
+  // Method to convert to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'orderId': orderId,
+      'items': items
+          .map((item) => item.toJson())
+          .toList(), // Pastikan CartModel memiliki toJson
+      'totalPrice': totalPrice,
+      'status': status,
+      'paymentMethod': paymentMethod,
+      'orderDate': orderDate.toIso8601String(),
+      'deliveryAddress': deliveryAddress,
+    };
   }
 }

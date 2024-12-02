@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:shamo_app/theme.dart';
+import 'package:uuid/uuid.dart';
 
 import '../models/order_model.dart';
 import '../providers/cart_provider.dart';
 import '../providers/order_provider.dart';
-import 'viewmyorder_page.dart';
 
 class CheckoutSuccessPage extends StatelessWidget {
   const CheckoutSuccessPage({super.key});
@@ -16,9 +16,11 @@ class CheckoutSuccessPage extends StatelessWidget {
     CartProvider cartProvider = Provider.of<CartProvider>(context);
     OrderProvider orderProvider = Provider.of<OrderProvider>(context);
 
+    var uuid = Uuid();
+    String orderId = uuid.v4();
     // Assume the order has been placed and add to OrderProvider
     OrderModel order = OrderModel(
-      orderId: 'ORD123',
+      orderId: orderId,
       items: cartProvider.carts,
       totalPrice: cartProvider.totalPrice(),
       status: 'settlement',
@@ -99,12 +101,10 @@ class CheckoutSuccessPage extends StatelessWidget {
               ),
               child: TextButton(
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushNamed(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => ViewMyOrderPage(
-                          order: order), // Navigate to View Order page
-                    ),
+                    '/view-order',
+                    arguments: order, // Pass order object here
                   );
                 },
                 style: TextButton.styleFrom(

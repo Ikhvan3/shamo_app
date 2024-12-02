@@ -154,7 +154,7 @@ class ProfilePage extends StatelessWidget {
       Navigator.pushNamed(
         context,
         '/view-order',
-        arguments: orderProvider.orders.first,
+        arguments: orderProvider.orders,
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
