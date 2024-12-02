@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/cart_model.dart';
 import '../models/transaction_model.dart';
+import '../models/user_model.dart';
 import '../services/transaction_service.dart';
 
 class TransactionProvider with ChangeNotifier {
@@ -9,11 +10,12 @@ class TransactionProvider with ChangeNotifier {
 
   final TransactionService _transactionService = TransactionService();
 
-  Future<void> fetchTransactions({bool forceRefresh = false}) async {
+  Future<void> fetchTransactions(
+      {required UserModel currentUser, bool forceRefresh = false}) async {
     try {
       if (_transactions.isEmpty || forceRefresh) {
-        _transactions =
-            await _transactionService.fetchTransactionsFromFirestore();
+        _transactions = await _transactionService
+            .fetchTransactionsFromFirestore(currentUser);
         notifyListeners();
       }
     } catch (e) {
@@ -22,14 +24,14 @@ class TransactionProvider with ChangeNotifier {
   }
 
   Future<Map<String, dynamic>?> checkout(
-      List<CartModel> carts, double totalPrice) async {
+      List<CartModel> carts, double totalPrice, UserModel currentUser) async {
     try {
       Map<String, dynamic>? snapToken =
-          await _transactionService.checkout(carts, totalPrice);
+          await _transactionService.checkout(carts, totalPrice, currentUser);
 
       if (snapToken != null) {
         // Fetch transaksi terbaru dari Firestore setelah checkout berhasil
-        await fetchTransactions(forceRefresh: true);
+        await fetchTransactions(currentUser: currentUser, forceRefresh: true);
         notifyListeners();
       }
 

@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:shamo_app/models/product_model.dart';
 import 'package:shamo_app/models/user_model.dart';
 
 class WishlistService {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  FirebaseAuth auth = FirebaseAuth.instance;
 
   // Mendapatkan wishlist berdasarkan user ID
   Stream<List<ProductModel>> getWishlistByUserId(int? userId) {

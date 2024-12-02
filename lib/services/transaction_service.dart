@@ -2,12 +2,16 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import '../models/cart_model.dart';
 import '../models/transaction_model.dart';
+import '../models/user_model.dart'; // Tambahkan import user model
 
 class TransactionService {
   String baseUrl = 'http://192.168.1.25:8000/api';
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<String?> _getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -15,7 +19,7 @@ class TransactionService {
   }
 
   Future<Map<String, dynamic>?> checkout(
-      List<CartModel> carts, double totalPrice) async {
+      List<CartModel> carts, double totalPrice, UserModel currentUser) async {
     var url = Uri.parse('$baseUrl/checkout');
     String? token = await _getToken();
 
@@ -53,9 +57,9 @@ class TransactionService {
           throw Exception('Unexpected API response structure');
         }
 
-        // Simpan ke Firestore
+        // Simpan ke Firestore dengan informasi user
         var transactionData = TransactionModel(
-          id: data['data']['transaction']['id'],
+          id: data['data']['transaction']['id']?.toString(),
           status: data['data']['transaction']['status'],
           totalPrice: totalPrice,
           shippingPrice: 0,
@@ -63,6 +67,11 @@ class TransactionService {
           address: "Marsemoon",
           items: carts,
           createdAt: DateTime.now(),
+
+          // Tambahkan informasi user
+          userId: currentUser.id,
+          userName: currentUser.name,
+          userEmail: currentUser.email,
         );
 
         await _firestore
@@ -84,10 +93,14 @@ class TransactionService {
     }
   }
 
-  Future<List<TransactionModel>> fetchTransactionsFromFirestore() async {
+  Future<List<TransactionModel>> fetchTransactionsFromFirestore(
+      UserModel currentUser) async {
     try {
-      QuerySnapshot snapshot =
-          await _firestore.collection('transactions').get();
+      // Ambil transaksi berdasarkan user ID
+      QuerySnapshot snapshot = await _firestore
+          .collection('transactions')
+          .where('userId', isEqualTo: currentUser.id)
+          .get();
 
       return snapshot.docs.map((doc) {
         return TransactionModel.fromJson(doc.data() as Map<String, dynamic>);

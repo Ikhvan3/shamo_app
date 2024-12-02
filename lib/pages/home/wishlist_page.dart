@@ -1,23 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shamo_app/providers/wishlist_provider.dart';
-import 'package:shamo_app/widgets/wishlist_card.dart';
 
+import '../../models/product_model.dart';
 import '../../providers/page_provider.dart';
+import '../../providers/wishlist_provider.dart';
 import '../../theme.dart';
+import '../../widgets/wishlist_card.dart';
 
-class WishlistPage extends StatefulWidget {
-  const WishlistPage({super.key});
-
-  @override
-  State<WishlistPage> createState() => _WishlistPageState();
-}
-
-class _WishlistPageState extends State<WishlistPage> {
+class WishlistPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WishlistProvider wishlistProvider = Provider.of<WishlistProvider>(context);
     PageProvider pageProvider = Provider.of<PageProvider>(context);
+
     Widget header() {
       return AppBar(
         backgroundColor: primaryTextColor,
@@ -43,48 +38,35 @@ class _WishlistPageState extends State<WishlistPage> {
                 'assets/image_wishlist.png',
                 width: 74,
               ),
-              SizedBox(
-                height: 23,
-              ),
+              SizedBox(height: 23),
               Text(
-                'You don\'t have dream shoes?',
+                'You don\'t have favorite items?',
                 style: subtitleTextStyle.copyWith(
                   fontSize: 16,
                   fontWeight: medium,
                 ),
               ),
-              SizedBox(
-                height: 12,
-              ),
+              SizedBox(height: 12),
               Text(
-                'Let\'s find your favorite shoes',
+                'Let\'s find your favorite items',
                 style: subtitleTextStyle,
               ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                height: 44,
-                child: TextButton(
-                  onPressed: () {
-                    pageProvider.currentIndex = 0;
-                  },
-                  style: TextButton.styleFrom(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 24,
-                    ),
-                    backgroundColor: backgroundColor8,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+              SizedBox(height: 20),
+              TextButton(
+                onPressed: () {
+                  pageProvider.currentIndex = 0;
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: backgroundColor8,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Text(
-                    'Explore Store',
-                    style: primaryTextStyle.copyWith(
-                      fontSize: 16,
-                      fontWeight: medium,
-                    ),
+                ),
+                child: Text(
+                  'Explore Store',
+                  style: primaryTextStyle.copyWith(
+                    fontSize: 16,
+                    fontWeight: medium,
                   ),
                 ),
               ),
@@ -95,30 +77,33 @@ class _WishlistPageState extends State<WishlistPage> {
     }
 
     Widget content() {
-      return Expanded(
-        child: Container(
-          color: backgroundColor1,
-          child: ListView(
-            padding: EdgeInsets.symmetric(
-              horizontal: defaultMargin,
+      return StreamBuilder<List<ProductModel>>(
+        stream: wishlistProvider.loadWishlist,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return emptyWishlist();
+          }
+
+          return Expanded(
+            child: Container(
+              color: backgroundColor1,
+              child: ListView(
+                padding: EdgeInsets.symmetric(horizontal: defaultMargin),
+                children: snapshot.data!.map((product) {
+                  print('Creating WishListCard for: ${product.name}');
+                  return WishListCard(product);
+                }).toList(),
+              ),
             ),
-            children: wishlistProvider.wishlist != null
-                ? wishlistProvider.wishlist
-                    .map(
-                      (product) => WishListCard(product),
-                    )
-                    .toList()
-                : [],
-          ),
-        ),
+          );
+        },
       );
     }
 
     return Column(
       children: [
         header(),
-        // emptyWishlist(),
-        wishlistProvider.wishlist.length == 0 ? emptyWishlist() : content(),
+        content(),
       ],
     );
   }

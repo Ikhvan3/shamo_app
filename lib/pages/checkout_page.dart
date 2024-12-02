@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:midtrans_snap/midtrans_snap.dart';
 import 'package:midtrans_snap/models.dart';
 import 'package:provider/provider.dart';
+import 'package:shamo_app/models/user_model.dart';
 import 'package:shamo_app/providers/auth_provider.dart';
 import 'package:shamo_app/providers/cart_provider.dart';
 import 'package:shamo_app/providers/transaction_provider.dart';
@@ -48,6 +49,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
             await transactionProvider.checkout(
           cartProvider.carts,
           cartProvider.totalPrice(),
+          authProvider.user,
         );
 
         if (checkoutResult != null && checkoutResult['snap_token'] != null) {

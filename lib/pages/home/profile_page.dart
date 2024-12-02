@@ -1,34 +1,38 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shamo_app/pages/sign_in_page.dart';
 
 import '../../models/user_model.dart';
-import '../../providers/auth_provider.dart';
-import '../../providers/order_provider.dart';
+
+import '../../providers/auth_provider.dart' as local_auth;
 import '../../theme.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    AuthProvider authProvider = Provider.of<AuthProvider>(context);
-    UserModel user = authProvider.user;
-    OrderProvider orderProvider = Provider.of<OrderProvider>(context);
+    return Consumer<local_auth.AuthProvider>(
+      builder: (context, authProvider, child) {
+        UserModel user = authProvider.user;
 
-    return Scaffold(
-      // Tambahkan Scaffold sebagai parent widget
-      body: Column(
-        children: [
-          _buildHeader(context, user, authProvider),
-          _buildContent(context, orderProvider),
-        ],
-      ),
+        return Scaffold(
+          body: Column(
+            children: [
+              _buildHeader(context, user, authProvider),
+              _buildContent(context),
+            ],
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildHeader(
-      BuildContext context, UserModel user, AuthProvider authProvider) {
+  Widget _buildHeader(BuildContext context, UserModel user,
+      local_auth.AuthProvider authProvider) {
     return Container(
       padding: EdgeInsets.all(defaultMargin),
       color: primaryTextColor,
@@ -89,7 +93,9 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildContent(BuildContext context, OrderProvider orderProvider) {
+  Widget _buildContent(
+    BuildContext context,
+  ) {
     return Expanded(
       child: Container(
         width: double.infinity,
@@ -110,7 +116,10 @@ class ProfilePage extends StatelessWidget {
               Navigator.pushNamed(context, '/edit-profile');
             }),
             _buildMenuItem('Your Order', () {
-              _handleOrderTap(context, orderProvider);
+              Navigator.pushNamed(
+                context,
+                '/view-order',
+              );
             }),
             _buildMenuItem('Help', () {}),
             SizedBox(height: 30),
@@ -149,22 +158,43 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  void _handleOrderTap(BuildContext context, OrderProvider orderProvider) {
-    if (orderProvider.orders.isNotEmpty) {
-      Navigator.pushNamed(
-        context,
-        '/view-order',
-        arguments: orderProvider.orders,
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('No orders found')),
-      );
-    }
-  }
+  // void _handleOrderTap(BuildContext context) async {
+  //   try {
+  //     // Dapatkan user saat ini
+  //     User? currentUser = FirebaseAuth.instance.currentUser;
+
+  //     // Query pesanan berdasarkan user ID
+  //     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+  //         .collection('transactions')
+  //         .where('userId', isEqualTo: currentUser)
+  //         .orderBy('timestamp', descending: true)
+  //         .get();
+
+  //     // Cek apakah ada pesanan
+  //     if (querySnapshot.docs.isEmpty) {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text('Tidak ada pesanan')),
+  //       );
+  //       return;
+  //     }
+
+  //     // Navigasi ke halaman daftar pesanan dengan membawa data
+  //     Navigator.pushNamed(
+  //       context,
+  //       '/view-order',
+  //       arguments: querySnapshot.docs
+  //           .map((doc) => {'id': doc.id, ...doc.data() as Map<String, dynamic>})
+  //           .toList(),
+  //     );
+  //   } catch (e) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('Gagal mengambil pesanan: ${e.toString()}')),
+  //     );
+  //   }
+  // }
 
   Future<void> _handleLogout(
-      BuildContext context, AuthProvider authProvider) async {
+      BuildContext context, local_auth.AuthProvider authProvider) async {
     final bool confirm = await showDialog(
           context: context,
           builder: (context) => AlertDialog(

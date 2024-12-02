@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
 import '../providers/transaction_provider.dart';
 import '../widgets/order_card.dart';
 import '../theme.dart';
@@ -13,11 +14,18 @@ class ViewMyOrderPage extends StatefulWidget {
 
 class _ViewMyOrderPageState extends State<ViewMyOrderPage> {
   @override
+  @override
   void initState() {
     super.initState();
-    // Fetch data saat halaman dimulai
+
+    // Dapatkan pengguna saat ini dari AuthProvider
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final currentUser =
+        authProvider.user; // Asumsikan ada properti user di AuthProvider
+
+    // Panggil fetchTransactions dengan currentUser
     Provider.of<TransactionProvider>(context, listen: false)
-        .fetchTransactions();
+        .fetchTransactions(currentUser: currentUser);
   }
 
   @override

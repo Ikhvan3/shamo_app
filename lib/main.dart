@@ -15,10 +15,10 @@ import 'package:shamo_app/providers/product_provider.dart';
 import 'package:shamo_app/providers/transaction_provider.dart';
 import 'package:shamo_app/providers/wishlist_provider.dart';
 import 'firebase_options.dart';
-import 'models/order_model.dart';
+
 import 'pages/sign_up_page.dart';
 import 'pages/viewmyorder_page.dart';
-import 'providers/order_provider.dart';
+
 import 'providers/scan_provider.dart';
 import 'services/wishlist_service.dart';
 
@@ -76,6 +76,8 @@ class MyApp extends StatelessWidget {
               wishlistService: WishlistService(),
               authProvider: auth,
             );
+            // Update user in WishlistProvider
+            wishlist.setUser(auth.user);
             return wishlist;
           },
         ),
@@ -91,9 +93,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => ScannerProvider(),
         ),
-        ChangeNotifierProvider(
-          create: (context) => OrderProvider()..fetchOrders(),
-        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -106,9 +105,7 @@ class MyApp extends StatelessWidget {
           '/cart': (context) => CartPage(),
           '/checkout': (context) => CheckoutPage(),
           '/checkout-success': (context) => CheckoutSuccessPage(),
-          '/view-order': (context) => ViewMyOrderPage(
-                orders: Provider.of<OrderProvider>(context).orders,
-              ),
+          '/view-order': (context) => const ViewMyOrderPage(),
         },
       ),
     );

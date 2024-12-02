@@ -28,7 +28,7 @@ class WishlistProvider with ChangeNotifier {
   }
 
   // Stream to load wishlist
-  Stream<List<ProductModel>> loadWishlist() {
+  Stream<List<ProductModel>> get loadWishlist {
     if (_user == null) {
       throw Exception('User not set');
     }
