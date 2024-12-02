@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../models/order_model.dart';
-import '../providers/order_provider.dart';
-import '../theme.dart';
+import '../providers/transaction_provider.dart';
 import '../widgets/order_card.dart';
+import '../theme.dart';
 
 class ViewMyOrderPage extends StatefulWidget {
-  final List<OrderModel> orders; // Tambahkan parameter orders
-
-  const ViewMyOrderPage({Key? key, required this.orders}) : super(key: key);
+  const ViewMyOrderPage({Key? key}) : super(key: key);
 
   @override
   State<ViewMyOrderPage> createState() => _ViewMyOrderPageState();
@@ -19,29 +15,15 @@ class _ViewMyOrderPageState extends State<ViewMyOrderPage> {
   @override
   void initState() {
     super.initState();
-    Provider.of<OrderProvider>(context, listen: false).fetchOrders();
+    // Fetch data saat halaman dimulai
+    Provider.of<TransactionProvider>(context, listen: false)
+        .fetchTransactions();
   }
 
   @override
   Widget build(BuildContext context) {
-    final orderProvider = Provider.of<OrderProvider>(context);
-    final orders = orderProvider.orders;
-
-    if (orders.isEmpty) {
-      return Scaffold(
-        appBar: AppBar(
-          backgroundColor: primaryTextColor,
-          centerTitle: true,
-          title: Text('Order Details', style: subtitleTextStyle),
-        ),
-        body: Center(
-          child: Text(
-            'No orders found.',
-            style: TextStyle(fontSize: 16, color: Colors.grey),
-          ),
-        ),
-      );
-    }
+    final transactionProvider = Provider.of<TransactionProvider>(context);
+    final transactions = transactionProvider.transactions;
 
     return Scaffold(
       appBar: AppBar(
@@ -49,13 +31,20 @@ class _ViewMyOrderPageState extends State<ViewMyOrderPage> {
         centerTitle: true,
         title: Text('Order Details', style: subtitleTextStyle),
       ),
-      body: ListView.builder(
-        itemCount: orders.length,
-        itemBuilder: (context, index) {
-          final order = orders[index];
-          return OrderCard(order: order);
-        },
-      ),
+      body: transactions.isEmpty
+          ? Center(
+              child: Text(
+                'No orders found.',
+                style: TextStyle(fontSize: 16, color: Colors.grey),
+              ),
+            )
+          : ListView.builder(
+              itemCount: transactions.length,
+              itemBuilder: (context, index) {
+                final transaction = transactions[index];
+                return OrderCard(order: transaction);
+              },
+            ),
     );
   }
 }

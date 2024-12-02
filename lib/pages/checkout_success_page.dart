@@ -4,9 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:shamo_app/theme.dart';
 import 'package:uuid/uuid.dart';
 
-import '../models/order_model.dart';
+import '../models/transaction_model.dart';
 import '../providers/cart_provider.dart';
-import '../providers/order_provider.dart';
 
 class CheckoutSuccessPage extends StatelessWidget {
   const CheckoutSuccessPage({super.key});
@@ -14,21 +13,6 @@ class CheckoutSuccessPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CartProvider cartProvider = Provider.of<CartProvider>(context);
-    OrderProvider orderProvider = Provider.of<OrderProvider>(context);
-
-    var uuid = Uuid();
-    String orderId = uuid.v4();
-    // Assume the order has been placed and add to OrderProvider
-    OrderModel order = OrderModel(
-      orderId: orderId,
-      items: cartProvider.carts,
-      totalPrice: cartProvider.totalPrice(),
-      status: 'settlement',
-      paymentMethod: 'Midtrans',
-      orderDate: DateTime.now(),
-      deliveryAddress: 'Semarang', // Replace with real address
-    );
-    orderProvider.addOrder(order); // Store the order after successful payment
 
     PreferredSizeWidget header() {
       return AppBar(
@@ -104,7 +88,7 @@ class CheckoutSuccessPage extends StatelessWidget {
                   Navigator.pushNamed(
                     context,
                     '/view-order',
-                    arguments: order, // Pass order object here
+                    // Pass order object here
                   );
                 },
                 style: TextButton.styleFrom(

@@ -1,21 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:shamo_app/services/transaction_service.dart';
 import '../models/cart_model.dart';
+import '../models/transaction_model.dart';
+import '../services/transaction_service.dart';
 
 class TransactionProvider with ChangeNotifier {
+  List<TransactionModel> _transactions = [];
+  List<TransactionModel> get transactions => _transactions;
+
+  final TransactionService _transactionService = TransactionService();
+
+  Future<void> fetchTransactions({bool forceRefresh = false}) async {
+    try {
+      if (_transactions.isEmpty || forceRefresh) {
+        _transactions =
+            await _transactionService.fetchTransactionsFromFirestore();
+        notifyListeners();
+      }
+    } catch (e) {
+      print('Kesalahan saat mengambil transaksi dari Firestore: $e');
+    }
+  }
+
   Future<Map<String, dynamic>?> checkout(
       List<CartModel> carts, double totalPrice) async {
     try {
-      if (carts.isEmpty) {
-        print('Keranjang kosong');
-        return null;
-      }
-
-      // Metode ini harus mengembalikan String? karena snapToken adalah String?
       Map<String, dynamic>? snapToken =
-          await TransactionService().checkout(carts, totalPrice);
+          await _transactionService.checkout(carts, totalPrice);
 
       if (snapToken != null) {
+        // Fetch transaksi terbaru dari Firestore setelah checkout berhasil
+        await fetchTransactions(forceRefresh: true);
         notifyListeners();
       }
 
