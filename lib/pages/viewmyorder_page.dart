@@ -1,17 +1,32 @@
 import 'package:flutter/material.dart';
-import '../models/cart_model.dart';
+import 'package:provider/provider.dart';
+
 import '../models/order_model.dart';
+import '../providers/order_provider.dart';
 import '../theme.dart';
-import '../widgets/checkout_card.dart';
+import '../widgets/order_card.dart';
 
-class ViewMyOrderPage extends StatelessWidget {
-  const ViewMyOrderPage({super.key, required this.orders});
+class ViewMyOrderPage extends StatefulWidget {
+  final List<OrderModel> orders; // Tambahkan parameter orders
 
-  final List<OrderModel> orders; // Menerima daftar pesanan
+  const ViewMyOrderPage({Key? key, required this.orders}) : super(key: key);
+
+  @override
+  State<ViewMyOrderPage> createState() => _ViewMyOrderPageState();
+}
+
+class _ViewMyOrderPageState extends State<ViewMyOrderPage> {
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<OrderProvider>(context, listen: false).fetchOrders();
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Menambahkan pengecekan untuk null
+    final orderProvider = Provider.of<OrderProvider>(context);
+    final orders = orderProvider.orders;
+
     if (orders.isEmpty) {
       return Scaffold(
         appBar: AppBar(
@@ -28,65 +43,18 @@ class ViewMyOrderPage extends StatelessWidget {
       );
     }
 
-    // Jika ada pesanan, tampilkan daftar pesanan
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryTextColor,
         centerTitle: true,
         title: Text('Order Details', style: subtitleTextStyle),
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: defaultMargin),
-        child: ListView.builder(
-          itemCount: orders.length, // Menampilkan daftar pesanan
-          itemBuilder: (context, index) {
-            final order = orders[index];
-
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 16.0),
-              child: Card(
-                elevation: 4,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(defaultMargin),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Order ID
-                      Text('Order ID: ${order.orderId}',
-                          style: subtitleTextStyle),
-                      SizedBox(height: 10),
-                      // List of items in the order
-                      Text('Items:', style: subtitleTextStyle),
-                      SizedBox(height: 10),
-                      // List of cart items in the order
-                      Column(
-                        children: order.items.map((cartItem) {
-                          return CheckoutCard(
-                              cartItem); // Reusing the CheckoutCard widget
-                        }).toList(),
-                      ),
-                      // Total price
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Total:', style: subtitleTextStyle),
-                          Text('Rp${order.totalPrice}', style: priceTextStyle),
-                        ],
-                      ),
-                      SizedBox(height: 5),
-                      // Order status
-                      Text('Status: ${order.status}', style: subtitleTextStyle),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
+      body: ListView.builder(
+        itemCount: orders.length,
+        itemBuilder: (context, index) {
+          final order = orders[index];
+          return OrderCard(order: order);
+        },
       ),
     );
   }

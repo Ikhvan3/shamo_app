@@ -25,16 +25,16 @@ class OrderService {
     }
   }
 
-  // Menambahkan pesanan ke Firestore
   Future<void> addOrder({required User user, required OrderModel order}) async {
     try {
       await firestore.collection('orders').add({
-        'userId': user.uid, // Ganti id dengan uid
-        'userName': user.displayName,
-        'userEmail': user.email,
-        'orderDetails': order.toJson(), // Pastikan OrderModel memiliki toJson
-        'orderStatus': order.status,
-        'orderDate': DateTime.now().toString(),
+        'userId': user.uid,
+        'orderId': order.orderId,
+        'items': order.items.map((item) => item.toJson()).toList(),
+        'totalPrice': order.totalPrice,
+        'status': order.status,
+        'paymentMethod': order.paymentMethod,
+        'orderDate': order.orderDate.toIso8601String(),
         'deliveryAddress': order.deliveryAddress,
       }).then((value) {
         print('Pesanan Berhasil Ditambahkan');
