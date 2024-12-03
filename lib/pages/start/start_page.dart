@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'startpage1.dart';
+import 'startpage2.dart';
 
 class StartScreen extends StatefulWidget {
   @override
@@ -25,7 +26,7 @@ class _StartScreenState extends State<StartScreen> {
           StartPage1(
               onNext: () => _pageController.nextPage(
                   duration: Duration(milliseconds: 300), curve: Curves.ease)),
-          Page2(
+          StartPage2(
               onNext: () => _pageController.nextPage(
                   duration: Duration(milliseconds: 300), curve: Curves.ease)),
           Page3(),
