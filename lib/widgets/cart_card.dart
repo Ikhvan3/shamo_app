@@ -15,14 +15,16 @@ class CartCard extends StatelessWidget {
     CartProvider cartProvider = Provider.of<CartProvider>(context);
     return Container(
       margin: EdgeInsets.only(
-        top: defaultMargin,
+        top: 20,
+        right: defaultMargin,
+        left: defaultMargin,
       ),
       padding: EdgeInsets.symmetric(
         horizontal: 16,
         vertical: 10,
       ),
       decoration: BoxDecoration(
-        color: HijauTextColor,
+        color: backgroundColor7,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -34,8 +36,8 @@ class CartCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                   child: Image.network(
                     cart.product!.galleries![0].url!,
-                    width: 60,
-                    height: 60,
+                    width: 70,
+                    height: 70,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       print('Error loading image: $error');
@@ -80,13 +82,13 @@ class CartCard extends StatelessWidget {
                   children: [
                     Text(
                       cart.product!.name!,
-                      style: primaryTextStyle.copyWith(
+                      style: subtitleTextStyle.copyWith(
                         fontWeight: semiBold,
                       ),
                     ),
                     Text(
-                      '\$${cart.product!.price}',
-                      style: priceTextStyle,
+                      '\Rp${cart.product!.price}',
+                      style: priceTextStyle2,
                     ),
                   ],
                 ),
@@ -107,7 +109,7 @@ class CartCard extends StatelessWidget {
                   ),
                   Text(
                     cart.quantity.toString(),
-                    style: primaryTextStyle.copyWith(
+                    style: subtitleTextStyle.copyWith(
                       fontWeight: medium,
                     ),
                   ),

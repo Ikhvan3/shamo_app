@@ -329,13 +329,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   children: [
                     Text(
                       'Total',
-                      style: priceTextStyle.copyWith(
+                      style: hijauTextStyle.copyWith(
                         fontWeight: semiBold,
                       ),
                     ),
                     Text(
                       '\Rp${cartProvider.totalPrice()}',
-                      style: priceTextStyle.copyWith(
+                      style: hijauTextStyle.copyWith(
                         fontWeight: semiBold,
                       ),
                     ),

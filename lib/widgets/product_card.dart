@@ -136,7 +136,7 @@ class ProductCard extends StatelessWidget {
                   ),
                   Text(
                     '\Rp${product.price}',
-                    style: priceTextStyle.copyWith(
+                    style: priceTextStyle2.copyWith(
                       fontSize: 14,
                       fontWeight: medium,
                     ),

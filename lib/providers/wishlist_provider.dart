@@ -75,4 +75,9 @@ class WishlistProvider with ChangeNotifier {
 
     return await _wishlistService.isInWishlist(user: _user, product: product);
   }
+
+  // Metode untuk memeriksa produk di wishlist tanpa async
+  bool isProductInWishlist(ProductModel product) {
+    return _wishlist.any((p) => p.id == product.id);
+  }
 }

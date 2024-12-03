@@ -7,6 +7,7 @@ Color primaryColor = Color(0xff6C5ECF);
 Color secondaryColor = Color.fromARGB(255, 56, 190, 174);
 Color alertColor = Color(0xffED6363);
 Color priceColor = Color(0xff2C96F1);
+Color priceColor2 = Color.fromARGB(255, 0, 177, 71);
 Color backgroundColor1 = Color.fromARGB(255, 206, 222, 212);
 Color backgroundColor2 = Color.fromARGB(255, 61, 193, 111);
 Color backgroundColor3 = Color.fromARGB(255, 154, 220, 179);
@@ -45,6 +46,9 @@ TextStyle subtitleTextStyle = GoogleFonts.poppins(
 
 TextStyle priceTextStyle = GoogleFonts.poppins(
   color: priceColor,
+);
+TextStyle priceTextStyle2 = GoogleFonts.poppins(
+  color: priceColor2,
 );
 
 TextStyle purpleTextStyle = GoogleFonts.poppins(

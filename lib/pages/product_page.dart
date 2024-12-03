@@ -27,6 +27,7 @@ class _ProductPageState extends State<ProductPage> {
 
     // Pastikan user sudah di-set di WishlistProvider
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkWishlistStatus();
       AuthProvider authProvider =
           Provider.of<AuthProvider>(context, listen: false);
       WishlistProvider wishlistProvider =
@@ -38,7 +39,9 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   // Method untuk memeriksa status wishlist
-  Future<void> _checkWishlistStatus(WishlistProvider wishlistProvider) async {
+  void _checkWishlistStatus() async {
+    final wishlistProvider =
+        Provider.of<WishlistProvider>(context, listen: false);
     bool isInWishlist = await wishlistProvider.isWishlist(widget.product);
     setState(() {
       _isInWishlist = isInWishlist;
@@ -335,11 +338,10 @@ class _ProductPageState extends State<ProductPage> {
                     onTap: () async {
                       await wishlistProvider.toggleWishlist(widget.product);
 
-                      // Periksa ulang status wishlist setelah perubahan
-                      bool isInWishlist =
-                          await wishlistProvider.isWishlist(widget.product);
+                      // Update state lokal sesuai status di provider
                       setState(() {
-                        _isInWishlist = isInWishlist;
+                        _isInWishlist = wishlistProvider
+                            .isProductInWishlist(widget.product);
                       });
 
                       // Tampilkan snackbar
@@ -392,7 +394,7 @@ class _ProductPageState extends State<ProductPage> {
                   ),
                   Text(
                     '\Rp${widget.product.price}',
-                    style: priceTextStyle.copyWith(
+                    style: primaryTextStyle.copyWith(
                       fontSize: 16,
                       fontWeight: semiBold,
                     ),
@@ -561,16 +563,7 @@ class _ProductPageState extends State<ProductPage> {
               content(wishlistProvider),
             ],
           ),
-          bottomNavigationBar:
-              //Container(
-              //   decoration: BoxDecoration(
-              //     color: backgroundColor2,
-              //     borderRadius: BorderRadius.vertical(
-              //       top: Radius.circular(24),
-              //     ),
-              //   ),
-              //   child:
-              Padding(
+          bottomNavigationBar: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [

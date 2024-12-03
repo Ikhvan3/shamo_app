@@ -31,7 +31,7 @@ class ChatTile extends StatelessWidget {
             Row(
               children: [
                 Image.asset(
-                  'assets/icon_shop_logo.png',
+                  'assets/logo_fresh.png',
                   width: 54,
                 ),
                 SizedBox(

@@ -18,6 +18,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String query = '';
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +55,24 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             IconButton(
-              icon: Icon(Icons.qr_code_scanner),
+              icon: Container(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color.fromARGB(255, 255, 255, 255)
+                          .withOpacity(0.3), // Warna bayangan
+                      blurRadius: 4, // Tingkat blur
+                      spreadRadius: 4, // Radius penyebaran
+                      // offset: Offset(0, 5), // Posisi bayangan
+                    ),
+                  ],
+                ),
+                child: Icon(
+                  Icons.qr_code_scanner_rounded,
+                  size: 38,
+                  color: backgroundColor8,
+                ),
+              ),
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => ScannerPage()),
@@ -69,7 +87,7 @@ class _HomePageState extends State<HomePage> {
       return Container(
         margin: EdgeInsets.symmetric(
           horizontal: defaultMargin,
-          vertical: 10,
+          vertical: 25,
         ),
         padding: EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
@@ -77,6 +95,7 @@ class _HomePageState extends State<HomePage> {
           borderRadius: BorderRadius.circular(12),
         ),
         child: TextField(
+          controller: _searchController,
           onChanged: (value) {
             setState(() {
               query = value.toLowerCase();
@@ -87,6 +106,17 @@ class _HomePageState extends State<HomePage> {
             border: InputBorder.none,
             hintStyle: subtitleTextStyle,
             icon: Icon(Icons.search, color: subtitleTextStyle.color),
+            suffixIcon: query.isNotEmpty
+                ? IconButton(
+                    icon: Icon(Icons.clear, color: subtitleTextStyle.color),
+                    onPressed: () {
+                      setState(() {
+                        query = '';
+                        _searchController.clear();
+                      });
+                    },
+                  )
+                : null,
           ),
           style: primaryTextStyle,
         ),
@@ -107,7 +137,7 @@ class _HomePageState extends State<HomePage> {
 
       return Container(
         margin: EdgeInsets.only(
-          top: defaultMargin,
+          top: 10,
         ),
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
@@ -240,12 +270,33 @@ class _HomePageState extends State<HomePage> {
         return Center(child: CircularProgressIndicator());
       }
 
+      // Filter produk berdasarkan kategori dan query
+      List filtered = productProvider.products.where((product) {
+        bool matchesCategory =
+            productProvider.selectedCategory == 'Semua Sayuran' ||
+                product.category?.name?.toLowerCase() ==
+                    productProvider.selectedCategory.toLowerCase();
+        bool matchesQuery = query.isEmpty ||
+            product.name!.toLowerCase().contains(query.toLowerCase());
+
+        return matchesCategory && matchesQuery;
+      }).toList();
+
+      // Jika hasil filter kosong, tampilkan pesan
+      if (filtered.isEmpty) {
+        return Center(
+          child: Text(
+            'Produk tidak ditemukan.',
+            style: primaryTextStyle,
+          ),
+        );
+      }
+
+      // Tampilkan daftar produk hasil filter
       return Container(
         margin: EdgeInsets.only(top: 14),
         child: Column(
-          children: productProvider.products
-              .map((product) => ProductTile(product))
-              .toList(),
+          children: filtered.map((product) => ProductTile(product)).toList(),
         ),
       );
     }

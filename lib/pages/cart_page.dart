@@ -107,7 +107,7 @@ class CartPage extends StatelessWidget {
                   ),
                   Text(
                     '\Rp${cartProvider.totalPrice()}',
-                    style: priceTextStyle.copyWith(
+                    style: priceTextStyle2.copyWith(
                       fontSize: 16,
                       fontWeight: semiBold,
                     ),

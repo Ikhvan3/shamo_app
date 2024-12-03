@@ -38,7 +38,7 @@ class WishListCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(
             12,
           ),
-          color: backgroundColor3,
+          color: backgroundColor7,
         ),
         child: Row(
           children: [
@@ -88,13 +88,13 @@ class WishListCard extends StatelessWidget {
                 children: [
                   Text(
                     product.name!,
-                    style: primaryTextStyle.copyWith(
+                    style: subtitleTextStyle.copyWith(
                       fontWeight: semiBold,
                     ),
                   ),
                   Text(
                     '\Rp${product.price}',
-                    style: priceTextStyle,
+                    style: priceTextStyle2,
                   ),
                 ],
               ),

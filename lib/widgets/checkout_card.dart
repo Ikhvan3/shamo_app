@@ -15,7 +15,7 @@ class CheckoutCard extends StatelessWidget {
         horizontal: 12,
       ),
       decoration: BoxDecoration(
-        color: backgroundColor4,
+        color: primaryTextColor,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -25,8 +25,8 @@ class CheckoutCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               child: Image.network(
                 cart.product!.galleries![0].url!,
-                width: 60,
-                height: 60,
+                width: 70,
+                height: 70,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
                   print('Error loading image: $error');
@@ -59,7 +59,7 @@ class CheckoutCard extends StatelessWidget {
               children: [
                 Text(
                   cart.product!.name!,
-                  style: primaryTextStyle.copyWith(
+                  style: subtitleTextStyle.copyWith(
                     fontWeight: semiBold,
                   ),
                   overflow: TextOverflow.ellipsis,
@@ -68,8 +68,8 @@ class CheckoutCard extends StatelessWidget {
                   height: 2,
                 ),
                 Text(
-                  '\$${cart.product!.price}',
-                  style: priceTextStyle,
+                  '\Rp${cart.product!.price}',
+                  style: priceTextStyle2,
                 ),
               ],
             ),
@@ -79,9 +79,8 @@ class CheckoutCard extends StatelessWidget {
           ),
           Text(
             '${cart.quantity} Items',
-            style: secondaryTextStyle.copyWith(
-              fontSize: 12,
-            ),
+            style:
+                subtitleTextStyle.copyWith(fontSize: 12, fontWeight: semiBold),
           )
         ],
       ),
