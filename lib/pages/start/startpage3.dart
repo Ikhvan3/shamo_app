@@ -49,33 +49,33 @@ class StartPage3 extends StatelessWidget {
                         height: 60,
                       ),
                       Text(
-                        "Pengiriman Sayuran ke\nRumah Anda",
+                        "Scan QR Code untuk Informasi Lengkap Sayuran Anda",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.bold),
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 20),
                       Text(
-                        "Pesan sayuran dari mana saja dan\ndapatkan pengiriman ke rumah Anda.",
+                        "Dengan memindai kode QR pada kemasan produk, Anda bisa mengetahui nutrisi dan manfaat sayuran secara lengkap",
                         textAlign: TextAlign.center,
                         style: subtitleTextStyle.copyWith(
                           fontWeight: semiBold,
-                          fontSize: 13,
+                          fontSize: 10,
                         ),
                       ),
                       SizedBox(
-                        height: 80,
+                        height: 20,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           _buildIndicator(false),
-                          _buildIndicator(true),
                           _buildIndicator(false),
+                          _buildIndicator(true),
                         ],
                       ),
                       SizedBox(
-                        height: 40,
+                        height: 10,
                       ),
                       ElevatedButton(
                         onPressed: () {
