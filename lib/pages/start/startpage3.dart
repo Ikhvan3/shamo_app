@@ -20,22 +20,22 @@ class StartPage3 extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: backgroundColor3,
+      backgroundColor: backgroundColor9,
       body: Column(
         children: [
           SizedBox(
-            height: 220,
+            height: 110,
           ),
           Container(
             child: Stack(
               children: [
                 Image.asset(
-                  'assets/image_start2.png',
+                  'assets/logo_scan.png',
                   width: 700,
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 260),
-                  height: 376,
+                  margin: EdgeInsets.only(top: 310),
+                  height: 436,
                   width: 397,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.vertical(
