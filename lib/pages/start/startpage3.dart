@@ -20,22 +20,22 @@ class StartPage3 extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: backgroundColor9,
+      backgroundColor: backgroundColor3,
       body: Column(
         children: [
           SizedBox(
-            height: 110,
+            height: 220,
           ),
           Container(
             child: Stack(
               children: [
                 Image.asset(
-                  'assets/logo_scan.png',
+                  'assets/image_start2.png',
                   width: 700,
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 310),
-                  height: 436,
+                  margin: EdgeInsets.only(top: 260),
+                  height: 376,
                   width: 397,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.vertical(
@@ -49,33 +49,33 @@ class StartPage3 extends StatelessWidget {
                         height: 60,
                       ),
                       Text(
-                        "Scan QR Code untuk Informasi Lengkap Sayuran Anda",
+                        "Pengiriman Sayuran ke\nRumah Anda",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                            fontSize: 25, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 20),
                       Text(
-                        "Dengan memindai kode QR pada kemasan produk, Anda bisa mengetahui nutrisi dan manfaat sayuran secara lengkap",
+                        "Pesan sayuran dari mana saja dan\ndapatkan pengiriman ke rumah Anda.",
                         textAlign: TextAlign.center,
                         style: subtitleTextStyle.copyWith(
                           fontWeight: semiBold,
-                          fontSize: 10,
+                          fontSize: 13,
                         ),
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 80,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           _buildIndicator(false),
-                          _buildIndicator(false),
                           _buildIndicator(true),
+                          _buildIndicator(false),
                         ],
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 40,
                       ),
                       ElevatedButton(
                         onPressed: () {
