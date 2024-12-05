@@ -17,6 +17,10 @@ import 'package:shamo_app/providers/wishlist_provider.dart';
 import 'firebase_options.dart';
 
 import 'pages/sign_up_page.dart';
+
+import 'pages/start/startpage1.dart';
+import 'pages/start/startpage2.dart';
+import 'pages/start/startpage3.dart';
 import 'pages/viewmyorder_page.dart';
 
 import 'providers/scan_provider.dart';
@@ -98,6 +102,9 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         routes: {
           '/': (context) => SplashPage(),
+          '/start1': (context) => StartPage1(),
+          '/start2': (context) => StartPage2(),
+          '/start3': (context) => StartPage3(),
           '/sign-in': (context) => SignInPage(),
           '/sign-up': (context) => SignUpPage(),
           '/home': (context) => MainPage(),
