@@ -54,7 +54,7 @@ class StartPage1 extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 25, fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 30),
                       Text(
                         "Solusi sehat untuk kebutuhan sayuran segar Anda.",
                         textAlign: TextAlign.center,
@@ -64,7 +64,7 @@ class StartPage1 extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height: 80,
+                        height: 75,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -89,8 +89,11 @@ class StartPage1 extends StatelessWidget {
                           ),
                         ),
                         style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           padding: EdgeInsets.symmetric(
-                              horizontal: 50, vertical: 15),
+                              horizontal: 130, vertical: 15),
                           backgroundColor: backgroundColor8,
                         ),
                       ),

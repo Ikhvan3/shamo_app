@@ -31,7 +31,6 @@ class StartPage3 extends StatelessWidget {
               children: [
                 Image.asset(
                   'assets/logo_scan.png',
-                  width: 700,
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 310),
@@ -46,7 +45,7 @@ class StartPage3 extends StatelessWidget {
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 60,
+                        height: 50,
                       ),
                       Text(
                         "Scan QR Code untuk Informasi Lengkap Sayuran Anda",
@@ -55,16 +54,19 @@ class StartPage3 extends StatelessWidget {
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 20),
-                      Text(
-                        "Dengan memindai kode QR pada kemasan produk, Anda bisa mengetahui nutrisi dan manfaat sayuran secara lengkap",
-                        textAlign: TextAlign.center,
-                        style: subtitleTextStyle.copyWith(
-                          fontWeight: semiBold,
-                          fontSize: 10,
+                      Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Text(
+                          "Dengan memindai kode QR pada kemasan produk,\nAnda bisa mengetahui nutrisi dan manfaat sayuran secara lengkap",
+                          textAlign: TextAlign.center,
+                          style: subtitleTextStyle.copyWith(
+                            fontWeight: semiBold,
+                            fontSize: 12,
+                          ),
                         ),
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 50,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -75,7 +77,7 @@ class StartPage3 extends StatelessWidget {
                         ],
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 30,
                       ),
                       ElevatedButton(
                         onPressed: () {
@@ -89,8 +91,11 @@ class StartPage3 extends StatelessWidget {
                           ),
                         ),
                         style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           padding: EdgeInsets.symmetric(
-                              horizontal: 50, vertical: 15),
+                              horizontal: 110, vertical: 15),
                           backgroundColor: backgroundColor8,
                         ),
                       ),
@@ -109,8 +114,11 @@ class StartPage3 extends StatelessWidget {
                           ),
                         ),
                         style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           padding: EdgeInsets.symmetric(
-                              horizontal: 50, vertical: 15),
+                              horizontal: 110, vertical: 15),
                           backgroundColor: backgroundColor8,
                         ),
                       ),

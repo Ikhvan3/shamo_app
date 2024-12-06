@@ -64,7 +64,7 @@ class StartPage2 extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height: 80,
+                        height: 70,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -89,8 +89,11 @@ class StartPage2 extends StatelessWidget {
                           ),
                         ),
                         style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           padding: EdgeInsets.symmetric(
-                              horizontal: 50, vertical: 15),
+                              horizontal: 130, vertical: 15),
                           backgroundColor: backgroundColor8,
                         ),
                       ),
