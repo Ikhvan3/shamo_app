@@ -4,6 +4,9 @@ import 'package:shamo_app/theme.dart';
 class StartPage3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    bool isFirstActive = false;
+    bool isSecondActive = false;
+    bool isThirdActive = true;
     Widget _buildIndicator(bool isActive) {
       return AnimatedContainer(
         duration: Duration(milliseconds: 300),
@@ -20,11 +23,11 @@ class StartPage3 extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: backgroundColor9,
+      backgroundColor: backgroundColor3,
       body: Column(
         children: [
           SizedBox(
-            height: 110,
+            height: 70,
           ),
           Container(
             child: Stack(
@@ -33,7 +36,7 @@ class StartPage3 extends StatelessWidget {
                   'assets/logo_scan.png',
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 310),
+                  margin: EdgeInsets.only(top: 350),
                   height: 436,
                   width: 397,
                   decoration: BoxDecoration(
@@ -71,9 +74,9 @@ class StartPage3 extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          _buildIndicator(false),
-                          _buildIndicator(false),
-                          _buildIndicator(true),
+                          _buildIndicator(isFirstActive),
+                          _buildIndicator(isSecondActive),
+                          _buildIndicator(isThirdActive),
                         ],
                       ),
                       SizedBox(

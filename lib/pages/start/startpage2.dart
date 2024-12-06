@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:shamo_app/theme.dart';
 
-class StartPage2 extends StatelessWidget {
+class StartPage2 extends StatefulWidget {
+  @override
+  State<StartPage2> createState() => _StartPage2State();
+}
+
+class _StartPage2State extends State<StartPage2> {
+  bool isFirstActive = false;
+  bool isSecondActive = true;
+  bool isThirdActive = false;
   @override
   Widget build(BuildContext context) {
     Widget _buildIndicator(bool isActive) {
       return AnimatedContainer(
         duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
         margin: EdgeInsets.symmetric(
           horizontal: 2,
         ),
@@ -69,9 +78,9 @@ class StartPage2 extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          _buildIndicator(false),
-                          _buildIndicator(true),
-                          _buildIndicator(false),
+                          _buildIndicator(isFirstActive),
+                          _buildIndicator(isSecondActive),
+                          _buildIndicator(isThirdActive),
                         ],
                       ),
                       SizedBox(
@@ -79,7 +88,16 @@ class StartPage2 extends StatelessWidget {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, '/start3');
+                          // Update state indikator sebelum navigasi
+                          setState(() {
+                            isSecondActive = false;
+                            isThirdActive = true;
+                          });
+
+                          // Tambak delay untuk memastikan animasi terlihat
+                          Future.delayed(Duration(milliseconds: 300), () {
+                            Navigator.pushNamed(context, '/start3');
+                          });
                         },
                         child: Text(
                           "Next",
