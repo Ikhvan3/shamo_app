@@ -18,7 +18,7 @@ class _StartPage1State extends State<StartPage1>
     // Inisialisasi AnimationController
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2), // Durasi animasi
+      duration: const Duration(seconds: 1), // Durasi animasi
     );
 
     // Definisikan animasi linear untuk garis biru
@@ -52,10 +52,13 @@ class _StartPage1State extends State<StartPage1>
         animation: _lineAnimation,
         builder: (context, child) {
           return Container(
+            decoration: BoxDecoration(
+              color: Colors.green,
+              borderRadius: BorderRadius.circular(10),
+            ),
             margin: const EdgeInsets.symmetric(horizontal: 2),
             width: 25 * _lineAnimation.value,
             height: 4,
-            color: Colors.green,
           );
         },
       );
@@ -76,15 +79,16 @@ class _StartPage1State extends State<StartPage1>
     }
 
     Widget _buildIndicator3() {
-      return ClipRRect(
-        child: Container(
-          margin: EdgeInsets.symmetric(
-            horizontal: 2,
-          ),
-          width: 7, // Panjang total garis putih
-          height: 4,
+      return Container(
+        decoration: BoxDecoration(
           color: Colors.grey,
+          borderRadius: BorderRadius.circular(10),
         ),
+        margin: EdgeInsets.symmetric(
+          horizontal: 2,
+        ),
+        width: 7, // Panjang total garis putih
+        height: 4,
       );
     }
 

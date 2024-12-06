@@ -6,25 +6,88 @@ class StartPage2 extends StatefulWidget {
   State<StartPage2> createState() => _StartPage2State();
 }
 
-class _StartPage2State extends State<StartPage2> {
-  bool isFirstActive = false;
-  bool isSecondActive = true;
-  bool isThirdActive = false;
+class _StartPage2State extends State<StartPage2>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _lineAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    // Inisialisasi AnimationController
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1), // Durasi animasi
+    );
+
+    // Definisikan animasi linear untuk garis biru
+    _lineAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+
+    // Mulai animasi ketika halaman dimuat
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    Widget _buildIndicator(bool isActive) {
-      return AnimatedContainer(
-        duration: Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
+    Widget _buildIndicator2() {
+      // Tambahkan pengecekan saat membangun animasi
+      if (!_controller.isAnimating && !_controller.isCompleted) {
+        return SizedBox(
+          width: 25, // Lebar default
+          height: 4,
+          child: Container(color: transparentColor),
+        );
+      }
+
+      return AnimatedBuilder(
+        animation: _lineAnimation,
+        builder: (context, child) {
+          return Container(
+            decoration: BoxDecoration(
+              color: Colors.green,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            margin: const EdgeInsets.symmetric(horizontal: 2),
+            width: 25 * _lineAnimation.value,
+            height: 4,
+          );
+        },
+      );
+    }
+
+    Widget _buildIndicator1() {
+      return Container(
+        decoration: BoxDecoration(
+          color: Colors.grey,
+          borderRadius: BorderRadius.circular(10),
+        ),
         margin: EdgeInsets.symmetric(
           horizontal: 2,
         ),
+        width: 7, // Panjang total garis putih
         height: 4,
-        width: isActive ? 25 : 7,
+      );
+    }
+
+    Widget _buildIndicator3() {
+      return Container(
         decoration: BoxDecoration(
-          color: isActive ? Colors.green : Colors.grey,
+          color: Colors.grey,
           borderRadius: BorderRadius.circular(10),
         ),
+        margin: EdgeInsets.symmetric(
+          horizontal: 2,
+        ),
+        width: 7, // Panjang total garis putih
+        height: 4,
       );
     }
 
@@ -78,9 +141,9 @@ class _StartPage2State extends State<StartPage2> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          _buildIndicator(isFirstActive),
-                          _buildIndicator(isSecondActive),
-                          _buildIndicator(isThirdActive),
+                          _buildIndicator1(),
+                          _buildIndicator2(),
+                          _buildIndicator3(),
                         ],
                       ),
                       SizedBox(
@@ -88,16 +151,7 @@ class _StartPage2State extends State<StartPage2> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          // Update state indikator sebelum navigasi
-                          setState(() {
-                            isSecondActive = false;
-                            isThirdActive = true;
-                          });
-
-                          // Tambak delay untuk memastikan animasi terlihat
-                          Future.delayed(Duration(milliseconds: 300), () {
-                            Navigator.pushNamed(context, '/start3');
-                          });
+                          Navigator.pushNamed(context, '/start3');
                         },
                         child: Text(
                           "Next",
@@ -124,5 +178,30 @@ class _StartPage2State extends State<StartPage2> {
         ],
       ),
     );
+  }
+}
+
+class LinePainter extends CustomPainter {
+  final double progress;
+
+  LinePainter(this.progress);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = backgroundColor8
+      ..strokeWidth = 5
+      ..style = PaintingStyle.stroke;
+
+    canvas.drawLine(
+      Offset(0, size.height / 2),
+      Offset(size.width * progress, size.height / 2),
+      paint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
   }
 }
