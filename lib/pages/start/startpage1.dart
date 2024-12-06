@@ -90,7 +90,7 @@ class StartPage1 extends StatelessWidget {
                         ),
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(20),
                           ),
                           padding: EdgeInsets.symmetric(
                               horizontal: 130, vertical: 15),

@@ -92,7 +92,7 @@ class StartPage3 extends StatelessWidget {
                         ),
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(20),
                           ),
                           padding: EdgeInsets.symmetric(
                               horizontal: 110, vertical: 15),
@@ -110,16 +110,16 @@ class StartPage3 extends StatelessWidget {
                           "Get Started",
                           style: TextStyle(
                             fontSize: 15,
-                            color: backgroundColor7,
+                            color: HijauTuaTextColor,
                           ),
                         ),
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(20),
                           ),
                           padding: EdgeInsets.symmetric(
-                              horizontal: 110, vertical: 15),
-                          backgroundColor: backgroundColor8,
+                              horizontal: 105, vertical: 15),
+                          backgroundColor: backgroundColor3,
                         ),
                       ),
                     ],
