@@ -67,31 +67,6 @@ class _ProductPageState extends State<ProductPage> {
 
   int currentIndex = 0;
 
-  void _showLoginPrompt(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Login Required'),
-        content: Text(
-            'You need to create an account or log in to use this feature.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.pushNamed(
-                  context, '/register'); // Adjust to your registration page
-            },
-            child: Text('Register'),
-          ),
-        ],
-      ),
-    );
-  }
-
   void showSuccessDialog() {
     showDialog(
       context: context,
@@ -212,6 +187,7 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
+    AuthProvider authProvider = Provider.of<AuthProvider>(context);
     WishlistProvider wishlistProvider = Provider.of<WishlistProvider>(context);
     Widget indicator(int index) {
       return Container(
@@ -361,6 +337,11 @@ class _ProductPageState extends State<ProductPage> {
                   ),
                   GestureDetector(
                     onTap: () async {
+                      if (!authProvider.isLoggedIn) {
+                        showLoginRequiredDialog();
+                        return;
+                      }
+
                       await wishlistProvider.toggleWishlist(widget.product);
 
                       // Update state lokal sesuai status di provider
@@ -510,12 +491,16 @@ class _ProductPageState extends State<ProductPage> {
     Widget buttonchat() {
       return GestureDetector(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => DetailChatPage(widget.product),
-            ),
-          );
+          if (!authProvider.isLoggedIn) {
+            showLoginRequiredDialog();
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DetailChatPage(widget.product),
+              ),
+            );
+          }
         },
         child: Container(
           width: 54,
@@ -537,14 +522,20 @@ class _ProductPageState extends State<ProductPage> {
           child: TextButton(
             onPressed: () async {
               try {
-                // Pastikan user sudah login
-                if (authProvider.user != null) {
+                if (!authProvider.isLoggedIn) {
+                  showLoginRequiredDialog();
+                } else {
                   await cartProvider.addCart(widget.product);
                   showSuccessDialog();
-                } else {
-                  // Tampilkan dialog untuk login jika belum login
-                  showLoginRequiredDialog();
                 }
+                // // Pastikan user sudah login
+                // if (authProvider.user != null) {
+                //   await cartProvider.addCart(widget.product);
+                //   showSuccessDialog();
+                // } else {
+                //   // Tampilkan dialog untuk login jika belum login
+                //   showLoginRequiredDialog();
+                // }
               } catch (e) {
                 // Tampilkan error jika gagal menambahkan ke cart
                 ScaffoldMessenger.of(context).showSnackBar(
