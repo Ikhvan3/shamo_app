@@ -69,12 +69,12 @@ class _HomePageState extends State<HomePage> {
                 IconButton(
                   icon: Container(
                     child: Image.asset(
-                      'assets/icon_chat.png',
+                      'assets/icon_cart.png',
                       width: 20,
                     ),
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/chat');
+                    Navigator.pushNamed(context, '/cart');
                   },
                 ),
               ],
@@ -126,6 +126,50 @@ class _HomePageState extends State<HomePage> {
                 : null,
           ),
           style: primaryTextStyle,
+        ),
+      );
+    }
+
+    Widget banner() {
+      return Container(
+        margin: EdgeInsets.only(left: 30, right: 30, top: 30),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: backgroundColor10,
+        ),
+        height: 145,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(
+                  "Segar\nuntukmu!",
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w700,
+                    color: backgroundColor7,
+                  ),
+                ),
+                SizedBox(
+                  width:
+                      175, // Menambahkan lebar tetap untuk menempatkan gambar
+                ),
+              ],
+            ),
+            Positioned(
+              right: 30,
+              bottom: 24, // Menempatkan gambar di posisi yang diinginkan
+              child: Transform.scale(
+                scale: 1.9, // Mengatur skala gambar
+                child: Image.asset(
+                  "assets/image_bgtomat.png",
+                  height: 90, // Menyesuaikan tinggi gambar dengan container
+                ),
+              ),
+            ),
+          ],
         ),
       );
     }
@@ -317,6 +361,7 @@ class _HomePageState extends State<HomePage> {
       // Jika "Semua Sayuran" dan tidak ada query, tampilkan layout lengkap
       return Column(
         children: [
+          banner(),
           popularProductsTitle(),
           popularProducts(),
           newArrivalTitle(),

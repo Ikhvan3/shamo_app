@@ -17,6 +17,7 @@ Color backgroundColor6 = Color(0xffECEDEF);
 Color backgroundColor7 = Color.fromARGB(255, 255, 255, 255);
 Color backgroundColor8 = Color.fromARGB(255, 0, 177, 71);
 Color backgroundColor9 = Color.fromARGB(255, 178, 216, 193);
+Color backgroundColor10 = Color.fromARGB(255, 99, 190, 134);
 Color primaryTextColor = Color.fromARGB(255, 255, 255, 255);
 Color secondaryTextColor = Color(0xff999999);
 Color HijauTextColor = Color.fromARGB(255, 0, 121, 48);
