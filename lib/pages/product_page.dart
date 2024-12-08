@@ -141,7 +141,23 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
-  void showLoginRequiredDialog() {
+  void showLoginRequiredDialog(String actionType) {
+    String message;
+
+    switch (actionType) {
+      case 'wishlist':
+        message = 'Please login to add items to wishlist';
+        break;
+      case 'message':
+        message = 'Please login to message';
+        break;
+      case 'cart':
+        message = 'Please login to add items to cart';
+        break;
+      default:
+        message = 'Please login to access this feature';
+    }
+
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) => AlertDialog(
@@ -154,7 +170,7 @@ class _ProductPageState extends State<ProductPage> {
           ),
         ),
         content: Text(
-          'Please login to add items to cart',
+          message,
           style: secondaryTextStyle,
         ),
         actions: [
@@ -338,7 +354,7 @@ class _ProductPageState extends State<ProductPage> {
                   GestureDetector(
                     onTap: () async {
                       if (!authProvider.isLoggedIn) {
-                        showLoginRequiredDialog();
+                        showLoginRequiredDialog('wishlist');
                         return;
                       }
 
@@ -492,7 +508,7 @@ class _ProductPageState extends State<ProductPage> {
       return GestureDetector(
         onTap: () {
           if (!authProvider.isLoggedIn) {
-            showLoginRequiredDialog();
+            showLoginRequiredDialog('message');
           } else {
             Navigator.push(
               context,
@@ -523,7 +539,7 @@ class _ProductPageState extends State<ProductPage> {
             onPressed: () async {
               try {
                 if (!authProvider.isLoggedIn) {
-                  showLoginRequiredDialog();
+                  showLoginRequiredDialog('cart');
                 } else {
                   await cartProvider.addCart(widget.product);
                   showSuccessDialog();
