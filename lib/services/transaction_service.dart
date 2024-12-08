@@ -9,7 +9,7 @@ import '../models/transaction_model.dart';
 import '../models/user_model.dart'; // Tambahkan import user model
 
 class TransactionService {
-  String baseUrl = 'http://192.168.150.195:8000/api';
+  String baseUrl = 'http://192.168.1.15:8000/api';
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 

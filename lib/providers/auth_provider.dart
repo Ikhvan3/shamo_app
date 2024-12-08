@@ -6,17 +6,37 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'cart_provider.dart';
 
 class AuthProvider with ChangeNotifier {
+  static final UserModel _guestUser = UserModel(
+    id: 0,
+    name: 'Guest',
+    email: 'guest@example.com',
+    username: 'guest',
+    token: null,
+  );
+
   late UserModel _user;
   String? _token;
   final CartProvider cartProvider;
 
-  AuthProvider({required this.cartProvider});
+  AuthProvider({required this.cartProvider}) {
+    _user = _guestUser;
+  }
 
   UserModel get user => _user;
   String? get token => _token;
 
   set user(UserModel user) {
     _user = user;
+    notifyListeners();
+  }
+
+  bool get isLoggedIn {
+    return _user != _guestUser && _token != null;
+  }
+
+  void loginAsGuest() {
+    _user = _guestUser;
+    _token = null;
     notifyListeners();
   }
 
@@ -92,6 +112,7 @@ class AuthProvider with ChangeNotifier {
       return true;
     } catch (e) {
       print('Error during login: $e');
+      loginAsGuest();
       return false;
     }
   }
@@ -102,6 +123,8 @@ class AuthProvider with ChangeNotifier {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.remove('token');
       _token = null;
+
+      _user = _guestUser;
 
       notifyListeners();
     } catch (e) {

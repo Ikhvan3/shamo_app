@@ -26,60 +26,112 @@ class _HomePageState extends State<HomePage> {
     UserModel user = authProvider.user;
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
     Widget header() {
+      AuthProvider authProvider = Provider.of<AuthProvider>(context);
+
+      // Tambahkan kondisi untuk pengecekan login
+      Widget headerContent = authProvider.isLoggedIn
+          ? Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Hallo, ${authProvider.user.name}',
+                        style: transparentColorText.copyWith(
+                          fontSize: 24,
+                          fontWeight: semiBold,
+                        ),
+                      ),
+                      Text(
+                        '@${authProvider.user.name}',
+                        style: subtitleTextStyle.copyWith(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  icon: Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color.fromARGB(255, 255, 255, 255)
+                              .withOpacity(0.3),
+                          blurRadius: 4,
+                          spreadRadius: 4,
+                        ),
+                      ],
+                    ),
+                    child: Icon(
+                      Icons.qr_code_scanner_rounded,
+                      size: 38,
+                      color: backgroundColor8,
+                    ),
+                  ),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => ScannerPage()),
+                  ),
+                ),
+              ],
+            )
+          : Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Hallo, Guest',
+                        style: transparentColorText.copyWith(
+                          fontSize: 24,
+                          fontWeight: semiBold,
+                        ),
+                      ),
+                      Text(
+                        'Selamat datang di Toko Sayur',
+                        style: subtitleTextStyle.copyWith(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  icon: Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color.fromARGB(255, 255, 255, 255)
+                              .withOpacity(0.3),
+                          blurRadius: 4,
+                          spreadRadius: 4,
+                        ),
+                      ],
+                    ),
+                    child: Icon(
+                      Icons.qr_code_scanner_rounded,
+                      size: 38,
+                      color: backgroundColor8,
+                    ),
+                  ),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => ScannerPage()),
+                  ),
+                ),
+              ],
+            );
+
       return Container(
         margin: EdgeInsets.only(
           top: defaultMargin,
           left: defaultMargin,
           right: defaultMargin,
         ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Hallo, ${user.name}',
-                    style: transparentColorText.copyWith(
-                      fontSize: 24,
-                      fontWeight: semiBold,
-                    ),
-                  ),
-                  Text(
-                    '@${user.name}',
-                    style: subtitleTextStyle.copyWith(
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            IconButton(
-              icon: Container(
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color.fromARGB(255, 255, 255, 255)
-                          .withOpacity(0.3), // Warna bayangan
-                      blurRadius: 4, // Tingkat blur
-                      spreadRadius: 4, // Radius penyebaran
-                      // offset: Offset(0, 5), // Posisi bayangan
-                    ),
-                  ],
-                ),
-                child: Icon(
-                  Icons.qr_code_scanner_rounded,
-                  size: 38,
-                  color: backgroundColor8,
-                ),
-              ),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => ScannerPage()),
-              ),
-            ),
-          ],
-        ),
+        child: headerContent,
       );
     }
 
