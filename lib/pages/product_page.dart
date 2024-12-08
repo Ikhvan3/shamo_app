@@ -544,14 +544,6 @@ class _ProductPageState extends State<ProductPage> {
                   await cartProvider.addCart(widget.product);
                   showSuccessDialog();
                 }
-                // // Pastikan user sudah login
-                // if (authProvider.user != null) {
-                //   await cartProvider.addCart(widget.product);
-                //   showSuccessDialog();
-                // } else {
-                //   // Tampilkan dialog untuk login jika belum login
-                //   showLoginRequiredDialog();
-                // }
               } catch (e) {
                 // Tampilkan error jika gagal menambahkan ke cart
                 ScaffoldMessenger.of(context).showSnackBar(

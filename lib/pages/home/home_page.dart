@@ -54,26 +54,15 @@ class _HomePageState extends State<HomePage> {
                 ),
                 IconButton(
                   icon: Container(
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color.fromARGB(255, 255, 255, 255)
-                              .withOpacity(0.3),
-                          blurRadius: 4,
-                          spreadRadius: 4,
-                        ),
-                      ],
-                    ),
                     child: Icon(
-                      Icons.qr_code_scanner_rounded,
-                      size: 38,
+                      Icons.shopping_cart,
+                      size: 32,
                       color: backgroundColor8,
                     ),
                   ),
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => ScannerPage()),
-                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/chat');
+                  },
                 ),
               ],
             )
@@ -101,35 +90,23 @@ class _HomePageState extends State<HomePage> {
                 ),
                 IconButton(
                   icon: Container(
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color.fromARGB(255, 255, 255, 255)
-                              .withOpacity(0.3),
-                          blurRadius: 4,
-                          spreadRadius: 4,
-                        ),
-                      ],
-                    ),
-                    child: Icon(
-                      Icons.qr_code_scanner_rounded,
-                      size: 38,
-                      color: backgroundColor8,
+                    child: Image.asset(
+                      'assets/icon_chat.png',
+                      width: 20,
                     ),
                   ),
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => ScannerPage()),
-                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/chat');
+                  },
                 ),
               ],
             );
 
       return Container(
         margin: EdgeInsets.only(
-          top: defaultMargin,
+          top: 20,
           left: defaultMargin,
-          right: defaultMargin,
+          right: 20,
         ),
         child: headerContent,
       );

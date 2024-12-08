@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shamo_app/pages/cart_page.dart';
 import 'package:shamo_app/pages/home/chat_page.dart';
 import 'package:shamo_app/pages/home/home_page.dart';
 import 'package:shamo_app/pages/home/profile_page.dart';
 import 'package:shamo_app/pages/home/wishlist_page.dart';
 import 'package:shamo_app/providers/page_provider.dart';
 import 'package:shamo_app/theme.dart';
+
+import '../scanner/scan_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -18,16 +21,19 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     PageProvider pageProvider = Provider.of<PageProvider>(context);
+
     Widget cartButton() {
       return FloatingActionButton(
         shape: CircleBorder(),
-        onPressed: () {
-          Navigator.pushNamed(context, '/cart');
-        },
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => ScannerPage()),
+        ),
         backgroundColor: backgroundColor8,
-        child: Image.asset(
-          'assets/icon_cart.png',
-          width: 20,
+        child: Icon(
+          Icons.qr_code_scanner,
+          size: 32,
+          color: Colors.white,
         ),
       );
     }
@@ -67,10 +73,12 @@ class _MainPageState extends State<MainPage> {
               ),
               BottomNavigationBarItem(
                 icon: Padding(
-                  padding: const EdgeInsets.only(right: 50),
+                  padding: const EdgeInsets.only(
+                    right: 50,
+                  ),
                   child: Image.asset(
-                    'assets/icon_chat.png',
-                    width: 20,
+                    'assets/icon_cart.png',
+                    width: 19,
                     color: pageProvider.currentIndex == 1
                         ? backgroundColor8
                         : Color(0xff808191),
@@ -116,7 +124,7 @@ class _MainPageState extends State<MainPage> {
           return HomePage();
           break;
         case 1:
-          return ChatPage();
+          return CartPage();
           break;
         case 2:
           return WishlistPage();
