@@ -67,6 +67,31 @@ class _ProductPageState extends State<ProductPage> {
 
   int currentIndex = 0;
 
+  void _showLoginPrompt(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Login Required'),
+        content: Text(
+            'You need to create an account or log in to use this feature.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(
+                  context, '/register'); // Adjust to your registration page
+            },
+            child: Text('Register'),
+          ),
+        ],
+      ),
+    );
+  }
+
   void showSuccessDialog() {
     showDialog(
       context: context,

@@ -91,9 +91,9 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       Text(
-                        'Selamat datang di Toko Sayur',
+                        'Selamat datang di VeggieFresh',
                         style: subtitleTextStyle.copyWith(
-                          fontSize: 16,
+                          fontSize: 15,
                         ),
                       ),
                     ],
