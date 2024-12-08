@@ -68,9 +68,10 @@ class _HomePageState extends State<HomePage> {
                 ),
                 IconButton(
                   icon: Container(
-                    child: Image.asset(
-                      'assets/icon_cart.png',
-                      width: 20,
+                    child: Icon(
+                      Icons.shopping_cart,
+                      size: 32,
+                      color: backgroundColor8,
                     ),
                   ),
                   onPressed: () {
@@ -130,50 +131,6 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    Widget banner() {
-      return Container(
-        margin: EdgeInsets.only(left: 30, right: 30, top: 30),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: backgroundColor10,
-        ),
-        height: 145,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(
-                  "Segar\nuntukmu!",
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.w700,
-                    color: backgroundColor7,
-                  ),
-                ),
-                SizedBox(
-                  width:
-                      175, // Menambahkan lebar tetap untuk menempatkan gambar
-                ),
-              ],
-            ),
-            Positioned(
-              right: 30,
-              bottom: 24, // Menempatkan gambar di posisi yang diinginkan
-              child: Transform.scale(
-                scale: 1.9, // Mengatur skala gambar
-                child: Image.asset(
-                  "assets/image_bgtomat.png",
-                  height: 90, // Menyesuaikan tinggi gambar dengan container
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
     Widget categories() {
       if (query.isNotEmpty) {
         return SizedBox(); // Sembunyikan kategori saat ada query pencarian
@@ -186,67 +143,155 @@ class _HomePageState extends State<HomePage> {
         'Kacang',
       ];
 
-      return Container(
-        margin: EdgeInsets.only(
-          top: 10,
-        ),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              SizedBox(
-                width: defaultMargin,
-              ),
-              ...categoryList
-                  .map((category) => GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            productProvider.setSelectedCategory(category);
-                          });
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 10,
-                          ),
-                          margin: EdgeInsets.only(
-                            right: 16,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Provider.of<ProductProvider>(context)
-                                        .selectedCategory ==
-                                    category
-                                ? backgroundColor8
-                                : backgroundColor7,
+      return Column(
+        children: [
+          Container(
+            margin: EdgeInsets.only(
+              left: 30,
+              right: 30,
+              top: 5,
+              bottom: 20,
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              gradient: backgroundstarting,
+            ),
+            height: 145,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 15,
+                            top: 40,
                           ),
                           child: Text(
-                            category,
-                            style: Provider.of<ProductProvider>(context)
-                                        .selectedCategory ==
-                                    category
-                                ? primaryTextStyle.copyWith(
-                                    fontSize: 13,
-                                    fontWeight: medium,
-                                  )
-                                : subtitleTextStyle.copyWith(
-                                    fontSize: 13,
-                                    fontWeight: medium,
-                                  ),
+                            "Sayuran segar",
+                            style: primaryTextStyle.copyWith(
+                              fontSize: 20,
+                              fontWeight: bold,
+                            ),
                           ),
                         ),
-                      ))
-                  .toList(),
-            ],
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 15,
+                            top: 5,
+                          ),
+                          child: Text(
+                            "Siap untuk Anda!",
+                            style: primaryTextStyle.copyWith(
+                              fontSize: 14,
+                              fontWeight: bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      width:
+                          165, // Menambahkan lebar tetap untuk menempatkan gambar
+                    ),
+                  ],
+                ),
+                Positioned(
+                  right: 30,
+                  bottom: 30, // Menempatkan gambar di posisi yang diinginkan
+                  child: Transform.scale(
+                    scale: 1.9, // Mengatur skala gambar
+                    child: Container(
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color.fromARGB(255, 74, 74, 74)
+                                .withOpacity(
+                                    0.2), // Warna bayangan dengan transparansi
+                            blurRadius: 8, // Radius blur bayangan
+                            offset: Offset(
+                                2, 2), // Posisi bayangan (horizontal, vertical)
+                          ),
+                        ],
+                      ),
+                      child: Image.asset(
+                        "assets/image_bgtomat.png",
+                        height:
+                            85, // Menyesuaikan tinggi gambar dengan container
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
+          Container(
+            margin: EdgeInsets.only(
+              top: 5,
+            ),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: defaultMargin,
+                  ),
+                  ...categoryList
+                      .map((category) => GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                productProvider.setSelectedCategory(category);
+                              });
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 10,
+                              ),
+                              margin: EdgeInsets.only(
+                                right: 16,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: Provider.of<ProductProvider>(context)
+                                            .selectedCategory ==
+                                        category
+                                    ? backgroundColor8
+                                    : backgroundColor7,
+                              ),
+                              child: Text(
+                                category,
+                                style: Provider.of<ProductProvider>(context)
+                                            .selectedCategory ==
+                                        category
+                                    ? primaryTextStyle.copyWith(
+                                        fontSize: 13,
+                                        fontWeight: medium,
+                                      )
+                                    : subtitleTextStyle.copyWith(
+                                        fontSize: 13,
+                                        fontWeight: medium,
+                                      ),
+                              ),
+                            ),
+                          ))
+                      .toList(),
+                ],
+              ),
+            ),
+          ),
+        ],
       );
     }
 
     Widget popularProductsTitle() {
       return Container(
         margin: EdgeInsets.only(
-          top: defaultMargin,
+          top: 20,
           left: defaultMargin,
           right: defaultMargin,
         ),
@@ -361,7 +406,6 @@ class _HomePageState extends State<HomePage> {
       // Jika "Semua Sayuran" dan tidak ada query, tampilkan layout lengkap
       return Column(
         children: [
-          banner(),
           popularProductsTitle(),
           popularProducts(),
           newArrivalTitle(),

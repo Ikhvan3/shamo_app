@@ -17,7 +17,17 @@ Color backgroundColor6 = Color(0xffECEDEF);
 Color backgroundColor7 = Color.fromARGB(255, 255, 255, 255);
 Color backgroundColor8 = Color.fromARGB(255, 0, 177, 71);
 Color backgroundColor9 = Color.fromARGB(255, 178, 216, 193);
-Color backgroundColor10 = Color.fromARGB(255, 99, 190, 134);
+Color backgroundColor10 = Color.fromARGB(255, 195, 255, 219);
+const LinearGradient backgroundstarting = LinearGradient(
+  begin: Alignment.topLeft,
+  end: Alignment.centerRight,
+  colors: [
+    Color.fromARGB(255, 15, 191, 85),
+    Color.fromARGB(255, 72, 191, 120),
+    Color.fromARGB(255, 157, 222, 182),
+  ],
+  stops: [0.1, 0.5, 1.0],
+);
 Color primaryTextColor = Color.fromARGB(255, 255, 255, 255);
 Color secondaryTextColor = Color(0xff999999);
 Color HijauTextColor = Color.fromARGB(255, 0, 121, 48);
