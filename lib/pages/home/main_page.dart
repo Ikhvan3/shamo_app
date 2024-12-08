@@ -77,7 +77,7 @@ class _MainPageState extends State<MainPage> {
                     right: 50,
                   ),
                   child: Image.asset(
-                    'assets/icon_cart.png',
+                    'assets/icon_chat.png',
                     width: 19,
                     color: pageProvider.currentIndex == 1
                         ? backgroundColor8
@@ -124,7 +124,7 @@ class _MainPageState extends State<MainPage> {
           return HomePage();
           break;
         case 1:
-          return CartPage();
+          return ChatPage();
           break;
         case 2:
           return WishlistPage();

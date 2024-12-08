@@ -33,23 +33,12 @@ class _HomePageState extends State<HomePage> {
           ? Row(
               children: [
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Hallo, ${authProvider.user.name}',
-                        style: transparentColorText.copyWith(
-                          fontSize: 24,
-                          fontWeight: semiBold,
-                        ),
-                      ),
-                      Text(
-                        '@${authProvider.user.name}',
-                        style: subtitleTextStyle.copyWith(
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
+                  child: Text(
+                    'Hallo, ${authProvider.user.name}',
+                    style: transparentColorText.copyWith(
+                      fontSize: 24,
+                      fontWeight: semiBold,
+                    ),
                   ),
                 ),
                 IconButton(
@@ -61,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/chat');
+                    Navigator.pushNamed(context, '/cart');
                   },
                 ),
               ],
@@ -69,23 +58,12 @@ class _HomePageState extends State<HomePage> {
           : Row(
               children: [
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Hallo, Guest',
-                        style: transparentColorText.copyWith(
-                          fontSize: 24,
-                          fontWeight: semiBold,
-                        ),
-                      ),
-                      Text(
-                        'Selamat datang di VeggieFresh',
-                        style: subtitleTextStyle.copyWith(
-                          fontSize: 15,
-                        ),
-                      ),
-                    ],
+                  child: Text(
+                    'Hallo, Guest',
+                    style: transparentColorText.copyWith(
+                      fontSize: 24,
+                      fontWeight: semiBold,
+                    ),
                   ),
                 ),
                 IconButton(

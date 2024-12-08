@@ -77,37 +77,6 @@ class EditProfilePage extends StatelessWidget {
       );
     }
 
-    Widget usernameInput() {
-      return Container(
-        margin: EdgeInsets.only(
-          top: 30,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Username',
-              style: subtitleTextStyle.copyWith(
-                fontSize: 13,
-              ),
-            ),
-            TextFormField(
-              style: subtitleTextStyle,
-              decoration: InputDecoration(
-                hintText: '@${user.username}',
-                hintStyle: subtitleTextStyle,
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: subtitleColor,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
     Widget emailInput() {
       return Container(
         margin: EdgeInsets.only(
@@ -165,7 +134,6 @@ class EditProfilePage extends StatelessWidget {
               ),
             ),
             nameInput(),
-            usernameInput(),
             emailInput(),
           ],
         ),
