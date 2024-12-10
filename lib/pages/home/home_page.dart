@@ -437,13 +437,15 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    return ListView(
-      children: [
-        header(),
-        searchField(),
-        categories(),
-        content(),
-      ],
+    return ShowCaseWidget(
+      builder: (context) => ListView(
+        children: [
+          header(),
+          searchField(),
+          categories(),
+          content(),
+        ],
+      ),
     );
   }
 }
