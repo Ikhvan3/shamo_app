@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shamo_app/theme.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 class StartPage3 extends StatefulWidget {
   @override
@@ -8,6 +9,7 @@ class StartPage3 extends StatefulWidget {
 
 class _StartPage3State extends State<StartPage3>
     with SingleTickerProviderStateMixin {
+  final GlobalKey _searchKey = GlobalKey();
   late AnimationController _controller;
   late Animation<double> _lineAnimation;
 
@@ -176,6 +178,8 @@ class _StartPage3State extends State<StartPage3>
                       ),
                       ElevatedButton(
                         onPressed: () {
+                          ShowCaseWidget.of(context)
+                              .startShowCase([_searchKey]);
                           Navigator.pushNamed(context, '/home');
                         },
                         child: Text(
