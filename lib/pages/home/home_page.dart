@@ -5,6 +5,7 @@ import 'package:shamo_app/providers/product_provider.dart';
 import 'package:shamo_app/theme.dart';
 import 'package:shamo_app/widgets/product_card.dart';
 import 'package:shamo_app/widgets/product_tile.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../providers/auth_provider.dart';
 import '../scanner/scan_page.dart';
@@ -19,6 +20,17 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String query = '';
   final TextEditingController _searchController = TextEditingController();
+
+  final GlobalKey _searchFieldKey = GlobalKey();
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        // Tampilkan ShowcaseView setelah widget di-build
+        ShowCaseWidget.of(context).startShowCase([_searchFieldKey]);
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,41 +104,45 @@ class _HomePageState extends State<HomePage> {
     }
 
     Widget searchField() {
-      return Container(
-        margin: EdgeInsets.symmetric(
-          horizontal: defaultMargin,
-          vertical: 25,
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 16),
-        decoration: BoxDecoration(
-          color: backgroundColor7,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: TextField(
-          controller: _searchController,
-          onChanged: (value) {
-            setState(() {
-              query = value.toLowerCase();
-            });
-          },
-          decoration: InputDecoration(
-            hintText: 'Cari sayuran...',
-            border: InputBorder.none,
-            hintStyle: subtitleTextStyle,
-            icon: Icon(Icons.search, color: subtitleTextStyle.color),
-            suffixIcon: query.isNotEmpty
-                ? IconButton(
-                    icon: Icon(Icons.clear, color: subtitleTextStyle.color),
-                    onPressed: () {
-                      setState(() {
-                        query = '';
-                        _searchController.clear();
-                      });
-                    },
-                  )
-                : null,
+      return Showcase(
+        key: _searchFieldKey,
+        description: 'Cari sayuran favorit Anda di sini!',
+        child: Container(
+          margin: EdgeInsets.symmetric(
+            horizontal: defaultMargin,
+            vertical: 25,
           ),
-          style: primaryTextStyle,
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          decoration: BoxDecoration(
+            color: backgroundColor7,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: TextField(
+            controller: _searchController,
+            onChanged: (value) {
+              setState(() {
+                query = value.toLowerCase();
+              });
+            },
+            decoration: InputDecoration(
+              hintText: 'Cari sayuran...',
+              border: InputBorder.none,
+              hintStyle: subtitleTextStyle,
+              icon: Icon(Icons.search, color: subtitleTextStyle.color),
+              suffixIcon: query.isNotEmpty
+                  ? IconButton(
+                      icon: Icon(Icons.clear, color: subtitleTextStyle.color),
+                      onPressed: () {
+                        setState(() {
+                          query = '';
+                          _searchController.clear();
+                        });
+                      },
+                    )
+                  : null,
+            ),
+            style: primaryTextStyle,
+          ),
         ),
       );
     }

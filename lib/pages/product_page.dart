@@ -321,6 +321,7 @@ class _ProductPageState extends State<ProductPage> {
           color: backgroundColor1,
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // NOTE : HEADER
             Container(
@@ -389,6 +390,20 @@ class _ProductPageState extends State<ProductPage> {
                     ),
                   ),
                 ],
+              ),
+            ),
+
+            Container(
+              margin: EdgeInsets.only(
+                top: 20,
+                left: 30,
+              ),
+              child: Text(
+                'Stok Tersedia: ${widget.product.stock ?? 0}',
+                style: subtitleTextStyle.copyWith(
+                  fontWeight: bold,
+                  fontSize: 15,
+                ),
               ),
             ),
 
