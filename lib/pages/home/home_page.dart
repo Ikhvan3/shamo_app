@@ -364,19 +364,6 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    // Widget newArrivals() {
-    //   return Container(
-    //     margin: EdgeInsets.only(
-    //       top: 14,
-    //     ),
-    //     child: Column(
-    //       children: productProvider.products
-    //           .map((product) => ProductTile(product))
-    //           .toList(),
-    //     ),
-    //   );
-    // }
-
     Widget filteredProducts() {
       if (productProvider.products.isEmpty) {
         return Center(child: CircularProgressIndicator());
