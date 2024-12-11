@@ -19,7 +19,7 @@ class CheckoutSuccessPage extends StatelessWidget {
         backgroundColor: primaryTextColor,
         centerTitle: true,
         title: Text(
-          'Checkout Success',
+          'Checkout Berhasil',
           style: subtitleTextStyle,
         ),
         elevation: 0,
@@ -39,7 +39,7 @@ class CheckoutSuccessPage extends StatelessWidget {
               height: 20,
             ),
             Text(
-              'You made a transaction',
+              'Anda melakukan transaksi',
               style: subtitleTextStyle.copyWith(
                 fontSize: 16,
                 fontWeight: medium,
@@ -49,7 +49,7 @@ class CheckoutSuccessPage extends StatelessWidget {
               height: 12,
             ),
             Text(
-              'Stay at home while we\n prepare your dream shoes',
+              'Tetaplah di rumah sementara kami\nmenyiapkan sayuran impian Anda',
               style: subtitleTextStyle,
               textAlign: TextAlign.center,
             ),
@@ -69,9 +69,9 @@ class CheckoutSuccessPage extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  'Order Other Shoes',
+                  'Pesan Sayuran Lainnya',
                   style: primaryTextStyle.copyWith(
-                    fontSize: 16,
+                    fontSize: 13,
                     fontWeight: medium,
                   ),
                 ),
@@ -98,7 +98,7 @@ class CheckoutSuccessPage extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  'View My Order',
+                  'Lihat Pesanan Saya',
                   style: primaryTextStyle.copyWith(
                     fontSize: 16,
                     fontWeight: medium,

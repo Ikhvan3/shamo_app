@@ -79,7 +79,7 @@ class ChatBubble extends StatelessWidget {
                         height: 4,
                       ),
                       Text(
-                        '\$${product!.price}',
+                        '\Rp${product!.price}',
                         style: priceTextStyle.copyWith(
                           fontWeight: medium,
                         ),

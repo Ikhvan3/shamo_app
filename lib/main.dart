@@ -15,6 +15,7 @@ import 'package:shamo_app/providers/page_provider.dart';
 import 'package:shamo_app/providers/product_provider.dart';
 import 'package:shamo_app/providers/transaction_provider.dart';
 import 'package:shamo_app/providers/wishlist_provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'firebase_options.dart';
 
 import 'pages/sign_up_page.dart';
@@ -35,7 +36,9 @@ void main(List<String> args) async {
       options: DefaultFirebaseOptions.currentPlatform,
     );
 
-    runApp(const MyApp());
+    runApp(ShowCaseWidget(
+      builder: (context) => MyApp(),
+    ));
   } catch (e) {
     print('Error during initialization: $e');
   }
@@ -99,23 +102,25 @@ class MyApp extends StatelessWidget {
           create: (context) => ScannerProvider(),
         ),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        routes: {
-          '/': (context) => SplashPage(),
-          '/start1': (context) => StartPage1(),
-          '/start2': (context) => StartPage2(),
-          '/start3': (context) => StartPage3(),
-          '/sign-in': (context) => SignInPage(),
-          '/sign-up': (context) => SignUpPage(),
-          '/home': (context) => MainPage(),
-          '/edit-profile': (context) => EditProfilePage(),
-          '/cart': (context) => CartPage(),
-          '/chat': (context) => ChatPage(),
-          '/checkout': (context) => CheckoutPage(),
-          '/checkout-success': (context) => CheckoutSuccessPage(),
-          '/view-order': (context) => const ViewMyOrderPage(),
-        },
+      child: ShowCaseWidget(
+        builder: (context) => MaterialApp(
+          debugShowCheckedModeBanner: false,
+          routes: {
+            '/': (context) => SplashPage(),
+            '/start1': (context) => StartPage1(),
+            '/start2': (context) => StartPage2(),
+            '/start3': (context) => StartPage3(),
+            '/sign-in': (context) => SignInPage(),
+            '/sign-up': (context) => SignUpPage(),
+            '/home': (context) => MainPage(),
+            '/edit-profile': (context) => EditProfilePage(),
+            '/cart': (context) => CartPage(),
+            '/chat': (context) => ChatPage(),
+            '/checkout': (context) => CheckoutPage(),
+            '/checkout-success': (context) => CheckoutSuccessPage(),
+            '/view-order': (context) => const ViewMyOrderPage(),
+          },
+        ),
       ),
     );
   }

@@ -42,7 +42,7 @@ class ChatTile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Shoe Store',
+                        'Toko VeggieFresh',
                         style: subtitleTextStyle.copyWith(
                           fontSize: 15,
                         ),

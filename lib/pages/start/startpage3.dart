@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shamo_app/theme.dart';
 import 'package:showcaseview/showcaseview.dart';
 
+import '../home/home_page.dart';
+
 class StartPage3 extends StatefulWidget {
   @override
   State<StartPage3> createState() => _StartPage3State();
@@ -9,7 +11,6 @@ class StartPage3 extends StatefulWidget {
 
 class _StartPage3State extends State<StartPage3>
     with SingleTickerProviderStateMixin {
-  final GlobalKey _searchKey = GlobalKey();
   late AnimationController _controller;
   late Animation<double> _lineAnimation;
 
@@ -178,9 +179,14 @@ class _StartPage3State extends State<StartPage3>
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          ShowCaseWidget.of(context)
-                              .startShowCase([_searchKey]);
-                          Navigator.pushNamed(context, '/home');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => HomePage(
+                                showShowcase: true, // Tambahkan parameter ini
+                              ),
+                            ),
+                          );
                         },
                         child: Text(
                           "Get Started",

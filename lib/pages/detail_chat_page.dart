@@ -45,7 +45,7 @@ class _DetailChatPageState extends State<DetailChatPage> {
         title: Row(
           children: [
             Image.asset(
-              'assets/image_shop_logo_online.png',
+              'assets/logo_fresh.png',
               width: 50,
             ),
             SizedBox(
@@ -55,7 +55,7 @@ class _DetailChatPageState extends State<DetailChatPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Shoe Store',
+                  'Toko VeggieFresh',
                   style: subtitleTextStyle.copyWith(
                     fontWeight: medium,
                     fontSize: 14,
@@ -143,7 +143,7 @@ class _DetailChatPageState extends State<DetailChatPage> {
                     height: 2,
                   ),
                   Text(
-                    '\$${widget.product.price}',
+                    '\Rp${widget.product.price}',
                     style: priceTextStyle.copyWith(
                       fontWeight: medium,
                     ),

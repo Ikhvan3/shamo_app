@@ -8,11 +8,10 @@ import 'package:shamo_app/widgets/product_tile.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 import '../../providers/auth_provider.dart';
-import '../scanner/scan_page.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
+  final bool showShowcase;
+  const HomePage({Key? key, this.showShowcase = false}) : super(key: key);
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -21,13 +20,15 @@ class _HomePageState extends State<HomePage> {
   String query = '';
   final TextEditingController _searchController = TextEditingController();
 
-  final GlobalKey _searchFieldKey = GlobalKey();
+  final GlobalKey _searchShowcaseKey = GlobalKey();
+  @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
-        // Tampilkan ShowcaseView setelah widget di-build
-        ShowCaseWidget.of(context).startShowCase([_searchFieldKey]);
+        if (widget.showShowcase) {
+          ShowCaseWidget.of(context).startShowCase([_searchShowcaseKey]);
+        }
       },
     );
   }
@@ -105,8 +106,12 @@ class _HomePageState extends State<HomePage> {
 
     Widget searchField() {
       return Showcase(
-        key: _searchFieldKey,
+        key: _searchShowcaseKey,
+        title: 'Pencarian Sayuran',
         description: 'Cari sayuran favorit Anda di sini!',
+        showArrow: true, // Tampilkan panah
+        overlayColor: Colors.blue, // Warna overlay
+        overlayOpacity: 0.6, // Opacity overlay
         child: Container(
           margin: EdgeInsets.symmetric(
             horizontal: defaultMargin,
