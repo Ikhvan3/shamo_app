@@ -107,11 +107,7 @@ class _HomePageState extends State<HomePage> {
     Widget searchField() {
       return Showcase(
         key: _searchShowcaseKey,
-
         description: 'Cari sayuran favorit Anda di sini!',
-        showArrow: true, // Tampilkan panah
-        overlayColor: Colors.blue, // Warna overlay
-        overlayOpacity: 0.6, // Opacity overlay
         child: Container(
           margin: EdgeInsets.symmetric(
             horizontal: defaultMargin,
