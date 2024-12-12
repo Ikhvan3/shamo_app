@@ -101,6 +101,10 @@ class _StartPage2State extends State<StartPage2>
           Container(
             child: Stack(
               children: [
+                Image.asset(
+                  'assets/image_start2.png',
+                  width: 700,
+                ),
                 Container(
                   margin: EdgeInsets.only(top: 260),
                   height: 376,
