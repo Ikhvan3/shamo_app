@@ -102,10 +102,6 @@ class _StartPage1State extends State<StartPage1>
           Container(
             child: Stack(
               children: [
-                Image.asset(
-                  'assets/image_start1.png',
-                  width: 600,
-                ),
                 Container(
                   margin: EdgeInsets.only(top: 360),
                   height: 376,
