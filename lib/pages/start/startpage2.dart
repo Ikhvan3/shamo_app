@@ -120,12 +120,6 @@ class _StartPage2State extends State<StartPage2>
                       SizedBox(
                         height: 60,
                       ),
-                      Text(
-                        "Pengiriman Sayuran ke\nRumah Anda",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.bold),
-                      ),
                       SizedBox(height: 20),
                       Text(
                         "Pesan sayuran dari mana saja dan\ndapatkan pengiriman ke rumah Anda.",
