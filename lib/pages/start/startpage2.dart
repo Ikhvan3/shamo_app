@@ -127,14 +127,6 @@ class _StartPage2State extends State<StartPage2>
                             fontSize: 25, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 20),
-                      Text(
-                        "Pesan sayuran dari mana saja dan\ndapatkan pengiriman ke rumah Anda.",
-                        textAlign: TextAlign.center,
-                        style: subtitleTextStyle.copyWith(
-                          fontWeight: semiBold,
-                          fontSize: 13,
-                        ),
-                      ),
                       SizedBox(
                         height: 70,
                       ),
