@@ -123,25 +123,26 @@ class _StartPage1State extends State<StartPage1>
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 60,
+                        height: size.height * 0.08,
                       ),
                       Text(
                         "Selamat Datang di\nVeggieFresh!",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.bold),
+                            fontSize: size.width * 0.06,
+                            fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(height: 30),
+                      SizedBox(height: size.height * 0.04),
                       Text(
                         "Solusi sehat untuk kebutuhan sayuran segar Anda.",
                         textAlign: TextAlign.center,
                         style: subtitleTextStyle.copyWith(
                           fontWeight: semiBold,
-                          fontSize: 13,
+                          fontSize: size.width * 0.035,
                         ),
                       ),
                       SizedBox(
-                        height: 75,
+                        height: size.height * 0.1,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
