@@ -1,5 +1,5 @@
 class AppConfig {
-  static const String baseUrl = 'http://192.168.1.26:8000';
+  static const String baseUrl = 'http://192.168.224.195:8000';
   static const String apiUrl = '$baseUrl/api';
 
   static String getFullImageUrl(String path) {
