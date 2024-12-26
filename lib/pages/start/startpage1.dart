@@ -38,6 +38,9 @@ class _StartPage1State extends State<StartPage1>
 
   @override
   Widget build(BuildContext context) {
+    // Mendapatkan ukuran layar
+    final size = MediaQuery.of(context).size;
+
     Widget _buildIndicator1() {
       // Tambahkan pengecekan saat membangun animasi
       if (!_controller.isAnimating && !_controller.isCompleted) {
@@ -97,7 +100,7 @@ class _StartPage1State extends State<StartPage1>
       body: Column(
         children: [
           SizedBox(
-            height: 120,
+            height: size.height * 0.15,
           ),
           Container(
             child: Stack(
