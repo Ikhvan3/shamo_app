@@ -153,7 +153,7 @@ class _StartPage1State extends State<StartPage1>
                         ],
                       ),
                       SizedBox(
-                        height: 40,
+                        height: size.height * 0.05,
                       ),
                       ElevatedButton(
                         onPressed: () {
@@ -162,7 +162,7 @@ class _StartPage1State extends State<StartPage1>
                         child: Text(
                           "Next",
                           style: TextStyle(
-                            fontSize: 15,
+                            fontSize: size.width * 0.045,
                             color: backgroundColor7,
                           ),
                         ),
@@ -171,7 +171,8 @@ class _StartPage1State extends State<StartPage1>
                             borderRadius: BorderRadius.circular(20),
                           ),
                           padding: EdgeInsets.symmetric(
-                              horizontal: 130, vertical: 15),
+                              horizontal: size.width * 0.3,
+                              vertical: size.height * 0.02),
                           backgroundColor: backgroundColor8,
                         ),
                       ),
