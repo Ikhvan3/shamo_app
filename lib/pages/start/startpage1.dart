@@ -107,12 +107,13 @@ class _StartPage1State extends State<StartPage1>
               children: [
                 Image.asset(
                   'assets/image_start1.png',
-                  width: 600,
+                  width: size.width * 0.8,
+                  height: size.height * 0.4,
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 360),
-                  height: 376,
-                  width: 397,
+                  margin: EdgeInsets.only(top: size.height * 0.45),
+                  height: size.height * 0.5,
+                  width: size.width * 0.9,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.vertical(
                       top: Radius.circular(50),
