@@ -37,6 +37,8 @@ class _StartPage2State extends State<StartPage2>
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     Widget _buildIndicator2() {
       // Tambahkan pengecekan saat membangun animasi
       if (!_controller.isAnimating && !_controller.isCompleted) {
@@ -95,81 +97,82 @@ class _StartPage2State extends State<StartPage2>
       backgroundColor: backgroundColor3,
       body: Column(
         children: [
-          SizedBox(
-            height: 220,
-          ),
-          Container(
+          Expanded(
             child: Stack(
               children: [
                 Image.asset(
                   'assets/image_start2.png',
-                  width: 700,
+                  width: size.width * 1,
+                  height: size.height * 0.7,
                 ),
-                Container(
-                  margin: EdgeInsets.only(top: 260),
-                  height: 376,
-                  width: 397,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(50),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    // margin: EdgeInsets.only(top: 260),
+                    height: size.height * 0.5,
+                    width: size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(50),
+                      ),
+                      color: backgroundColor7,
                     ),
-                    color: backgroundColor7,
-                  ),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 60,
-                      ),
-                      Text(
-                        "Pengiriman Sayuran ke\nRumah Anda",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 20),
-                      Text(
-                        "Pesan sayuran dari mana saja dan\ndapatkan pengiriman ke rumah Anda.",
-                        textAlign: TextAlign.center,
-                        style: subtitleTextStyle.copyWith(
-                          fontWeight: semiBold,
-                          fontSize: 13,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 70,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          _buildIndicator1(),
-                          _buildIndicator2(),
-                          _buildIndicator3(),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 40,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/start3');
-                        },
-                        child: Text(
-                          "Next",
+                    child: Column(
+                      children: [
+                        SizedBox(height: size.height * 0.04),
+                        Text(
+                          "Pengiriman Sayuran ke\nRumah Anda",
+                          textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 15,
-                            color: backgroundColor7,
+                              fontSize: size.width * 0.06,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: size.height * 0.04),
+                        Text(
+                          "Pesan sayuran dari mana saja dan\ndapatkan pengiriman ke rumah Anda.",
+                          textAlign: TextAlign.center,
+                          style: subtitleTextStyle.copyWith(
+                            fontWeight: semiBold,
+                            fontSize: size.width * 0.035,
                           ),
                         ),
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 130, vertical: 15),
-                          backgroundColor: backgroundColor8,
+                        SizedBox(
+                          height: size.height * 0.1,
                         ),
-                      ),
-                    ],
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            _buildIndicator1(),
+                            _buildIndicator2(),
+                            _buildIndicator3(),
+                          ],
+                        ),
+                        SizedBox(
+                          height: size.height * 0.05,
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/start3');
+                          },
+                          child: Text(
+                            "Next",
+                            style: TextStyle(
+                              fontSize: size.width * 0.045,
+                              color: backgroundColor7,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.3,
+                                vertical: size.height * 0.02),
+                            backgroundColor: backgroundColor8,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

@@ -23,11 +23,30 @@ class TransactionProvider with ChangeNotifier {
     }
   }
 
-  Future<Map<String, dynamic>?> checkout(
-      List<CartModel> carts, double totalPrice, UserModel currentUser) async {
+  Future<Map<String, dynamic>?> checkoutCOD(List<CartModel> carts,
+      double totalPrice, UserModel currentUser, String address) async {
     try {
-      Map<String, dynamic>? snapToken =
-          await _transactionService.checkout(carts, totalPrice, currentUser);
+      Map<String, dynamic>? result = await _transactionService.checkoutCOD(
+          carts, totalPrice, currentUser, address);
+
+      if (result != null) {
+        // Refresh daftar transaksi
+        await fetchTransactions(currentUser: currentUser, forceRefresh: true);
+        notifyListeners();
+      }
+
+      return result;
+    } catch (e) {
+      print('Kesalahan di TransactionProvider (COD): $e');
+      return null;
+    }
+  }
+
+  Future<Map<String, dynamic>?> checkout(List<CartModel> carts,
+      double totalPrice, UserModel currentUser, String address) async {
+    try {
+      Map<String, dynamic>? snapToken = await _transactionService.checkout(
+          carts, totalPrice, currentUser, address);
 
       if (snapToken != null) {
         // Fetch transaksi terbaru dari Firestore setelah checkout berhasil

@@ -18,8 +18,8 @@ class TransactionService {
     return prefs.getString('token');
   }
 
-  Future<Map<String, dynamic>?> checkout(
-      List<CartModel> carts, double totalPrice, UserModel currentUser) async {
+  Future<Map<String, dynamic>?> checkoutCOD(List<CartModel> carts,
+      double totalPrice, UserModel currentUser, String address) async {
     var url = Uri.parse('$baseUrl/checkout');
     String? token = await _getToken();
 
@@ -34,7 +34,77 @@ class TransactionService {
     };
 
     var body = jsonEncode({
-      'address': 'Marsemoon',
+      'address': address,
+      'items': carts
+          .map((cart) => {
+                'id': cart.product?.id,
+                'quantity': cart.quantity,
+              })
+          .toList(),
+      'status': "PENDING",
+      'total_price': totalPrice,
+      'shipping_price': 0,
+      'payment_method': "cod", // Ubah payment method menjadi cod
+    });
+
+    try {
+      print('Sending COD request to $url');
+      var response = await http.post(url, headers: headers, body: body);
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+
+        // Generate ID transaksi untuk COD
+        String transactionId = DateTime.now().millisecondsSinceEpoch.toString();
+
+        // Simpan ke Firestore dengan informasi user
+        var transactionData = TransactionModel(
+          id: transactionId,
+          status: "PENDING",
+          totalPrice: totalPrice,
+          shippingPrice: 0,
+          paymentMethod: "cod",
+          address: address,
+          items: carts,
+          createdAt: DateTime.now(),
+          userId: currentUser.id,
+          userName: currentUser.name,
+          userEmail: currentUser.email,
+        );
+
+        await _firestore
+            .collection('transactions')
+            .doc(transactionId)
+            .set(transactionData.toJson());
+
+        return {'transaction_id': transactionId, 'status': 'success'};
+      } else {
+        print('API Error: ${response.body}');
+        return null;
+      }
+    } catch (e) {
+      print('Error during COD checkout: $e');
+      return null;
+    }
+  }
+
+  Future<Map<String, dynamic>?> checkout(List<CartModel> carts,
+      double totalPrice, UserModel currentUser, String address) async {
+    var url = Uri.parse('$baseUrl/checkout');
+    String? token = await _getToken();
+
+    if (token == null) {
+      print('Token tidak ditemukan. Silakan login terlebih dahulu.');
+      return null;
+    }
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    var body = jsonEncode({
+      'address': address,
       'items': carts
           .map((cart) => {
                 'id': cart.product?.id,
@@ -64,7 +134,7 @@ class TransactionService {
           totalPrice: totalPrice,
           shippingPrice: 0,
           paymentMethod: "credit_card",
-          address: "Marsemoon",
+          address: address,
           items: carts,
           createdAt: DateTime.now(),
 

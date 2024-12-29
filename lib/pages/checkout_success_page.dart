@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:shamo_app/theme.dart';
-import 'package:uuid/uuid.dart';
-
-import '../models/transaction_model.dart';
 import '../providers/cart_provider.dart';
 
 class CheckoutSuccessPage extends StatelessWidget {

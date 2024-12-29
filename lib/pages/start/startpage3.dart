@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shamo_app/theme.dart';
-import 'package:showcaseview/showcaseview.dart';
 
 import '../home/home_page.dart';
 
@@ -40,6 +39,8 @@ class _StartPage3State extends State<StartPage3>
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     Widget _buildIndicator3() {
       // Tambahkan pengecekan saat membangun animasi
       if (!_controller.isAnimating && !_controller.isCompleted) {
@@ -98,113 +99,120 @@ class _StartPage3State extends State<StartPage3>
       backgroundColor: backgroundColor3,
       body: Column(
         children: [
-          SizedBox(
-            height: 70,
-          ),
-          Container(
+          Expanded(
             child: Stack(
               children: [
-                Image.asset(
-                  'assets/logo_scan.png',
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 350),
-                  height: 436,
-                  width: 397,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(50),
-                    ),
-                    color: backgroundColor7,
+                Padding(
+                  padding: EdgeInsets.only(bottom: size.height * 0.5),
+                  child: Image.asset(
+                    'assets/logo_scan.png',
+                    width: size.width * 1,
+                    height: size.height * 1,
+                    fit: BoxFit.contain,
                   ),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 50,
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    // margin: EdgeInsets.only(top: 350),
+                    height: size.height * 0.6,
+                    width: size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(50),
                       ),
-                      Text(
-                        "Scan QR Code untuk Informasi Lengkap Sayuran Anda",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Text(
-                          "Dengan memindai kode QR pada kemasan produk,\nAnda bisa mengetahui nutrisi dan manfaat sayuran secara lengkap",
+                      color: backgroundColor7,
+                    ),
+                    child: Column(
+                      children: [
+                        SizedBox(height: size.height * 0.04),
+                        Text(
+                          "Scan QR Code untuk Informasi Lengkap Sayuran Anda",
                           textAlign: TextAlign.center,
-                          style: subtitleTextStyle.copyWith(
-                            fontWeight: semiBold,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 50,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          _buildIndicator1(),
-                          _buildIndicator2(),
-                          _buildIndicator3(),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/sign-up');
-                        },
-                        child: Text(
-                          "Buat Profil",
                           style: TextStyle(
-                            fontSize: 15,
-                            color: backgroundColor7,
-                          ),
+                              fontSize: size.width * 0.06,
+                              fontWeight: FontWeight.bold),
                         ),
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 110, vertical: 15),
-                          backgroundColor: backgroundColor8,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HomePage(
-                                showShowcase: true, // Tambahkan parameter ini
-                              ),
+                        SizedBox(height: size.height * 0.03),
+                        Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Text(
+                            "Dengan memindai kode QR pada kemasan produk,\nAnda bisa mengetahui nutrisi dan manfaat sayuran secara lengkap",
+                            textAlign: TextAlign.center,
+                            style: subtitleTextStyle.copyWith(
+                              fontWeight: semiBold,
+                              fontSize: size.width * 0.030,
                             ),
-                          );
-                        },
-                        child: Text(
-                          "Get Started",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: HijauTuaTextColor,
                           ),
                         ),
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 105, vertical: 15),
-                          backgroundColor: backgroundColor3,
+                        SizedBox(
+                          height: size.height * 0.02,
                         ),
-                      ),
-                    ],
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            _buildIndicator1(),
+                            _buildIndicator2(),
+                            _buildIndicator3(),
+                          ],
+                        ),
+                        SizedBox(
+                          height: size.height * 0.05,
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/sign-up');
+                          },
+                          child: Text(
+                            "Buat Profil",
+                            style: TextStyle(
+                              fontSize: size.width * 0.045,
+                              color: backgroundColor7,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.3,
+                                vertical: size.height * 0.02),
+                            backgroundColor: backgroundColor8,
+                          ),
+                        ),
+                        SizedBox(
+                          height: size.height * 0.02,
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HomePage(
+                                  showShowcase: true, // Tambahkan parameter ini
+                                ),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            "Get Started",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: HijauTuaTextColor,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.3,
+                                vertical: size.height * 0.02),
+                            backgroundColor: backgroundColor3,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

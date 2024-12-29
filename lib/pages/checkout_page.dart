@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:midtrans_snap/midtrans_snap.dart';
 import 'package:midtrans_snap/models.dart';
 import 'package:provider/provider.dart';
-import 'package:shamo_app/models/user_model.dart';
+
 import 'package:shamo_app/providers/auth_provider.dart';
 import 'package:shamo_app/providers/cart_provider.dart';
 import 'package:shamo_app/providers/transaction_provider.dart';
@@ -20,13 +20,101 @@ class CheckoutPage extends StatefulWidget {
 
 class _CheckoutPageState extends State<CheckoutPage> {
   bool isLoading = false;
+  String selectedPaymentMethod = 'cod'; // Default ke COD
+  final TextEditingController addressController = TextEditingController();
+  bool isAddressEntered = false;
+  String savedAddress = '';
+
+  void _showAddAddressDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: backgroundColor3,
+          title: Text(
+            'Tambah Alamat',
+            style: subtitleTextStyle.copyWith(
+              fontSize: 18,
+              fontWeight: semiBold,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: addressController,
+                style: subtitleTextStyle,
+                maxLines: 3,
+                decoration: InputDecoration(
+                  hintText: 'Masukkan alamat lengkap',
+                  hintStyle: subtitleTextStyle.copyWith(
+                    fontSize: 14,
+                    color: Colors.grey,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  filled: true,
+                  fillColor: backgroundColor1,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                addressController.clear();
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'Hapus',
+                style: subtitleTextStyle.copyWith(
+                  color: Colors.red,
+                  fontWeight: medium,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  savedAddress = addressController.text;
+                  isAddressEntered = savedAddress.isNotEmpty;
+                });
+                Navigator.of(context).pop();
+              },
+              style: TextButton.styleFrom(
+                backgroundColor: backgroundColor8,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: Text(
+                'Simpan',
+                style: primaryTextStyle.copyWith(
+                  fontWeight: medium,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    addressController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     CartProvider cartProvider = Provider.of<CartProvider>(context);
-
     TransactionProvider transactionProvider =
         Provider.of<TransactionProvider>(context);
     AuthProvider authProvider = Provider.of<AuthProvider>(context);
+
+    // Pada CheckoutPage, modifikasi method handleCheckout:
 
     handleCheckout() async {
       setState(() {
@@ -43,56 +131,76 @@ class _CheckoutPageState extends State<CheckoutPage> {
         return;
       }
 
-      try {
-        // Proses checkout dan dapatkan snap token
-        Map<String, dynamic>? checkoutResult =
-            await transactionProvider.checkout(
-          cartProvider.carts,
-          cartProvider.totalPrice(),
-          authProvider.user,
+      if (!isAddressEntered) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Silakan masukkan alamat pengiriman')),
         );
+        setState(() {
+          isLoading = false;
+        });
+        return;
+      }
 
-        if (checkoutResult != null && checkoutResult['snap_token'] != null) {
-          String snapToken = checkoutResult['snap_token'];
+      try {
+        if (selectedPaymentMethod == 'cod') {
+          // Proses checkout COD
+          Map<String, dynamic>? result = await transactionProvider.checkoutCOD(
+              cartProvider.carts,
+              cartProvider.totalPrice(),
+              authProvider.user,
+              savedAddress // gunakan alamat yang telah disimpan
+              );
 
-          // Tampilkan halaman Midtrans
-          final result = await Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => MidtransSnap(
-                mode: MidtransEnvironment.sandbox,
-                token: snapToken,
-                midtransClientKey: 'SB-Mid-client-9IcCzu63pO9YgHmi',
-                onPageFinished: (url) => print("Page Finished: $url"),
-                onPageStarted: (url) => print("Page Started: $url"),
-                onResponse: (response) {
-                  print("Payment Response: ${response.toJson()}");
-                  print("Status Code: ${response.statusCode}");
-                  if (response.transactionStatus == 'settlement' ||
-                      response.transactionStatus == 'capture') {
-                    cartProvider.carts.clear();
-                    Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      '/checkout-success',
-                      (route) => false,
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Pembayaran gagal!')),
-                    );
-                  }
-                },
-              ),
-            ),
-          );
-
-          if (result == null) {
-            print('Pembayaran dibatalkan.');
+          if (result != null && result['status'] == 'success') {
+            cartProvider.carts.clear();
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              '/checkout-success',
+              (route) => false,
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Gagal melakukan checkout COD')),
+            );
           }
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Gagal mendapatkan Snap Token')),
-          );
+          // Proses checkout digital (kode yang sudah ada)
+          Map<String, dynamic>? checkoutResult =
+              await transactionProvider.checkout(cartProvider.carts,
+                  cartProvider.totalPrice(), authProvider.user, savedAddress);
+
+          if (checkoutResult != null && checkoutResult['snap_token'] != null) {
+            String snapToken = checkoutResult['snap_token'];
+
+            final result = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MidtransSnap(
+                  mode: MidtransEnvironment.sandbox,
+                  token: snapToken,
+                  midtransClientKey: 'SB-Mid-client-9IcCzu63pO9YgHmi',
+                  onPageFinished: (url) => print("Page Finished: $url"),
+                  onPageStarted: (url) => print("Page Started: $url"),
+                  onResponse: (response) {
+                    print("Payment Response: ${response.toJson()}");
+                    if (response.transactionStatus == 'settlement' ||
+                        response.transactionStatus == 'capture') {
+                      cartProvider.carts.clear();
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        '/checkout-success',
+                        (route) => false,
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Pembayaran gagal!')),
+                      );
+                    }
+                  },
+                ),
+              ),
+            );
+          }
         }
       } catch (e) {
         print('Error in handleCheckout: $e');
@@ -118,17 +226,169 @@ class _CheckoutPageState extends State<CheckoutPage> {
       );
     }
 
+    Widget addressDetails() {
+      return Container(
+        margin: EdgeInsets.only(top: defaultMargin),
+        padding: EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: backgroundColor3,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Detail Alamat',
+                  style: subtitleTextStyle.copyWith(
+                    fontSize: 16,
+                    fontWeight: medium,
+                  ),
+                ),
+                TextButton(
+                  onPressed: _showAddAddressDialog,
+                  style: TextButton.styleFrom(
+                    backgroundColor: backgroundColor8,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  ),
+                  child: Text(
+                    'Tambah Alamat',
+                    style: primaryTextStyle.copyWith(
+                      fontSize: 12,
+                      fontWeight: medium,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 12),
+            if (isAddressEntered) ...[
+              Row(
+                children: [
+                  Column(
+                    children: [
+                      Image.asset(
+                        'assets/icon_store_location.png',
+                        width: 40,
+                      ),
+                      Image.asset(
+                        'assets/icon_line.png',
+                        height: 30,
+                      ),
+                      Image.asset(
+                        'assets/icon_your_addres.png',
+                        width: 40,
+                      ),
+                    ],
+                  ),
+                  SizedBox(width: 12),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Lokasi Toko',
+                        style: subtitleTextStyle.copyWith(
+                          fontSize: 12,
+                          fontWeight: light,
+                        ),
+                      ),
+                      Text(
+                        'Semarang',
+                        style: subtitleTextStyle.copyWith(
+                          fontWeight: medium,
+                        ),
+                      ),
+                      SizedBox(height: defaultMargin),
+                      Text(
+                        'Alamat Anda',
+                        style: subtitleTextStyle.copyWith(
+                          fontSize: 12,
+                          fontWeight: light,
+                        ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        child: Text(
+                          savedAddress,
+                          style: subtitleTextStyle.copyWith(
+                            fontWeight: medium,
+                          ),
+                          overflow: TextOverflow.visible,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ] else
+              Text(
+                'Silakan tambah alamat pengiriman',
+                style: subtitleTextStyle.copyWith(
+                  color: Colors.grey,
+                  fontSize: 14,
+                ),
+              ),
+          ],
+        ),
+      );
+    }
+
+    Widget paymentMethodSelection() {
+      return Container(
+        margin: EdgeInsets.only(top: defaultMargin),
+        padding: EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: backgroundColor3,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Metode Pembayaran',
+              style: subtitleTextStyle.copyWith(
+                fontSize: 16,
+                fontWeight: medium,
+              ),
+            ),
+            SizedBox(height: 12),
+            RadioListTile<String>(
+              title: Text('Cash on Delivery (COD)', style: subtitleTextStyle),
+              value: 'cod',
+              groupValue: selectedPaymentMethod,
+              onChanged: (value) {
+                setState(() {
+                  selectedPaymentMethod = value!;
+                });
+              },
+            ),
+            RadioListTile<String>(
+              title: Text('Pembayaran Digital', style: subtitleTextStyle),
+              value: 'digital',
+              groupValue: selectedPaymentMethod,
+              onChanged: (value) {
+                setState(() {
+                  selectedPaymentMethod = value!;
+                });
+              },
+            ),
+          ],
+        ),
+      );
+    }
+
     Widget content() {
       return ListView(
-        padding: EdgeInsets.symmetric(
-          horizontal: defaultMargin,
-        ),
+        padding: EdgeInsets.symmetric(horizontal: defaultMargin),
         children: [
-          //NOTE : LIST ITEMS
+          // List Items (existing code)
           Container(
-            margin: EdgeInsets.only(
-              top: defaultMargin,
-            ),
+            margin: EdgeInsets.only(top: defaultMargin),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -141,104 +401,19 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 ),
                 Column(
                   children: cartProvider.carts
-                      .map(
-                        (cart) => CheckoutCard(cart),
-                      )
+                      .map((cart) => CheckoutCard(cart))
                       .toList(),
                 ),
               ],
             ),
           ),
 
-          //NOTE : ADDRESS DETAILS
-          Container(
-            margin: EdgeInsets.only(
-              top: defaultMargin,
-            ),
-            padding: EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: backgroundColor3,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Detail Alamat',
-                  style: subtitleTextStyle.copyWith(
-                    fontSize: 16,
-                    fontWeight: medium,
-                  ),
-                ),
-                SizedBox(
-                  height: 12,
-                ),
-                Row(
-                  children: [
-                    Column(
-                      children: [
-                        Image.asset(
-                          'assets/icon_store_location.png',
-                          width: 40,
-                        ),
-                        Image.asset(
-                          'assets/icon_line.png',
-                          height: 30,
-                        ),
-                        Image.asset(
-                          'assets/icon_your_addres.png',
-                          width: 40,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      width: 12,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Lokasi Toko',
-                          style: subtitleTextStyle.copyWith(
-                            fontSize: 12,
-                            fontWeight: light,
-                          ),
-                        ),
-                        Text(
-                          'Semarang',
-                          style: subtitleTextStyle.copyWith(
-                            fontWeight: medium,
-                          ),
-                        ),
-                        SizedBox(
-                          height: defaultMargin,
-                        ),
-                        Text(
-                          'Alamat Anda',
-                          style: subtitleTextStyle.copyWith(
-                            fontSize: 12,
-                            fontWeight: light,
-                          ),
-                        ),
-                        Text(
-                          'Semarang',
-                          style: subtitleTextStyle.copyWith(
-                            fontWeight: medium,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
+          // Address Input
+          addressDetails(),
 
-          //NOTE : PAYMENT SUMMARY
+          // Payment Summary (existing code)
           Container(
-            margin: EdgeInsets.only(
-              top: defaultMargin,
-            ),
+            margin: EdgeInsets.only(top: defaultMargin),
             padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: backgroundColor3,
@@ -254,116 +429,82 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     fontWeight: medium,
                   ),
                 ),
-                SizedBox(
-                  height: 12,
-                ),
+                SizedBox(height: 12),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       'Total Sayuran',
-                      style: subtitleTextStyle.copyWith(
-                        fontSize: 12,
-                      ),
+                      style: subtitleTextStyle.copyWith(fontSize: 12),
                     ),
                     Text(
-                      '${cartProvider.totalItems()} Item',
-                      style: subtitleTextStyle.copyWith(
-                        fontWeight: medium,
-                      ),
+                      '${cartProvider.totalItems()} Items',
+                      style: subtitleTextStyle.copyWith(fontWeight: medium),
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 12,
-                ),
+                SizedBox(height: 12),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       'Harga Sayuran',
-                      style: subtitleTextStyle.copyWith(
-                        fontSize: 12,
-                      ),
+                      style: subtitleTextStyle.copyWith(fontSize: 12),
                     ),
                     Text(
-                      '\Rp${cartProvider.totalPrice()}',
-                      style: subtitleTextStyle.copyWith(
-                        fontWeight: medium,
-                      ),
+                      'Rp${cartProvider.totalPrice()}',
+                      style: subtitleTextStyle.copyWith(fontWeight: medium),
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 12,
-                ),
+                SizedBox(height: 12),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       'Pengiriman',
-                      style: subtitleTextStyle.copyWith(
-                        fontSize: 12,
-                      ),
+                      style: subtitleTextStyle.copyWith(fontSize: 12),
                     ),
                     Text(
                       'Gratis',
-                      style: subtitleTextStyle.copyWith(
-                        fontWeight: medium,
-                      ),
+                      style: subtitleTextStyle.copyWith(fontWeight: medium),
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 11,
-                ),
-                Divider(
-                  thickness: 1,
-                  color: Color(0xff2E3141),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
+                Divider(thickness: 1, color: Color(0xff2E3141)),
+                SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       'Total',
-                      style: hijauTextStyle.copyWith(
-                        fontWeight: semiBold,
-                      ),
+                      style: hijauTextStyle.copyWith(fontWeight: semiBold),
                     ),
                     Text(
-                      '\Rp${cartProvider.totalPrice()}',
-                      style: hijauTextStyle.copyWith(
-                        fontWeight: semiBold,
-                      ),
+                      'Rp${cartProvider.totalPrice()}',
+                      style: hijauTextStyle.copyWith(fontWeight: semiBold),
                     ),
                   ],
                 ),
               ],
             ),
           ),
-          //NOTE : Checkout Button
-          SizedBox(
-            height: defaultMargin,
-          ),
-          Divider(
-            thickness: 1,
-            color: Color(0xff2E3141),
-          ),
+
+          // Payment Method Selection
+          paymentMethodSelection(),
+
+          // Checkout Button
+          SizedBox(height: defaultMargin),
+          Divider(thickness: 1, color: Color(0xff2E3141)),
           isLoading
               ? Container(
-                  margin: EdgeInsets.only(
-                    bottom: 30,
-                  ),
-                  child: LoadingButton())
+                  margin: EdgeInsets.only(bottom: 30),
+                  child: LoadingButton(),
+                )
               : Container(
                   height: 50,
                   width: double.infinity,
-                  margin: EdgeInsets.symmetric(
-                    vertical: defaultMargin,
-                  ),
+                  margin: EdgeInsets.symmetric(vertical: defaultMargin),
                   child: TextButton(
                     onPressed: handleCheckout,
                     style: TextButton.styleFrom(

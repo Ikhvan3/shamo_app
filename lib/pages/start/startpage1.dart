@@ -42,7 +42,6 @@ class _StartPage1State extends State<StartPage1>
     final size = MediaQuery.of(context).size;
 
     Widget _buildIndicator1() {
-      // Tambahkan pengecekan saat membangun animasi
       if (!_controller.isAnimating && !_controller.isCompleted) {
         return SizedBox(
           width: 25, // Lebar default
@@ -73,7 +72,7 @@ class _StartPage1State extends State<StartPage1>
           color: Colors.grey,
           borderRadius: BorderRadius.circular(10),
         ),
-        margin: EdgeInsets.symmetric(
+        margin: const EdgeInsets.symmetric(
           horizontal: 2,
         ),
         width: 7, // Panjang total garis putih
@@ -87,7 +86,7 @@ class _StartPage1State extends State<StartPage1>
           color: Colors.grey,
           borderRadius: BorderRadius.circular(10),
         ),
-        margin: EdgeInsets.symmetric(
+        margin: const EdgeInsets.symmetric(
           horizontal: 2,
         ),
         width: 7, // Panjang total garis putih
@@ -99,84 +98,87 @@ class _StartPage1State extends State<StartPage1>
       backgroundColor: backgroundColor3,
       body: Column(
         children: [
-          SizedBox(
-            height: size.height * 0.15,
-          ),
-          Container(
+          Expanded(
             child: Stack(
               children: [
-                Image.asset(
-                  'assets/image_start1.png',
-                  width: size.width * 0.8,
-                  height: size.height * 0.4,
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: size.height * 0.45),
-                  height: size.height * 0.5,
-                  width: size.width * 0.9,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(50),
+                Padding(
+                  padding: EdgeInsets.only(bottom: size.height * 0.3),
+                  child: Center(
+                    child: Image.asset(
+                      'assets/image_start1.png',
+                      width: size.width * 1,
+                      height: size.height * 0.8,
+                      fit: BoxFit.contain,
                     ),
-                    color: backgroundColor7,
                   ),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: size.height * 0.08,
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    height: size.height * 0.5,
+                    width: size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(50),
                       ),
-                      Text(
-                        "Selamat Datang di\nVeggieFresh!",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: size.width * 0.06,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: size.height * 0.04),
-                      Text(
-                        "Solusi sehat untuk kebutuhan sayuran segar Anda.",
-                        textAlign: TextAlign.center,
-                        style: subtitleTextStyle.copyWith(
-                          fontWeight: semiBold,
-                          fontSize: size.width * 0.035,
-                        ),
-                      ),
-                      SizedBox(
-                        height: size.height * 0.1,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          _buildIndicator1(),
-                          _buildIndicator2(),
-                          _buildIndicator3(),
-                        ],
-                      ),
-                      SizedBox(
-                        height: size.height * 0.05,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/start2');
-                        },
-                        child: Text(
-                          "Next",
+                      color: backgroundColor7,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Selamat Datang di\nVeggieFresh!",
+                          textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: size.width * 0.045,
-                            color: backgroundColor7,
+                              fontSize: size.width * 0.06,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: size.height * 0.04),
+                        Text(
+                          "Solusi sehat untuk kebutuhan sayuran segar Anda.",
+                          textAlign: TextAlign.center,
+                          style: subtitleTextStyle.copyWith(
+                            fontWeight: semiBold,
+                            fontSize: size.width * 0.035,
                           ),
                         ),
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: size.width * 0.3,
-                              vertical: size.height * 0.02),
-                          backgroundColor: backgroundColor8,
+                        SizedBox(
+                          height: size.height * 0.1,
                         ),
-                      ),
-                    ],
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            _buildIndicator1(),
+                            _buildIndicator2(),
+                            _buildIndicator3(),
+                          ],
+                        ),
+                        SizedBox(
+                          height: size.height * 0.05,
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/start2');
+                          },
+                          child: Text(
+                            "Next",
+                            style: TextStyle(
+                              fontSize: size.width * 0.045,
+                              color: backgroundColor7,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.3,
+                                vertical: size.height * 0.02),
+                            backgroundColor: backgroundColor8,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
