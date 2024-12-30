@@ -21,16 +21,20 @@ class _HomePageState extends State<HomePage> {
   final TextEditingController _searchController = TextEditingController();
 
   final GlobalKey _searchShowcaseKey = GlobalKey();
+
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) {
-        if (widget.showShowcase) {
-          ShowCaseWidget.of(context).startShowCase([_searchShowcaseKey]);
-        }
-      },
-    );
+    // Pindahkan inisialisasi showcase ke method terpisah
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _startShowcase();
+    });
+  }
+
+  void _startShowcase() {
+    if (widget.showShowcase) {
+      ShowCaseWidget.of(context)?.startShowCase([_searchShowcaseKey]);
+    }
   }
 
   @override
@@ -38,6 +42,7 @@ class _HomePageState extends State<HomePage> {
     AuthProvider authProvider = Provider.of<AuthProvider>(context);
     UserModel user = authProvider.user;
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
+
     Widget header() {
       AuthProvider authProvider = Provider.of<AuthProvider>(context);
 
@@ -429,14 +434,17 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    return ShowCaseWidget(
-      builder: (context) => ListView(
-        children: [
-          header(),
-          searchField(),
-          categories(),
-          content(),
-        ],
+    return Scaffold(
+      backgroundColor: backgroundColor1,
+      body: Builder(
+        builder: (context) => ListView(
+          children: [
+            header(),
+            searchField(),
+            categories(),
+            content(),
+          ],
+        ),
       ),
     );
   }
